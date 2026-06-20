@@ -1019,6 +1019,7 @@ async function checkSession(){
 
 async function verificarAcesso(){
   try{
+    try{ const {data:adm}=await sb.rpc('is_admin'); IS_ADMIN=(adm===true); if(IS_ADMIN) return {liberado:true,status:'admin'}; }catch(e){}
     const {data}=await sb.from('assinatura').select('status,teste_fim,pago_ate').limit(1);
     const a=(data&&data[0])||null;
     const agora=new Date();
@@ -1066,6 +1067,107 @@ async function iniciarApp(){
   // registra último acesso (para o painel admin saber tempo de uso)
   try{ if(EMP&&EMP.user_id) await sb.from('empresa').update({ultimo_acesso:new Date().toISOString()}).eq('user_id',EMP.user_id); }catch(e){}
   assinarRealtime();
+  if(IS_ADMIN) montarAdminUI();
+}
+
+/* ================= PAINEL DO DONO (admin) ================= */
+let IS_ADMIN=false;
+function montarAdminUI(){
+  if(document.getElementById('adminFab')) return;
+  const fab=document.createElement('button');
+  fab.id='adminFab';
+  fab.innerHTML='\ud83d\udc51 Painel';
+  fab.onclick=abrirAdmin;
+  fab.style.cssText='position:fixed;right:14px;bottom:80px;z-index:9000;background:#1f8fff;color:#fff;border:0;border-radius:30px;padding:12px 18px;font-size:14px;font-weight:700;box-shadow:0 8px 24px rgba(31,143,255,.45);cursor:pointer';
+  document.body.appendChild(fab);
+  const ov=document.createElement('div');
+  ov.id='adminPanel';
+  ov.style.cssText='display:none;position:fixed;inset:0;z-index:9500;background:#0a1322;overflow-y:auto;padding:18px 16px 60px';
+  ov.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">'+
+    '<h2 style="margin:0;font-size:20px;color:#eaf1ff">\ud83d\udc51 Painel do dono</h2>'+
+    '<button onclick="fecharAdmin()" style="background:transparent;color:#8095b4;border:0;font-size:24px;line-height:1;cursor:pointer">\u2715</button></div>'+
+    '<div id="admStats" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap"></div>'+
+    '<div id="admLista"></div>';
+  document.body.appendChild(ov);
+}
+async function abrirAdmin(){
+  document.getElementById('adminPanel').style.display='block';
+  document.body.style.overflow='hidden';
+  await carregarAdmin();
+}
+function fecharAdmin(){
+  document.getElementById('adminPanel').style.display='none';
+  document.body.style.overflow='';
+}
+async function carregarAdmin(){
+  const lista=document.getElementById('admLista');
+  const stats=document.getElementById('admStats');
+  lista.innerHTML='<div style="text-align:center;color:#8095b4;padding:30px">Carregando\u2026</div>';
+  const {data,error}=await sb.rpc('admin_usuarios');
+  if(error){ lista.innerHTML='<div style="color:#ff6b6b;padding:20px">Erro: '+error.message+'</div>'; return; }
+  const us=data||[];
+  const agora=new Date();
+  const fmt=d=>d?new Date(d).toLocaleDateString('pt-BR'):'\u2014';
+  function st(u){
+    if(u.status==='liberado') return {t:'Liberado',c:'#22c55e'};
+    if(u.status==='pago') return (!u.pago_ate||new Date(u.pago_ate)>agora)?{t:'Pago',c:'#22c55e'}:{t:'Pgto venceu',c:'#ff6b6b'};
+    if(u.status==='teste') return (u.teste_fim&&new Date(u.teste_fim)>agora)?{t:'Em teste',c:'#1f8fff'}:{t:'Teste acabou',c:'#ff6b6b'};
+    return {t:u.status||'\u2014',c:'#8095b4'};
+  }
+  const nPago=us.filter(u=>{const x=st(u).t;return x==='Pago'||x==='Liberado'}).length;
+  const nTeste=us.filter(u=>st(u).t==='Em teste').length;
+  const nVenc=us.filter(u=>st(u).t==='Teste acabou'||st(u).t==='Pgto venceu').length;
+  const card=(n,l,c)=>'<div style="flex:1;min-width:74px;background:#13203a;border-radius:12px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:800;color:'+c+'">'+n+'</div><div style="font-size:11px;color:#8095b4">'+l+'</div></div>';
+  stats.innerHTML=card(us.length,'Total','#eaf1ff')+card(nTeste,'Em teste','#1f8fff')+card(nPago,'Pagantes','#22c55e')+card(nVenc,'Vencidos','#ff6b6b');
+  if(!us.length){ lista.innerHTML='<div style="text-align:center;color:#8095b4;padding:30px">Nenhum cliente ainda.</div>'; return; }
+  const btnA='background:#1f3a5f;color:#9cc7ff;border:0;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:600;cursor:pointer';
+  const btnG='background:#16442e;color:#5ee08a;border:0;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:600;cursor:pointer';
+  const btnR='background:#4a1f1f;color:#ff9a9a;border:0;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:600;cursor:pointer';
+  lista.innerHTML=us.map(function(u){
+    const s=st(u);
+    const venc=u.status==='pago'?('Pago at\u00e9 '+fmt(u.pago_ate)):('Teste at\u00e9 '+fmt(u.teste_fim));
+    return '<div style="background:#13203a;border-radius:14px;padding:14px;margin-bottom:12px">'+
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">'+
+        '<div style="min-width:0"><div style="font-weight:700;color:#eaf1ff;font-size:15px;overflow:hidden;text-overflow:ellipsis">'+(u.nome||'(sem nome)')+'</div>'+
+        '<div style="font-size:12px;color:#8095b4;margin-top:2px;word-break:break-all">'+(u.email||'')+'</div>'+
+        '<div style="font-size:12px;color:#8095b4">\ud83d\udcf1 '+(u.whatsapp||'\u2014')+'</div></div>'+
+        '<span style="background:'+s.c+'22;color:'+s.c+';font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;white-space:nowrap">'+s.t+'</span>'+
+      '</div>'+
+      '<div style="font-size:11px;color:#6b7da0;margin-top:6px">'+venc+' \u00b7 cadastro '+fmt(u.criado_em)+' \u00b7 \u00falt. acesso '+fmt(u.ultimo_acesso)+'</div>'+
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">'+
+        '<button onclick="admDias(\''+u.user_id+'\',7)" style="'+btnA+'">+7 dias</button>'+
+        '<button onclick="admDias(\''+u.user_id+'\',30)" style="'+btnA+'">+30 dias</button>'+
+        '<button onclick="admPago(\''+u.user_id+'\')" style="'+btnG+'">Marcar pago</button>'+
+        '<button onclick="admLiberar(\''+u.user_id+'\')" style="'+btnG+'">Liberar total</button>'+
+        '<button onclick="admBloq(\''+u.user_id+'\')" style="'+btnR+'">Bloquear</button>'+
+      '</div></div>';
+  }).join('');
+}
+async function admDias(uid,dias){
+  const {error}=await sb.rpc('admin_liberar_dias',{alvo:uid,dias:dias});
+  if(error){toast('Erro: '+error.message,true);return}
+  toast('+'+dias+' dias liberados \u2713'); carregarAdmin();
+}
+async function admPago(uid){
+  const meses=prompt('Marcar como PAGO por quantos meses?\n(deixe vazio para sem vencimento)');
+  if(meses===null) return;
+  let ate=null;
+  if(meses.trim()!==''){ const m=parseInt(meses); if(isNaN(m)){toast('N\u00famero inv\u00e1lido',true);return} const d=new Date(); d.setMonth(d.getMonth()+m); ate=d.toISOString(); }
+  const {error}=await sb.rpc('admin_marcar_pago',{alvo:uid,ate:ate,plano_nome:'mensal'});
+  if(error){toast('Erro: '+error.message,true);return}
+  toast('Marcado como pago \u2713'); carregarAdmin();
+}
+async function admLiberar(uid){
+  if(!confirm('Liberar acesso TOTAL (sem vencimento) para este cliente?')) return;
+  const {error}=await sb.rpc('admin_liberar_total',{alvo:uid});
+  if(error){toast('Erro: '+error.message,true);return}
+  toast('Acesso liberado \u2713'); carregarAdmin();
+}
+async function admBloq(uid){
+  if(!confirm('Bloquear este cliente agora?')) return;
+  const {error}=await sb.rpc('admin_bloquear',{alvo:uid});
+  if(error){toast('Erro: '+error.message,true);return}
+  toast('Cliente bloqueado'); carregarAdmin();
 }
 
 /* ================= CARREGAR DADOS ================= */
