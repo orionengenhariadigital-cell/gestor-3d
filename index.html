@@ -151,7 +151,7 @@
     <label>Senha</label>
     <input id="lg_pass" type="password" autocomplete="current-password" placeholder="sua senha">
     <button class="act" id="btnEntrar" onclick="entrar()">Entrar</button>
-    <button class="act ghost" id="btnIrCadastro" style="margin-top:10px" onclick="mostrarCadastro(true)">Criar conta · teste 3 dias grátis</button>
+    <button class="act ghost" id="btnIrCadastro" style="margin-top:10px" onclick="mostrarCadastro(true)">Criar conta · teste 7 dias grátis</button>
     <button class="act ghost" style="margin-top:10px;font-size:13px" onclick="falarSuporte('tempo')">⏰ Quero mais tempo de teste</button>
     <div id="cadastroExtra" style="display:none">
       <div style="border-top:1px solid var(--line);margin:14px 0"></div>
@@ -161,7 +161,7 @@
       <input id="cad_tel" type="text" inputmode="numeric" placeholder="Ex: 19999999999">
       <button class="act" onclick="criarConta()">✅ Criar conta e começar</button>
       <button class="act ghost" style="margin-top:10px" onclick="mostrarCadastro(false)">Já tenho conta</button>
-      <small class="note">3 dias grátis. Sem cartão. Cancele quando quiser.</small>
+      <small class="note">7 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
   <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.0</div>
@@ -968,7 +968,7 @@ function mostrarCadastro(mostrar){
   document.getElementById('cadastroExtra').style.display=mostrar?'block':'none';
   document.getElementById('btnEntrar').style.display=mostrar?'none':'block';
   document.getElementById('btnIrCadastro').style.display=mostrar?'none':'block';
-  document.getElementById('lgSub').textContent=mostrar?'Crie sua conta — 3 dias grátis':'Gestão para impressão 3D';
+  document.getElementById('lgSub').textContent=mostrar?'Crie sua conta — 7 dias grátis':'Gestão para impressão 3D';
 }
 async function criarConta(){
   const email=document.getElementById('lg_email').value.trim();
@@ -981,10 +981,10 @@ async function criarConta(){
   if(tel.length<10){toast('Digite seu WhatsApp com DDD',true);return}
   const {data,error}=await sb.auth.signUp({email,password:pass});
   if(error){toast('Não foi possível cadastrar: '+error.message,true);return}
-  // cria o perfil da empresa com 3 dias de teste
+  // cria o perfil da empresa com 7 dias de teste
   if(data.user){
     user=data.user;
-    const fim=new Date(); fim.setDate(fim.getDate()+3);
+    const fim=new Date(); fim.setDate(fim.getDate()+7);
     await sb.from('empresa').insert({nome,whatsapp:tel,telefone:tel,ramo:'Impressão 3D',ultimo_acesso:new Date().toISOString()});
     await sb.from('assinatura').insert({status:'teste',teste_fim:fim.toISOString()});
   }
