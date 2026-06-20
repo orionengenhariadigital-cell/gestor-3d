@@ -177,6 +177,7 @@
       <h1 id="hdNome">Gestor Impressão 3D</h1>
       <p id="hdSub">Impressão 3D</p>
     </div>
+    <button class="out" onclick="abrirPersonalizar()" style="margin-right:8px" title="Personalizar abas">⚙️</button>
     <button class="out" onclick="abrirAjuda()" style="margin-right:8px" title="Como começar">❓</button>
     <button class="out" onclick="sair()">Sair</button>
   </header>
@@ -1102,6 +1103,7 @@ function montarAjuda(){
     '</div>'+
     lista+
     '<button onclick="fecharAjuda()" style="margin-top:14px;width:100%;background:#1f8fff;color:#fff;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:700;cursor:pointer">Come\u00e7ar agora \ud83d\ude80</button>'+
+    '<button onclick="fecharAjuda();abrirPersonalizar()" style="margin-top:8px;width:100%;background:transparent;color:#6cc0ff;border:1px solid #1f3a5f;border-radius:14px;padding:13px;font-size:14px;font-weight:600;cursor:pointer">\u2699\ufe0f Escolher o que quero controlar</button>'+
     '</div>';
   document.body.appendChild(ov);
 }
@@ -1116,6 +1118,70 @@ function fecharAjuda(){
   if(el) el.style.display='none';
   document.body.style.overflow='';
   try{ localStorage.setItem('g3d_welcome_seen','1'); }catch(e){}
+}
+
+/* ================= MODO SIMPLES/COMPLETO (escolha de abas) ================= */
+const ABAS_FIXAS=['orc','venda','graf'];
+const ABAS_OPC=[
+  {k:'fil',    lbl:'Filamento', emoji:'\ud83e\uddf5', desc:'Estoque e custo dos filamentos'},
+  {k:'pecas',  lbl:'Pe\u00e7as',     emoji:'\ud83d\udce6', desc:'Pe\u00e7as prontas em estoque e perdas'},
+  {k:'custos', lbl:'Dados',     emoji:'\u2699\ufe0f', desc:'M\u00e1quinas e custos do neg\u00f3cio'},
+  {k:'hist',   lbl:'Hist\u00f3rico', emoji:'\ud83d\udd59', desc:'Hist\u00f3rico de tudo que passou'}
+];
+function abasEscolhidas(){
+  let extra=[];
+  try{ extra = Array.isArray(EMP.abas) ? EMP.abas : (EMP.abas ? JSON.parse(EMP.abas) : []); }catch(e){ extra=[]; }
+  return Array.isArray(extra) ? extra : [];
+}
+function aplicarAbas(){
+  const extra=abasEscolhidas();
+  document.querySelectorAll('.tab').forEach(function(b){
+    const t=b.dataset.tab;
+    const vis = ABAS_FIXAS.includes(t) || extra.includes(t);
+    b.style.display = vis ? '' : 'none';
+  });
+  const atual=document.querySelector('.tab.active');
+  if(!atual || atual.style.display==='none'){
+    const primeira=Array.from(document.querySelectorAll('.tab')).find(function(b){return b.style.display!=='none';});
+    if(primeira) go(primeira.dataset.tab);
+  }
+}
+function montarPersonalizar(){
+  if(document.getElementById('persPanel')) return;
+  const ov=document.createElement('div'); ov.id='persPanel';
+  ov.style.cssText='display:none;position:fixed;inset:0;z-index:9600;background:#0a1322;overflow-y:auto;padding:24px 18px 40px';
+  ov.innerHTML='<div style="max-width:440px;margin:0 auto">'+
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'+
+      '<h2 style="margin:0;font-size:20px;color:#eaf1ff">\u2699\ufe0f O que voc\u00ea quer controlar?</h2>'+
+      '<button onclick="fecharPersonalizar()" style="background:transparent;color:#8095b4;border:0;font-size:24px;cursor:pointer">\u2715</button></div>'+
+    '<p style="margin:0 0 16px;color:#8095b4;font-size:13px">Or\u00e7ar, Venda e Resumo aparecem sempre. Marque o que mais quer usar:</p>'+
+    '<div id="persLista"></div>'+
+    '<button onclick="salvarPersonalizar()" style="margin-top:14px;width:100%;background:#1f8fff;color:#fff;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:700;cursor:pointer">Salvar</button>'+
+    '</div>';
+  document.body.appendChild(ov);
+}
+function abrirPersonalizar(){
+  montarPersonalizar();
+  const extra=abasEscolhidas();
+  document.getElementById('persLista').innerHTML=ABAS_OPC.map(function(a){
+    const on=extra.includes(a.k);
+    return '<label style="display:flex;gap:12px;align-items:center;background:#13203a;border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer">'+
+      '<input type="checkbox" data-aba="'+a.k+'" '+(on?'checked':'')+' style="width:22px;height:22px;accent-color:#1f8fff;flex:none">'+
+      '<div style="font-size:22px">'+a.emoji+'</div>'+
+      '<div><div style="font-weight:700;color:#eaf1ff;font-size:15px">'+a.lbl+'</div>'+
+      '<div style="font-size:12px;color:#8095b4">'+a.desc+'</div></div></label>';
+  }).join('');
+  document.getElementById('persPanel').style.display='block';
+  document.body.style.overflow='hidden'; window.scrollTo(0,0);
+}
+function fecharPersonalizar(){ const e=document.getElementById('persPanel'); if(e) e.style.display='none'; document.body.style.overflow=''; }
+async function salvarPersonalizar(){
+  const sel=Array.from(document.querySelectorAll('#persLista input[type=checkbox]')).filter(function(c){return c.checked;}).map(function(c){return c.dataset.aba;});
+  EMP.abas=sel;
+  try{ if(EMP&&EMP.user_id){ await sb.from('empresa').update({abas:sel}).eq('user_id',EMP.user_id); } }catch(e){}
+  aplicarAbas();
+  fecharPersonalizar();
+  toast('Abas atualizadas \u2713');
 }
 
 /* ================= PAINEL DO DONO (admin) ================= */
@@ -1244,6 +1310,7 @@ async function carregarTudo(){
   EMP=(emp.data&&emp.data[0])||{};
   aplicarMarca();
   renderTudo();
+  aplicarAbas();
 }
 function aplicarMarca(){
   const nome=EMP.nome||'Meu Negócio';
