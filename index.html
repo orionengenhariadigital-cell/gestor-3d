@@ -177,6 +177,7 @@
       <h1 id="hdNome">Gestor Impressão 3D</h1>
       <p id="hdSub">Impressão 3D</p>
     </div>
+    <button class="out" onclick="abrirAjuda()" style="margin-right:8px" title="Como começar">❓</button>
     <button class="out" onclick="sair()">Sair</button>
   </header>
 
@@ -1068,6 +1069,53 @@ async function iniciarApp(){
   try{ if(EMP&&EMP.user_id) await sb.from('empresa').update({ultimo_acesso:new Date().toISOString()}).eq('user_id',EMP.user_id); }catch(e){}
   assinarRealtime();
   if(IS_ADMIN) montarAdminUI();
+  try{ if(!localStorage.getItem('g3d_welcome_seen')) setTimeout(abrirAjuda,500); }catch(e){}
+}
+
+/* ================= COMO COMEÇAR (boas-vindas / ajuda) ================= */
+function montarAjuda(){
+  if(document.getElementById('ajudaPanel')) return;
+  const ov=document.createElement('div');
+  ov.id='ajudaPanel';
+  ov.style.cssText='display:none;position:fixed;inset:0;z-index:9600;background:#0a1322;overflow-y:auto;padding:24px 18px 40px';
+  const passos=[
+    ['\u2699\ufe0f','Dados','Cadastre suas m\u00e1quinas e os custos do neg\u00f3cio (energia, valor da m\u00e1quina). \u00c9 isso que faz o pre\u00e7o sair certo \u2014 faz uma vez s\u00f3.'],
+    ['\ud83e\uddf5','Filamento','Cadastre os filamentos que voc\u00ea tem: tipo, cor/marca e quanto custou o rolo.'],
+    ['\ud83d\udcc4','Or\u00e7ar','Monte o or\u00e7amento pro cliente \u2014 o app calcula material, energia, tempo e sua margem.'],
+    ['\ud83d\uded2','Venda','Fechou neg\u00f3cio? Registre a venda. Daqui saem seu faturamento e lucro.'],
+    ['\ud83d\udce6','Pe\u00e7a','Imprime pe\u00e7as pra estoque? Cadastre aqui e d\u00ea baixa quando vender.'],
+    ['\ud83d\udcca','Resumo','O raio-x do neg\u00f3cio: quanto vendeu, lucro e o que mais sai.'],
+    ['\ud83d\udd59','Hist\u00f3rico','Consulte tudo que j\u00e1 passou.']
+  ];
+  let lista='';
+  passos.forEach(function(p,i){
+    lista+='<div style="display:flex;gap:12px;align-items:flex-start;background:#13203a;border-radius:14px;padding:13px 14px;margin-bottom:10px">'+
+      '<div style="font-size:24px;line-height:1.2">'+p[0]+'</div>'+
+      '<div><div style="font-weight:700;color:#eaf1ff;font-size:15px">'+(i+1)+'. '+p[1]+'</div>'+
+      '<div style="font-size:13px;color:#8095b4;line-height:1.5;margin-top:2px">'+p[2]+'</div></div></div>';
+  });
+  ov.innerHTML='<div style="max-width:440px;margin:0 auto">'+
+    '<div style="text-align:center;margin-bottom:18px">'+
+      '<div style="font-size:40px">\ud83d\udc4b</div>'+
+      '<h2 style="margin:6px 0 2px;font-size:22px;color:#eaf1ff">Bem-vindo ao Gestor!</h2>'+
+      '<p style="margin:0;color:#8095b4;font-size:14px">Veja por onde come\u00e7ar \u2014 \u00e9 rapidinho:</p>'+
+    '</div>'+
+    lista+
+    '<button onclick="fecharAjuda()" style="margin-top:14px;width:100%;background:#1f8fff;color:#fff;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:700;cursor:pointer">Come\u00e7ar agora \ud83d\ude80</button>'+
+    '</div>';
+  document.body.appendChild(ov);
+}
+function abrirAjuda(){
+  montarAjuda();
+  document.getElementById('ajudaPanel').style.display='block';
+  document.body.style.overflow='hidden';
+  window.scrollTo(0,0);
+}
+function fecharAjuda(){
+  const el=document.getElementById('ajudaPanel');
+  if(el) el.style.display='none';
+  document.body.style.overflow='';
+  try{ localStorage.setItem('g3d_welcome_seen','1'); }catch(e){}
 }
 
 /* ================= PAINEL DO DONO (admin) ================= */
