@@ -1062,6 +1062,14 @@ function mostrarBloqueio(info){
   el.style.display='flex';
 }
 function assinarAgora(){ window.open('https://mpago.la/1QFACk5','_blank'); }
+let _usoPend=0, _usoOn=false;
+function iniciarHeartbeatUso(){
+  if(_usoOn) return; _usoOn=true;
+  setInterval(function(){ if(document.visibilityState==='visible'){ _usoPend++; if(_usoPend>=5) _flushUso(); } },60000);
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='hidden') _flushUso(); });
+  window.addEventListener('pagehide',_flushUso);
+}
+async function _flushUso(){ if(_usoPend<=0) return; const add=_usoPend; _usoPend=0; const novo=(EMP.tempo_uso_min||0)+add; EMP.tempo_uso_min=novo; try{ if(EMP&&EMP.user_id) await sb.from('empresa').update({tempo_uso_min:novo}).eq('user_id',EMP.user_id); }catch(e){} }
 async function iniciarApp(){
   const _ac=await verificarAcesso();
   if(!_ac.liberado){ mostrarBloqueio(_ac); return; }
@@ -1070,7 +1078,8 @@ async function iniciarApp(){
   document.getElementById('nav').style.display='flex';
   await carregarTudo();
   // registra último acesso (para o painel admin saber tempo de uso)
-  try{ if(EMP&&EMP.user_id) await sb.from('empresa').update({ultimo_acesso:new Date().toISOString()}).eq('user_id',EMP.user_id); }catch(e){}
+  try{ if(EMP&&EMP.user_id){ const _pa=EMP.primeiro_acesso||new Date().toISOString(); const _lg=(EMP.logins||0)+1; await sb.from('empresa').update({ultimo_acesso:new Date().toISOString(),logins:_lg,primeiro_acesso:_pa}).eq('user_id',EMP.user_id); EMP.logins=_lg; EMP.primeiro_acesso=_pa; } }catch(e){}
+  iniciarHeartbeatUso();
   assinarRealtime();
   if(IS_ADMIN) montarAdminUI();
   try{ var _uid=(EMP&&EMP.user_id)?EMP.user_id:''; if(!localStorage.getItem('g3d_onb_'+_uid)) setTimeout(abrirAjuda,500); }catch(e){}
@@ -1235,8 +1244,11 @@ async function carregarAdmin(){
   const {data,error}=await sb.rpc('admin_usuarios');
   if(error){ lista.innerHTML='<div style="color:#ff6b6b;padding:20px">Erro: '+error.message+'</div>'; return; }
   const us=data||[];
+  let _uso={};
+  try{ const _r=await sb.rpc('admin_uso'); (_r.data||[]).forEach(function(x){ _uso[x.user_id]=x; }); }catch(e){}
   const agora=new Date();
   const fmt=d=>d?new Date(d).toLocaleDateString('pt-BR'):'\u2014';
+  const fmtMin=m=>{ m=+m||0; if(m<60) return m+' min'; const h=Math.floor(m/60),mm=m%60; return h+'h'+(mm?(' '+mm+'min'):''); };
   function st(u){
     if(u.status==='liberado') return {t:'Liberado',c:'#22c55e'};
     if(u.status==='pago') return (!u.pago_ate||new Date(u.pago_ate)>agora)?{t:'Pago',c:'#22c55e'}:{t:'Pgto venceu',c:'#ff6b6b'};
@@ -1263,6 +1275,7 @@ async function carregarAdmin(){
         '<span style="background:'+s.c+'22;color:'+s.c+';font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;white-space:nowrap">'+s.t+'</span>'+
       '</div>'+
       '<div style="font-size:11px;color:#6b7da0;margin-top:6px">'+venc+' \u00b7 cadastro '+fmt(u.criado_em)+' \u00b7 \u00falt. acesso '+fmt(u.ultimo_acesso)+'</div>'+
+      '<div style="font-size:11px;color:#6b7da0;margin-top:3px">🔑 '+((_uso[u.user_id]||{}).logins||0)+' logins · ⏱️ '+fmtMin((_uso[u.user_id]||{}).tempo_uso_min)+' de uso · 1º acesso '+fmt((_uso[u.user_id]||{}).primeiro_acesso)+'</div>'+
       '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">'+
         '<button onclick="admDias(\''+u.user_id+'\',7)" style="'+btnA+'">+7 dias</button>'+
         '<button onclick="admDias(\''+u.user_id+'\',30)" style="'+btnA+'">+30 dias</button>'+
