@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.4</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.5</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -188,6 +188,7 @@
     <div>
       <h1 id="hdNome">Gestor Impressão 3D</h1>
       <p id="hdSub">Impressão 3D</p>
+      <span id="statusBadge" style="display:none;align-items:center;gap:6px;margin-top:5px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;line-height:1.2;width:fit-content"></span>
     </div>
     <button class="out" onclick="abrirPersonalizar()" style="margin-right:8px" title="Personalizar abas">⚙️</button>
     <button class="out" onclick="abrirAjuda()" style="margin-right:8px" title="Como começar">❓</button>
@@ -1006,6 +1007,32 @@ async function criarConta(){
   else { toast('Confirme seu email para entrar (verifique a caixa de entrada)'); mostrarCadastro(false); }
 }
 
+function atualizarStatusBadge(ac){
+  var el=document.getElementById('statusBadge'); if(!el) return;
+  ac=ac||{}; var a=(window.ASSIN)||{}; var agora=new Date();
+  var dia=function(d){ return Math.ceil((new Date(d)-agora)/86400000); };
+  var txt='', cor='#1f8fff', bg='rgba(31,143,255,.15)', tap=false;
+  if(ac.status==='admin'){ el.style.display='none'; return; }
+  if(ac.status==='pago' || a.status==='pago'){
+    if(a.pago_ate){
+      var d=dia(a.pago_ate);
+      if(d>5){ txt='\u2705 Assinatura ativa'; cor='#22c55e'; bg='rgba(34,197,94,.15)'; }
+      else if(d>=0){ txt='\u23f0 Renova em '+d+(d===1?' dia':' dias'); cor='#f59e0b'; bg='rgba(245,158,11,.15)'; tap=true; }
+      else { txt='\u26a0\ufe0f Mensalidade em atraso'; cor='#ff6b6b'; bg='rgba(255,107,107,.15)'; tap=true; }
+    } else { txt='\u2705 Assinatura ativa'; cor='#22c55e'; bg='rgba(34,197,94,.15)'; }
+  } else if(ac.status==='liberado'){
+    txt='\u2705 Acesso liberado'; cor='#22c55e'; bg='rgba(34,197,94,.15)';
+  } else if(ac.status==='teste' || a.status==='teste'){
+    var dd=(ac.dias!=null)?ac.dias:(a.teste_fim?dia(a.teste_fim):0);
+    if(dd>7){ txt='\u23f0 Teste gr\u00e1tis \u00b7 faltam '+dd+' dias'; cor='#1f8fff'; bg='rgba(31,143,255,.15)'; }
+    else if(dd>=1){ txt='\u23f0 Teste acaba em '+dd+(dd===1?' dia':' dias')+' \u00b7 assine'; cor='#f59e0b'; bg='rgba(245,158,11,.15)'; tap=true; }
+    else { txt='\u26a0\ufe0f Teste encerrado \u00b7 assine'; cor='#ff6b6b'; bg='rgba(255,107,107,.15)'; tap=true; }
+  } else { el.style.display='none'; return; }
+  el.textContent=txt; el.style.color=cor; el.style.background=bg;
+  el.style.display='inline-flex';
+  el.onclick = tap ? function(){ if(typeof assinarAgora==='function') assinarAgora(); } : null;
+  el.style.cursor = tap ? 'pointer' : 'default';
+}
 function _secIcon(txt){
   var t=(txt||'').toLowerCase();
   if(/invent/.test(t)) return '\ud83d\udccb';
@@ -1095,6 +1122,7 @@ async function verificarAcesso(){
     try{ const {data:adm}=await sb.rpc('is_admin'); IS_ADMIN=(adm===true); if(IS_ADMIN) return {liberado:true,status:'admin'}; }catch(e){}
     const {data}=await sb.from('assinatura').select('status,teste_fim,pago_ate').limit(1);
     const a=(data&&data[0])||null;
+    window.ASSIN=a;
     const agora=new Date();
     if(!a) return {liberado:false,motivo:'sem_assinatura'};
     if(a.status==='pago'){
@@ -1147,6 +1175,7 @@ async function iniciarApp(){
   document.getElementById('app').style.display='block';
   document.getElementById('nav').style.display='flex';
   montarSanfonas();
+  atualizarStatusBadge(_ac);
   await carregarTudo();
   // registra último acesso (para o painel admin saber tempo de uso)
   try{ if(EMP&&EMP.user_id){ const _pa=EMP.primeiro_acesso||new Date().toISOString(); const _lg=(EMP.logins||0)+1; await sb.from('empresa').update({ultimo_acesso:new Date().toISOString(),logins:_lg,primeiro_acesso:_pa}).eq('user_id',EMP.user_id); EMP.logins=_lg; EMP.primeiro_acesso=_pa; } }catch(e){}
