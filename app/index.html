@@ -994,6 +994,13 @@ async function criarConta(){
   else { toast('Confirme seu email para entrar (verifique a caixa de entrada)'); mostrarCadastro(false); }
 }
 
+function telaLogin(){
+  var boot=document.getElementById('boot'); if(boot) boot.style.display='none';
+  var app=document.getElementById('app'); if(app) app.style.display='none';
+  var nav=document.getElementById('nav'); if(nav) nav.style.display='none';
+  var bl=document.getElementById('bloqueio'); if(bl) bl.style.display='none';
+  var lg=document.getElementById('login'); if(lg) lg.style.display='block';
+}
 async function checkSession(){
   const boot=document.getElementById('boot');
   // se a biblioteca do Supabase não carregou (internet ruim no 1º acesso), avisa
@@ -1005,18 +1012,18 @@ async function checkSession(){
   const failsafe=setTimeout(()=>{
     boot.style.display='none';
     if(document.getElementById('app').style.display!=='block')
-      document.getElementById('login').style.display='block';
+      telaLogin();
   },8000);
   try{
     const {data}=await sb.auth.getSession();
     clearTimeout(failsafe);
     boot.style.display='none';
     if(data && data.session){ user=data.session.user; await iniciarApp(); }
-    else { document.getElementById('login').style.display='block'; }
+    else { telaLogin(); }
   }catch(e){
     clearTimeout(failsafe);
     boot.style.display='none';
-    document.getElementById('login').style.display='block';
+    telaLogin();
   }
 }
 
