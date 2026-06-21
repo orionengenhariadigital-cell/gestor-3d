@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.9</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.0</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -1518,6 +1518,13 @@ function go(t){
   document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
+  // ao entrar na aba, formularios voltam fechados; listas ficam abertas
+  document.querySelectorAll('#tab-'+t+' h2.sec.acc').forEach(function(h){
+    var b=h.nextElementSibling; if(!b||!b.classList.contains('sec-body'))return;
+    var isList=!!h.querySelector('.count');
+    if(isList){ b.style.display=''; h.classList.add('acc-open'); }
+    else { b.style.display='none'; h.classList.remove('acc-open'); }
+  });
   if(t==='graf') setTimeout(renderGraficos,50);
   window.scrollTo(0,0);
 }
