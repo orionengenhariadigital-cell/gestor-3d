@@ -1073,7 +1073,7 @@ async function iniciarApp(){
   try{ if(EMP&&EMP.user_id) await sb.from('empresa').update({ultimo_acesso:new Date().toISOString()}).eq('user_id',EMP.user_id); }catch(e){}
   assinarRealtime();
   if(IS_ADMIN) montarAdminUI();
-  try{ if(!localStorage.getItem('g3d_welcome_seen')) setTimeout(abrirAjuda,500); }catch(e){}
+  try{ var _uid=(EMP&&EMP.user_id)?EMP.user_id:''; if(!localStorage.getItem('g3d_onb_'+_uid)) setTimeout(abrirAjuda,500); }catch(e){}
 }
 
 /* ================= COMO COMEÇAR (boas-vindas / ajuda) ================= */
@@ -1105,8 +1105,12 @@ function montarAjuda(){
       '<p style="margin:0;color:#8095b4;font-size:14px">Veja por onde come\u00e7ar \u2014 \u00e9 rapidinho:</p>'+
     '</div>'+
     lista+
-    '<button onclick="fecharAjuda()" style="margin-top:14px;width:100%;background:#1f8fff;color:#fff;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:700;cursor:pointer">Come\u00e7ar agora \ud83d\ude80</button>'+
-    '<button onclick="fecharAjuda();abrirPersonalizar()" style="margin-top:8px;width:100%;background:transparent;color:#6cc0ff;border:1px solid #1f3a5f;border-radius:14px;padding:13px;font-size:14px;font-weight:600;cursor:pointer">\u2699\ufe0f Escolher o que quero controlar</button>'+
+    '<div style="margin-top:18px;background:#0f1a30;border:1px solid #1f3a5f;border-radius:16px;padding:16px">'+
+      '<div style="font-weight:700;color:#eaf1ff;font-size:15px;text-align:center;margin-bottom:4px">Como você quer começar?</div>'+
+      '<div style="font-size:12px;color:#8095b4;text-align:center;margin-bottom:14px">Dá pra mudar depois no ⚙️ quando quiser.</div>'+
+      '<button onclick="escolherModo(\'simples\')" style="width:100%;background:#1f8fff;color:#fff;border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px;line-height:1.35">✨ Modo Simples<br><span style="font-weight:500;font-size:12px;opacity:.9">Só o essencial: Orçar, Venda, Resumo e Dados</span></button>'+
+      '<button onclick="escolherModo(\'completo\')" style="width:100%;background:#13203a;color:#eaf1ff;border:1px solid #2a4368;border-radius:14px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;line-height:1.35">🧰 Modo Completo<br><span style="font-weight:500;font-size:12px;color:#8095b4">Tudo: também Filamento, Peças e Histórico</span></button>'+
+    '</div>'+
     '</div>';
   document.body.appendChild(ov);
 }
@@ -1121,6 +1125,15 @@ function fecharAjuda(){
   if(el) el.style.display='none';
   document.body.style.overflow='';
   try{ localStorage.setItem('g3d_welcome_seen','1'); }catch(e){}
+}
+async function escolherModo(modo){
+  const sel = modo==='completo' ? ['fil','pecas','hist'] : [];
+  EMP.abas=sel;
+  try{ if(EMP&&EMP.user_id){ await sb.from('empresa').update({abas:sel}).eq('user_id',EMP.user_id); } }catch(e){}
+  aplicarAbas();
+  try{ var _uid=(EMP&&EMP.user_id)?EMP.user_id:''; localStorage.setItem('g3d_onb_'+_uid,'1'); }catch(e){}
+  fecharAjuda();
+  toast(modo==='completo'?'Modo completo ativado \u2713':'Modo simples ativado \u2713');
 }
 
 /* ================= MODO SIMPLES/COMPLETO (escolha de abas) ================= */
