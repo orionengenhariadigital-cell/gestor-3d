@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.1</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.2</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -1182,7 +1182,7 @@ async function iniciarApp(){
   await carregarTudo();
   // registra último acesso (para o painel admin saber tempo de uso)
   try{ if(EMP&&EMP.user_id){ const _pa=EMP.primeiro_acesso||new Date().toISOString(); const _lg=(EMP.logins||0)+1; await sb.from('empresa').update({ultimo_acesso:new Date().toISOString(),logins:_lg,primeiro_acesso:_pa}).eq('user_id',EMP.user_id); EMP.logins=_lg; EMP.primeiro_acesso=_pa; } }catch(e){}
-  try{ var _uid=(EMP&&EMP.user_id)?EMP.user_id:''; if(!localStorage.getItem('g3d_hide_'+_uid)) setTimeout(abrirAjuda,500); }catch(e){}
+  try{ var _uid=(EMP&&EMP.user_id)?EMP.user_id:''; var _hide=(EMP&&EMP.esconder_ajuda)||localStorage.getItem('g3d_hide_'+_uid); if(!_hide) setTimeout(abrirAjuda,500); }catch(e){}
   iniciarHeartbeatUso();
   try{ assinarRealtime(); }catch(e){}
   try{ if(IS_ADMIN) montarAdminUI(); }catch(e){}
@@ -1245,6 +1245,7 @@ async function escolherModo(modo){
 }
 function naoMostrarMais(){
   try{ var _uid=(EMP&&EMP.user_id)?EMP.user_id:''; localStorage.setItem('g3d_hide_'+_uid,'1'); }catch(e){}
+  try{ if(EMP&&EMP.user_id){ EMP.esconder_ajuda=true; sb.from('empresa').update({esconder_ajuda:true}).eq('user_id',EMP.user_id); } }catch(e){}
   fecharAjuda();
   toast('Ok! Toque no \u2753 quando quiser rever.');
 }
