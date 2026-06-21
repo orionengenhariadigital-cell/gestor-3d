@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.0</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.1</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -1078,8 +1078,7 @@ function montarSanfonas(){
       var chev=document.createElement('span'); chev.className='acc-chev'; chev.textContent='\u25B8';
       h.appendChild(left); h.appendChild(chev);
       h.classList.add('acc');
-      var _isList = !!h.querySelector('.count');
-      if(_isList){ body.style.display=''; h.classList.add('acc-open'); } else { body.style.display='none'; }
+      body.style.display='none';
       h.addEventListener('click', function(){
         var open=body.style.display!=='none';
         if(open){ body.style.display='none'; h.classList.remove('acc-open'); }
@@ -1521,9 +1520,7 @@ function go(t){
   // ao entrar na aba, formularios voltam fechados; listas ficam abertas
   document.querySelectorAll('#tab-'+t+' h2.sec.acc').forEach(function(h){
     var b=h.nextElementSibling; if(!b||!b.classList.contains('sec-body'))return;
-    var isList=!!h.querySelector('.count');
-    if(isList){ b.style.display=''; h.classList.add('acc-open'); }
-    else { b.style.display='none'; h.classList.remove('acc-open'); }
+    b.style.display='none'; h.classList.remove('acc-open');
   });
   if(t==='graf') setTimeout(renderGraficos,50);
   window.scrollTo(0,0);
