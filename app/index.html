@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.4</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.5</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -897,6 +897,8 @@ const EDIT_DEFS={
     {k:'gramas',lbl:'Gramas',tipo:'num'},
     {k:'tempo_horas',lbl:'Tempo (horas)',tipo:'num'},
     {k:'maquina_id',lbl:'Máquina',tipo:'maq'},
+    {k:'custo',lbl:'Custo (R$)',tipo:'num'},
+    {k:'criado_em',lbl:'Data',tipo:'date'},
     {k:'obs',lbl:'Observação',tipo:'text'}
   ]},
   perdas:{titulo:'Editar perda/falha',campos:[
@@ -918,7 +920,7 @@ function editar(tabela,id){
     let val=rec[c.k]; if(val==null)val='';
     if(c.tipo==='num'){ const n=+val; val=(val===''||isNaN(n))?'':String(n).replace('.',','); return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="num" type="text" inputmode="decimal" value="${val}">`; }
     if(c.tipo==='color'){ return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="color" type="color" value="${val||'#1f8fff'}" style="width:54px;height:42px;padding:2px;border-radius:10px;cursor:pointer;display:block">`; }
-    if(c.tipo==='date'){ return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="text" type="date" value="${val}">`; }
+    if(c.tipo==='date'){ return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="text" type="date" value="${(''+val).slice(0,10)}">`; }
     if(c.tipo==='select'){ return `<label>${c.lbl}</label><select data-k="${c.k}" data-t="text">${c.ops.map(o=>`<option ${o===val?'selected':''}>${o}</option>`).join('')}</select>`; }
     if(c.tipo==='maq'){ return `<label>${c.lbl}</label><select data-k="${c.k}" data-t="text"><option value="">— sem máquina —</option>${db.maquinas.map(m=>`<option value="${m.id}" ${m.id===val?'selected':''}>${m.nome}</option>`).join('')}</select>`; }
     return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="text" type="text" value="${(''+val).replace(/"/g,'&quot;')}">`;
