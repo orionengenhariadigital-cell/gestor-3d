@@ -136,6 +136,18 @@
   .sync.off .dot{background:var(--amber)}
   .spin{display:inline-block;width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--brand);border-radius:50%;animation:r 1s linear infinite;margin:30px auto}
   @keyframes r{to{transform:rotate(360deg)}}
+
+  /* ===== Sanfonas (secoes recolhiveis) ===== */
+  h2.sec.acc{cursor:pointer;justify-content:space-between;background:#13203a;border:1px solid #24386a;border-radius:14px;padding:13px 15px;margin:10px 0 0;-webkit-tap-highlight-color:transparent;transition:background .15s,border-color .15s}
+  h2.sec.acc:hover{background:#172a4d}
+  h2.sec.acc.acc-open{border-color:#2f6fb0;background:#16284a}
+  h2.sec.acc .acc-left{display:flex;align-items:center;gap:10px;min-width:0;overflow:hidden}
+  h2.sec.acc .acc-ico{flex:none;width:9px;height:9px;border-radius:50%;background:#6cc0ff;box-shadow:0 0 8px rgba(108,192,255,.7)}
+  h2.sec.acc .acc-chev{flex:none;color:#6cc0ff;font-size:13px;transition:transform .2s ease}
+  h2.sec.acc.acc-open .acc-chev{transform:rotate(90deg)}
+  .sec-body{padding:6px 2px 4px}
+  .sec-body.opening{animation:secIn .2s ease}
+  @keyframes secIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -164,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.1</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.2</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -994,6 +1006,31 @@ async function criarConta(){
   else { toast('Confirme seu email para entrar (verifique a caixa de entrada)'); mostrarCadastro(false); }
 }
 
+function montarSanfonas(){
+  document.querySelectorAll('#app section').forEach(function(sec){
+    sec.querySelectorAll(':scope > h2.sec').forEach(function(h){
+      if(h.dataset.acc) return; h.dataset.acc='1';
+      var body=document.createElement('div'); body.className='sec-body';
+      var n=h.nextElementSibling;
+      while(n && !(n.tagName==='H2' && n.classList.contains('sec'))){ var nx=n.nextElementSibling; body.appendChild(n); n=nx; }
+      h.parentNode.insertBefore(body, h.nextElementSibling);
+      if(body.querySelector('canvas')){ return; } // graficos ficam sempre abertos
+      var left=document.createElement('span'); left.className='acc-left';
+      while(h.firstChild){ left.appendChild(h.firstChild); }
+      var dot=document.createElement('span'); dot.className='acc-ico';
+      left.insertBefore(dot, left.firstChild);
+      var chev=document.createElement('span'); chev.className='acc-chev'; chev.textContent='\u25B8';
+      h.appendChild(left); h.appendChild(chev);
+      h.classList.add('acc');
+      body.style.display='none';
+      h.addEventListener('click', function(){
+        var open=body.style.display!=='none';
+        if(open){ body.style.display='none'; h.classList.remove('acc-open'); }
+        else { body.style.display=''; body.classList.add('opening'); h.classList.add('acc-open'); setTimeout(function(){ body.classList.remove('opening'); },220); }
+      });
+    });
+  });
+}
 function telaLogin(){
   var boot=document.getElementById('boot'); if(boot) boot.style.display='none';
   var app=document.getElementById('app'); if(app) app.style.display='none';
@@ -1083,6 +1120,7 @@ async function iniciarApp(){
   document.getElementById('login').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('nav').style.display='flex';
+  montarSanfonas();
   await carregarTudo();
   // registra último acesso (para o painel admin saber tempo de uso)
   try{ if(EMP&&EMP.user_id){ const _pa=EMP.primeiro_acesso||new Date().toISOString(); const _lg=(EMP.logins||0)+1; await sb.from('empresa').update({ultimo_acesso:new Date().toISOString(),logins:_lg,primeiro_acesso:_pa}).eq('user_id',EMP.user_id); EMP.logins=_lg; EMP.primeiro_acesso=_pa; } }catch(e){}
