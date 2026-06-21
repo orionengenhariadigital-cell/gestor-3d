@@ -142,7 +142,7 @@
   h2.sec.acc:hover{background:#172a4d}
   h2.sec.acc.acc-open{border-color:#2f6fb0;background:#16284a}
   h2.sec.acc .acc-left{display:flex;align-items:center;gap:10px;min-width:0;overflow:hidden}
-  h2.sec.acc .acc-ico{flex:none;width:9px;height:9px;border-radius:50%;background:#6cc0ff;box-shadow:0 0 8px rgba(108,192,255,.7)}
+  h2.sec.acc .acc-ico{flex:none;width:30px;height:30px;border-radius:9px;background:rgba(108,192,255,.15);display:grid;place-items:center;font-size:16px;line-height:1}
   h2.sec.acc .acc-chev{flex:none;color:#6cc0ff;font-size:13px;transition:transform .2s ease}
   h2.sec.acc.acc-open .acc-chev{transform:rotate(90deg)}
   .sec-body{padding:6px 2px 4px}
@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.2</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.3</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -1006,6 +1006,30 @@ async function criarConta(){
   else { toast('Confirme seu email para entrar (verifique a caixa de entrada)'); mostrarCadastro(false); }
 }
 
+function _secIcon(txt){
+  var t=(txt||'').toLowerCase();
+  if(/invent/.test(t)) return '\ud83d\udccb';
+  if(/atribuir|antigos/.test(t)) return '\u26a1';
+  if(/cadastr|comprar/.test(t)) return '\ud83e\uddf5';
+  if(/estoque/.test(t)) return '\ud83d\udce6';
+  if(/vendas? recente|registrar impress|venda/.test(t)) return '\ud83d\uded2';
+  if(/or\u00e7|orcamento/.test(t)) return '\ud83d\udcc4';
+  if(/impress/.test(t)) return '\ud83d\udda8\ufe0f';
+  if(/custo/.test(t)) return '\ud83d\udcb0';
+  if(/empresa/.test(t)) return '\ud83c\udfe2';
+  if(/m\u00e1quina|maquina|ferrament/.test(t)) return '\ud83d\udee0\ufe0f';
+  if(/manuten/.test(t)) return '\ud83d\udd27';
+  if(/acess|insumo/.test(t)) return '\ud83d\udd29';
+  if(/link/.test(t)) return '\ud83d\udd17';
+  if(/resumo/.test(t)) return '\ud83d\udcca';
+  if(/hist\u00f3ri|histori/.test(t)) return '\ud83d\udd59';
+  if(/perda|falha/.test(t)) return '\u26a0\ufe0f';
+  if(/pe\u00e7a|peca/.test(t)) return '\ud83e\udde9';
+  if(/sugest|suporte/.test(t)) return '\ud83d\udca1';
+  if(/backup/.test(t)) return '\ud83d\udcbe';
+  if(/tema|personaliz/.test(t)) return '\ud83c\udfa8';
+  return '\ud83d\udccc';
+}
 function montarSanfonas(){
   document.querySelectorAll('#app section').forEach(function(sec){
     sec.querySelectorAll(':scope > h2.sec').forEach(function(h){
@@ -1017,8 +1041,10 @@ function montarSanfonas(){
       if(body.querySelector('canvas')){ return; } // graficos ficam sempre abertos
       var left=document.createElement('span'); left.className='acc-left';
       while(h.firstChild){ left.appendChild(h.firstChild); }
-      var dot=document.createElement('span'); dot.className='acc-ico';
-      left.insertBefore(dot, left.firstChild);
+      var _fc=left.firstChild;
+      if(_fc && _fc.nodeType===3){ _fc.textContent=_fc.textContent.replace(/^\s*[^0-9A-Za-zÀ-ÿ]+\s*/,''); }
+      var ico=document.createElement('span'); ico.className='acc-ico'; ico.textContent=_secIcon(left.textContent||'');
+      left.insertBefore(ico, left.firstChild);
       var chev=document.createElement('span'); chev.className='acc-chev'; chev.textContent='\u25B8';
       h.appendChild(left); h.appendChild(chev);
       h.classList.add('acc');
@@ -1124,10 +1150,10 @@ async function iniciarApp(){
   await carregarTudo();
   // registra último acesso (para o painel admin saber tempo de uso)
   try{ if(EMP&&EMP.user_id){ const _pa=EMP.primeiro_acesso||new Date().toISOString(); const _lg=(EMP.logins||0)+1; await sb.from('empresa').update({ultimo_acesso:new Date().toISOString(),logins:_lg,primeiro_acesso:_pa}).eq('user_id',EMP.user_id); EMP.logins=_lg; EMP.primeiro_acesso=_pa; } }catch(e){}
-  iniciarHeartbeatUso();
-  assinarRealtime();
-  if(IS_ADMIN) montarAdminUI();
   try{ var _uid=(EMP&&EMP.user_id)?EMP.user_id:''; if(!localStorage.getItem('g3d_hide_'+_uid)) setTimeout(abrirAjuda,500); }catch(e){}
+  iniciarHeartbeatUso();
+  try{ assinarRealtime(); }catch(e){}
+  try{ if(IS_ADMIN) montarAdminUI(); }catch(e){}
 }
 
 /* ================= COMO COMEÇAR (boas-vindas / ajuda) ================= */
