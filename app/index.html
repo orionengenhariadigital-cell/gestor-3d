@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.8</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.9</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -965,7 +965,10 @@ async function salvarEdit(){
 }
 const MAT_COLORS = {PLA:'var(--pla)',PETG:'var(--petg)',ABS:'var(--abs)',ASA:'var(--asa)',TPU:'#c77dff',Nylon:'#9aa7b5',PC:'#74e0d4','PLA-CF':'#7a8a99','PETG-CF':'#4a9e7a',HIPS:'#ffd47f',PVA:'#b0e57c',Outros:'var(--outros)'};
 const MAT_HEX = {PLA:'#5ac8fa',PETG:'#2ed47a',ABS:'#ff8a5c',ASA:'#ffb547',TPU:'#c77dff',Nylon:'#9aa7b5',PC:'#74e0d4','PLA-CF':'#7a8a99','PETG-CF':'#4a9e7a',HIPS:'#ffd47f',PVA:'#b0e57c',Outros:'#6cc0ff'};
-function toast(m,err=false){const e=document.getElementById('toast');e.textContent=m;e.classList.toggle('err',err);e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200)}
+let _pendingCollapse=null;
+function toast(m,err=false){const e=document.getElementById('toast');e.textContent=m;e.classList.toggle('err',err);e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200);
+  try{ if(_pendingCollapse){ if(err){ _pendingCollapse=null; } else if((m||'').indexOf('Salvando')<0){ var h=_pendingCollapse,b=h.nextElementSibling; if(b&&b.classList.contains('sec-body')){ b.style.display='none'; h.classList.remove('acc-open'); } _pendingCollapse=null; } } }catch(_e){} }
+document.addEventListener('click',function(e){ try{ var btn=(e.target&&e.target.closest)?e.target.closest('button.act'):null; if(!btn)return; var body=btn.closest('.sec-body'); if(!body)return; var head=body.previousElementSibling; if(!head||!head.classList.contains('acc'))return; if(body.querySelector('[onclick*=\"salvarFilamento\"]')){ _pendingCollapse=null; return; } _pendingCollapse=head; }catch(_e){} },true);
 
 /* ================= AUTH ================= */
 async function entrar(){
