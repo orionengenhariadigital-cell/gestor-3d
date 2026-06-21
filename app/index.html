@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.3</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.4</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -1185,12 +1185,7 @@ function montarAjuda(){
       '<p style="margin:0;color:#8095b4;font-size:14px">Veja por onde come\u00e7ar \u2014 \u00e9 rapidinho:</p>'+
     '</div>'+
     lista+
-    '<div style="margin-top:18px;background:#0f1a30;border:1px solid #1f3a5f;border-radius:16px;padding:16px">'+
-      '<div style="font-weight:700;color:#eaf1ff;font-size:15px;text-align:center;margin-bottom:4px">Como você quer começar?</div>'+
-      '<div style="font-size:12px;color:#8095b4;text-align:center;margin-bottom:14px">Dá pra mudar depois no ⚙️ quando quiser.</div>'+
-      '<button onclick="escolherModo(\'simples\')" style="width:100%;background:#1f8fff;color:#fff;border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px;line-height:1.35">✨ Modo Simples<br><span style="font-weight:500;font-size:12px;opacity:.9">Só o essencial: Orçar, Venda, Resumo e Dados</span></button>'+
-      '<button onclick="escolherModo(\'completo\')" style="width:100%;background:#13203a;color:#eaf1ff;border:1px solid #2a4368;border-radius:14px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;line-height:1.35">🧰 Modo Completo<br><span style="font-weight:500;font-size:12px;color:#8095b4">Tudo: também Filamento, Peças e Histórico</span></button>'+
-    '</div>'+
+    '<button onclick="fecharAjuda()" style="margin-top:18px;width:100%;background:#1f8fff;color:#fff;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:700;cursor:pointer">↩️ Voltar ao app</button>'+
     '<p style="text-align:center;color:#8095b4;font-size:12px;margin:16px 0 0;line-height:1.5">💡 Você pode rever isso quando quiser tocando no <b style="color:#ff6b6b">❓</b> aqui em cima.</p>'+
     '<button onclick="naoMostrarMais()" style="margin-top:8px;width:100%;background:transparent;color:#8095b4;border:0;font-size:13px;padding:8px;cursor:pointer;text-decoration:underline">Não mostrar isso toda vez que entrar</button>'+
     '</div>';
@@ -1236,9 +1231,10 @@ function abasEscolhidas(){
 }
 function aplicarAbas(){
   const extra=abasEscolhidas();
+  const completo = (extra.length===0);
   document.querySelectorAll('.tab').forEach(function(b){
     const t=b.dataset.tab;
-    const vis = ABAS_FIXAS.includes(t) || extra.includes(t);
+    const vis = completo || ABAS_FIXAS.includes(t) || extra.includes(t);
     b.style.display = vis ? '' : 'none';
   });
   const atual=document.querySelector('.tab.active');
