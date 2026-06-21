@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.7</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v1.8</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -1603,8 +1603,7 @@ async function salvarConfig(){
     margem_padrao:numF(document.getElementById('c_margem').value)||3,
     margem_revenda:numF(document.getElementById('c_margemrev').value)||2,
     taxa_falha:numF(document.getElementById('c_falha').value)||0,
-    whats_fixo:(document.getElementById('c_whats').value||'').replace(/\D/g,''),
-    atualizado_em:new Date().toISOString()
+    whats_fixo:(document.getElementById('c_whats').value||'').replace(/\D/g,'')
   };
   let res;
   if(db.config&&db.config.id){ res=await sb.from('config').update(payload).eq('id',db.config.id); }
