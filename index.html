@@ -1121,11 +1121,10 @@ function fecharAjuda(){
 }
 
 /* ================= MODO SIMPLES/COMPLETO (escolha de abas) ================= */
-const ABAS_FIXAS=['orc','venda','graf'];
+const ABAS_FIXAS=['orc','venda','graf','custos'];
 const ABAS_OPC=[
   {k:'fil',    lbl:'Filamento', emoji:'\ud83e\uddf5', desc:'Estoque e custo dos filamentos'},
   {k:'pecas',  lbl:'Pe\u00e7as',     emoji:'\ud83d\udce6', desc:'Pe\u00e7as prontas em estoque e perdas'},
-  {k:'custos', lbl:'Dados',     emoji:'\u2699\ufe0f', desc:'M\u00e1quinas e custos do neg\u00f3cio'},
   {k:'hist',   lbl:'Hist\u00f3rico', emoji:'\ud83d\udd59', desc:'Hist\u00f3rico de tudo que passou'}
 ];
 function abasEscolhidas(){
@@ -1154,7 +1153,7 @@ function montarPersonalizar(){
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'+
       '<h2 style="margin:0;font-size:20px;color:#eaf1ff">\u2699\ufe0f O que voc\u00ea quer controlar?</h2>'+
       '<button onclick="fecharPersonalizar()" style="background:transparent;color:#8095b4;border:0;font-size:24px;cursor:pointer">\u2715</button></div>'+
-    '<p style="margin:0 0 16px;color:#8095b4;font-size:13px">Or\u00e7ar, Venda e Resumo aparecem sempre. Marque o que mais quer usar:</p>'+
+    '<p style="margin:0 0 16px;color:#8095b4;font-size:13px">Or\u00e7ar, Venda, Resumo e Dados aparecem sempre. Marque o que mais quer usar:</p>'+
     '<div id="persLista"></div>'+
     '<button onclick="salvarPersonalizar()" style="margin-top:14px;width:100%;background:#1f8fff;color:#fff;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:700;cursor:pointer">Salvar</button>'+
     '</div>';
