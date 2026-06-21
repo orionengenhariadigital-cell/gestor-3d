@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.3</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.4</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -892,8 +892,11 @@ const EDIT_DEFS={
     {k:'tempo_parada_h',lbl:'Tempo parada (horas)',tipo:'num'},
     {k:'data',lbl:'Data',tipo:'date'}
   ]},
-  impressoes:{titulo:'Editar impressão própria',sub:'Gramas não editáveis (use Reverter)',campos:[
+  impressoes:{titulo:'Editar impressão própria',sub:'Edição completa — ajuste o que precisar',campos:[
     {k:'nome',lbl:'Nome',tipo:'text'},
+    {k:'gramas',lbl:'Gramas',tipo:'num'},
+    {k:'tempo_horas',lbl:'Tempo (horas)',tipo:'num'},
+    {k:'maquina_id',lbl:'Máquina',tipo:'maq'},
     {k:'obs',lbl:'Observação',tipo:'text'}
   ]},
   perdas:{titulo:'Editar perda/falha',campos:[
@@ -917,6 +920,7 @@ function editar(tabela,id){
     if(c.tipo==='color'){ return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="color" type="color" value="${val||'#1f8fff'}" style="width:54px;height:42px;padding:2px;border-radius:10px;cursor:pointer;display:block">`; }
     if(c.tipo==='date'){ return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="text" type="date" value="${val}">`; }
     if(c.tipo==='select'){ return `<label>${c.lbl}</label><select data-k="${c.k}" data-t="text">${c.ops.map(o=>`<option ${o===val?'selected':''}>${o}</option>`).join('')}</select>`; }
+    if(c.tipo==='maq'){ return `<label>${c.lbl}</label><select data-k="${c.k}" data-t="text"><option value="">— sem máquina —</option>${db.maquinas.map(m=>`<option value="${m.id}" ${m.id===val?'selected':''}>${m.nome}</option>`).join('')}</select>`; }
     return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="text" type="text" value="${(''+val).replace(/"/g,'&quot;')}">`;
   }).join('');
   // bloco de foto (se a tabela tiver foto)
@@ -1515,6 +1519,7 @@ function flashSync(){const b=document.getElementById('syncBadge');document.getEl
 
 /* ================= NAV ================= */
 function go(t){
+  _vendaSrcOrc=null;
   document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
@@ -2500,6 +2505,8 @@ function renderOrc(){
       <button class="ed" onclick="editar('orcamentos','${o.id}')">✏️</button><button class="x" onclick="delOrc('${o.id}')">×</button></div>`;
   }).join('');
 }
+let _vendaSrcOrc=null;
+function _abrirSecaoDe(elId){ try{ var el=document.getElementById(elId); var b=el&&el.closest('.sec-body'); if(b){ b.style.display=''; var h=b.previousElementSibling; if(h&&h.classList.contains('acc'))h.classList.add('acc-open'); } }catch(e){} }
 function orcVirarVenda(id){
   const o=db.orcamentos.find(x=>x.id===id); if(!o)return;
   go('venda');
@@ -2515,7 +2522,13 @@ function orcVirarVenda(id){
   (o.cores||[]).forEach(c=>addCorRow(c.filId||'',c.g));
   if(o.maquina_id) document.getElementById('v_maq').value=o.maquina_id;
   calcVenda();
-  toast('Orçamento carregado na Venda — confira e registre');
+  _abrirSecaoDe('v_nome');
+  _vendaSrcOrc=id;
+  if(confirm('Registrar esta venda agora?\n\nVai baixar o filamento, lançar o faturamento e concluir o orçamento (ele sai da lista de orçamentos).')){
+    registrarVenda();
+  } else {
+    toast('Orçamento carregado na Venda — confira e toque em Registrar venda');
+  }
 }
 
 /* ================= CÁLCULO DA VENDA ================= */
@@ -2621,11 +2634,13 @@ async function registrarVenda(){
     venda_id:ins.data&&ins.data[0]?ins.data[0].id:null,
     baixas
   });
+  var _eraOrc=false;
+  if(_vendaSrcOrc){ _eraOrc=true; try{ await sb.from('orcamentos').delete().eq('id',_vendaSrcOrc); }catch(e){} _vendaSrcOrc=null; }
   ['v_nome','v_th','v_tm','v_trab','v_venda','v_perda','v_obs'].forEach(i=>document.getElementById(i).value='');
   document.getElementById('v_cores').innerHTML=''; document.getElementById('v_acess').innerHTML=''; pendingPhoto.v=null;
   document.getElementById('v_prev').src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' fill='%230a1322'/><text x='32' y='38' font-size='24' text-anchor='middle' fill='%238095b4'>📷</text></svg>";
   document.getElementById('v_produto').value='';
-  await carregarTudo(); calcVenda(); toast('Venda registrada ✓');
+  await carregarTudo(); calcVenda(); toast(_eraOrc?'Venda registrada e orçamento concluído ✓':'Venda registrada ✓');
 }
 async function delVenda(id){
   const v=db.vendas.find(x=>x.id===id);
