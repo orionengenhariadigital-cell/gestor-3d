@@ -1089,7 +1089,7 @@ async function iniciarApp(){
   iniciarHeartbeatUso();
   assinarRealtime();
   if(IS_ADMIN) montarAdminUI();
-  try{ var _uid=(EMP&&EMP.user_id)?EMP.user_id:''; if(!localStorage.getItem('g3d_onb_'+_uid)) setTimeout(abrirAjuda,500); }catch(e){}
+  try{ var _uid=(EMP&&EMP.user_id)?EMP.user_id:''; if(!localStorage.getItem('g3d_hide_'+_uid)) setTimeout(abrirAjuda,500); }catch(e){}
 }
 
 /* ================= COMO COMEÇAR (boas-vindas / ajuda) ================= */
@@ -1127,6 +1127,8 @@ function montarAjuda(){
       '<button onclick="escolherModo(\'simples\')" style="width:100%;background:#1f8fff;color:#fff;border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px;line-height:1.35">✨ Modo Simples<br><span style="font-weight:500;font-size:12px;opacity:.9">Só o essencial: Orçar, Venda, Resumo e Dados</span></button>'+
       '<button onclick="escolherModo(\'completo\')" style="width:100%;background:#13203a;color:#eaf1ff;border:1px solid #2a4368;border-radius:14px;padding:14px;font-size:16px;font-weight:700;cursor:pointer;line-height:1.35">🧰 Modo Completo<br><span style="font-weight:500;font-size:12px;color:#8095b4">Tudo: também Filamento, Peças e Histórico</span></button>'+
     '</div>'+
+    '<p style="text-align:center;color:#8095b4;font-size:12px;margin:16px 0 0;line-height:1.5">💡 Você pode rever isso quando quiser tocando no <b style="color:#ff6b6b">❓</b> aqui em cima.</p>'+
+    '<button onclick="naoMostrarMais()" style="margin-top:8px;width:100%;background:transparent;color:#8095b4;border:0;font-size:13px;padding:8px;cursor:pointer;text-decoration:underline">Não mostrar isso toda vez que entrar</button>'+
     '</div>';
   document.body.appendChild(ov);
 }
@@ -1147,9 +1149,13 @@ async function escolherModo(modo){
   EMP.abas=sel;
   try{ if(EMP&&EMP.user_id){ await sb.from('empresa').update({abas:sel}).eq('user_id',EMP.user_id); } }catch(e){}
   aplicarAbas();
-  try{ var _uid=(EMP&&EMP.user_id)?EMP.user_id:''; localStorage.setItem('g3d_onb_'+_uid,'1'); }catch(e){}
   fecharAjuda();
   toast(modo==='completo'?'Modo completo ativado \u2713':'Modo simples ativado \u2713');
+}
+function naoMostrarMais(){
+  try{ var _uid=(EMP&&EMP.user_id)?EMP.user_id:''; localStorage.setItem('g3d_hide_'+_uid,'1'); }catch(e){}
+  fecharAjuda();
+  toast('Ok! Toque no \u2753 quando quiser rever.');
 }
 
 /* ================= MODO SIMPLES/COMPLETO (escolha de abas) ================= */
