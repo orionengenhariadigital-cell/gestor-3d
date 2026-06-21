@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.6</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.7</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -2227,6 +2227,25 @@ async function registrarImpressaoPropria(){
   document.getElementById('o_cores').innerHTML='';
   await carregarTudo(); calcOrc(); _recolherSecaoDe('o_nome'); toast('Impressão própria registrada ✓ (estoque baixado)');
 }
+async function impVirarVenda(id){
+  const o=db.impressoes.find(x=>x.id===id); if(!o)return;
+  const margem=(db.config&&+db.config.margem_padrao)||3;
+  const sug=((+o.custo||0)*margem).toFixed(2).replace('.',',');
+  const v=prompt('Virar esta impressão própria em VENDA.\n\nO filamento já foi baixado quando você registrou a impressão — aqui entra só o faturamento.\n\nPreço de venda (R$):', sug);
+  if(v===null) return;
+  const venda=numF(v); if(!(venda>0)){ toast('Informe um preço válido',true); return; }
+  const custo=+o.custo||0;
+  toast('Salvando...');
+  const ins=await sb.from('vendas').insert({
+    nome:o.nome, numero:proxNumero(db.vendas), gramas:o.gramas, perda_g:o.perda_g||0, tempo_horas:o.tempo_horas||0,
+    cores:o.cores||[], custo, venda, lucro:venda-custo, foto_url:o.foto_url||null,
+    obs:(o.obs||''), maquina_id:o.maquina_id||null
+  }).select();
+  if(ins.error){ toast('Erro: '+ins.error.message,true); return; }
+  await sb.from('impressoes').delete().eq('id',id);
+  await logAcao('Impressão virou venda: '+o.nome,'venda',{venda_id:ins.data&&ins.data[0]?ins.data[0].id:null});
+  await carregarTudo(); toast('Virou venda ✓ (faturamento lançado)');
+}
 async function delImp(id){ if(!confirm('Remover esta impressão própria?'))return; await sb.from('impressoes').delete().eq('id',id); await carregarTudo(); }
 
 /* ================= PERDAS / FALHAS ================= */
@@ -2509,7 +2528,8 @@ function renderImp(){
     const d=new Date(i.criado_em).toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
     return `<div class="item"><div class="thumb" style="display:flex;align-items:center;justify-content:center;font-size:22px">🖨️</div>
       <div class="main"><div class="t">${i.nome}</div>
-      <div class="s">${d} · ${(+i.gramas).toLocaleString('pt-BR')}g · ${i.tempo_horas||0}h ${maqNome(i.maquina_id)?'· '+maqNome(i.maquina_id):''}${i.obs?'<br>📝 '+i.obs:''}</div></div>
+      <div class="s">${d} · ${(+i.gramas).toLocaleString('pt-BR')}g · ${i.tempo_horas||0}h ${maqNome(i.maquina_id)?'· '+maqNome(i.maquina_id):''}${i.obs?'<br>📝 '+i.obs:''}</div>
+      <div style="margin-top:8px"><button class="addcor" style="margin:0;border-color:var(--green);color:var(--green);font-size:12px;padding:6px 14px" onclick="impVirarVenda('${i.id}')">➡️ Virar venda</button></div></div>
       <div class="right"><div class="big">${BRL(i.custo)}</div><div class="lbl">custo</div></div>
       <button class="ed" onclick="impEditarCompleto('${i.id}')">✏️</button><button class="x" onclick="delImp('${i.id}')">×</button></div>`;
   }).join('');
