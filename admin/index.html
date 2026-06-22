@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Painel do Dono · Gestor Impressão 3D</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>">
+<style>
+  :root{ --brand:#1f8fff; --bg:#070b14; --card:#0e1830; --line:#23375c; --txt:#eaf1ff; --sub:#8095b4; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:620px;margin:0 auto;padding:18px 16px 60px}
+  h1{font-size:21px;margin:0}
+  .muted{color:var(--sub);font-size:13px}
+  input{width:100%;box-sizing:border-box;background:#0a1322;color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;margin-top:8px}
+  button{cursor:pointer;font-family:inherit}
+  .btn{width:100%;background:var(--brand);color:#fff;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:700;margin-top:14px}
+  .btn.ghost{background:transparent;color:var(--sub);border:1px solid var(--line)}
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}
+  .stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .err{color:#ff6b6b;font-size:13px;margin-top:10px;white-space:pre-line}
+  .hidden{display:none}
+  .search{margin-bottom:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div id="login">
+    <div style="text-align:center;margin:30px 0 18px">
+      <div style="font-size:46px">👑</div>
+      <h1>Painel do Dono</h1>
+      <div class="muted">Gestor Impressão 3D — acesso administrativo</div>
+    </div>
+    <input id="email" type="email" placeholder="Email de administrador" autocomplete="username">
+    <input id="senha" type="password" placeholder="Senha" autocomplete="current-password">
+    <button class="btn" id="btnEntrar" onclick="entrar()">Entrar</button>
+    <div class="err" id="loginErr"></div>
+    <div class="muted" style="text-align:center;margin-top:18px">Use a conta de administrador.<br>Quem não for admin não verá nada aqui.</div>
+  </div>
+
+  <!-- PAINEL -->
+  <div id="painel" class="hidden">
+    <div class="topbar">
+      <div><h1>👑 Clientes</h1><div class="muted" id="quemSou"></div></div>
+      <button class="btn ghost" style="width:auto;margin:0;padding:10px 14px" onclick="sair()">Sair</button>
+    </div>
+    <input class="search" id="busca" placeholder="🔎 Buscar por nome ou email..." oninput="filtrar()">
+    <div class="stats" id="stats"></div>
+    <div id="lista"></div>
+    <button class="btn ghost" onclick="carregar()" style="margin-top:8px">↻ Atualizar</button>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://bzeuyahlxtnxfniftqdy.supabase.co";
+const SUPABASE_KEY="sb_publishable_Vk1eOgDYc4P0mosEIpWApA_kgRuhAfZ";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let TODOS=[]; let USO={};
+
+/* ---------- toast / modais ---------- */
+function toast(m,err){ var t=document.getElementById('_t'); if(!t){ t=document.createElement('div'); t.id='_t'; t.style.cssText='position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#16243f;color:#fff;padding:12px 18px;border-radius:12px;font-size:14px;z-index:99999;max-width:90%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.4)'; document.body.appendChild(t); } t.textContent=m; t.style.borderLeft='4px solid '+(err?'#ff6b6b':'#22c55e'); t.style.opacity='1'; clearTimeout(t._h); t._h=setTimeout(function(){t.style.transition='opacity .4s';t.style.opacity='0';},2400); }
+function _esc(s){return(''+s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function confirmar(msg){ return new Promise(function(res){ var ov=document.createElement('div'); ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px'; var c=document.createElement('div'); c.style.cssText='background:#0e1830;border:1px solid #24375c;border-radius:18px;max-width:380px;width:100%;padding:22px'; c.innerHTML='<div style="font-size:15px;line-height:1.5;color:#eaf1ff;white-space:pre-line;margin-bottom:18px">'+_esc(msg)+'</div>'; var r=document.createElement('div'); r.style.cssText='display:flex;gap:10px'; var a=document.createElement('button'); a.textContent='Cancelar'; a.style.cssText='flex:1;background:transparent;color:#9fb2d4;border:1px solid #2a3e63;border-radius:12px;padding:13px;font-size:15px;font-weight:600'; var b=document.createElement('button'); b.textContent='Confirmar'; b.style.cssText='flex:1;background:var(--brand);color:#fff;border:0;border-radius:12px;padding:13px;font-size:15px;font-weight:700'; function cl(v){try{document.body.removeChild(ov);}catch(e){} res(v);} a.onclick=function(){cl(false);}; b.onclick=function(){cl(true);}; ov.onclick=function(e){if(e.target===ov)cl(false);}; r.appendChild(a);r.appendChild(b);c.appendChild(r);ov.appendChild(c);document.body.appendChild(ov); }); }
+function perguntar(msg,def){ return new Promise(function(res){ var ov=document.createElement('div'); ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px'; var c=document.createElement('div'); c.style.cssText='background:#0e1830;border:1px solid #24375c;border-radius:18px;max-width:380px;width:100%;padding:22px'; c.innerHTML='<div style="font-size:15px;line-height:1.5;color:#eaf1ff;white-space:pre-line;margin-bottom:14px">'+_esc(msg)+'</div>'; var inp=document.createElement('input'); inp.type='text'; inp.value=(def==null?'':def); inp.style.cssText='width:100%;box-sizing:border-box;background:#0a1322;color:#eaf1ff;border:1px solid #2a3e63;border-radius:12px;padding:13px;font-size:16px;margin-bottom:16px'; c.appendChild(inp); var r=document.createElement('div'); r.style.cssText='display:flex;gap:10px'; var a=document.createElement('button'); a.textContent='Cancelar'; a.style.cssText='flex:1;background:transparent;color:#9fb2d4;border:1px solid #2a3e63;border-radius:12px;padding:13px;font-size:15px;font-weight:600'; var b=document.createElement('button'); b.textContent='OK'; b.style.cssText='flex:1;background:var(--brand);color:#fff;border:0;border-radius:12px;padding:13px;font-size:15px;font-weight:700'; function cl(v){try{document.body.removeChild(ov);}catch(e){} res(v);} a.onclick=function(){cl(null);}; b.onclick=function(){cl(inp.value);}; inp.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();cl(inp.value);}}; ov.onclick=function(e){if(e.target===ov)cl(null);}; r.appendChild(a);r.appendChild(b);c.appendChild(r);ov.appendChild(c);document.body.appendChild(ov); setTimeout(function(){try{inp.focus();inp.select();}catch(e){}},60); }); }
+
+/* ---------- auth ---------- */
+async function entrar(){
+  const email=document.getElementById('email').value.trim();
+  const senha=document.getElementById('senha').value;
+  const err=document.getElementById('loginErr'); err.textContent='';
+  if(!email||!senha){ err.textContent='Preencha email e senha.'; return; }
+  document.getElementById('btnEntrar').textContent='Entrando...';
+  const {data,error}=await sb.auth.signInWithPassword({email,password:senha});
+  document.getElementById('btnEntrar').textContent='Entrar';
+  if(error){ err.textContent='Login falhou: '+error.message; return; }
+  abrirPainel(data.user);
+}
+async function sair(){ await sb.auth.signOut(); location.reload(); }
+
+function abrirPainel(user){
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('painel').classList.remove('hidden');
+  document.getElementById('quemSou').textContent=user&&user.email?user.email:'';
+  carregar();
+}
+
+/* ---------- dados ---------- */
+async function carregar(){
+  const lista=document.getElementById('lista');
+  lista.innerHTML='<div style="text-align:center;color:var(--sub);padding:30px">Carregando…</div>';
+  const {data,error}=await sb.rpc('admin_usuarios');
+  if(error){ lista.innerHTML='<div class="err" style="padding:20px">Erro: '+error.message+'\n\nEssa conta provavelmente não é administradora.</div>'; document.getElementById('stats').innerHTML=''; return; }
+  TODOS=data||[]; USO={};
+  try{ const r=await sb.rpc('admin_uso'); (r.data||[]).forEach(function(x){USO[x.user_id]=x;}); }catch(e){}
+  filtrar();
+}
+
+const agora=new Date();
+const fmt=d=>d?new Date(d).toLocaleDateString('pt-BR'):'—';
+const fmtMin=m=>{m=+m||0; if(m<60)return m+' min'; const h=Math.floor(m/60),mm=m%60; return h+'h'+(mm?(' '+mm+'min'):'');};
+function st(u){
+  if(u.status==='liberado') return {t:'Liberado',c:'#22c55e'};
+  if(u.status==='pago') return (!u.pago_ate||new Date(u.pago_ate)>agora)?{t:'Pago',c:'#22c55e'}:{t:'Pgto venceu',c:'#ff6b6b'};
+  if(u.status==='teste') return (u.teste_fim&&new Date(u.teste_fim)>agora)?{t:'Em teste',c:'#1f8fff'}:{t:'Teste acabou',c:'#ff6b6b'};
+  return {t:u.status||'—',c:'#8095b4'};
+}
+function filtrar(){
+  const q=(document.getElementById('busca').value||'').toLowerCase().trim();
+  const us=TODOS.filter(u=>!q||((u.nome||'').toLowerCase().includes(q))||((u.email||'').toLowerCase().includes(q)));
+  const stats=document.getElementById('stats');
+  const nPago=TODOS.filter(u=>{const x=st(u).t;return x==='Pago'||x==='Liberado';}).length;
+  const nTeste=TODOS.filter(u=>st(u).t==='Em teste').length;
+  const nVenc=TODOS.filter(u=>st(u).t==='Teste acabou'||st(u).t==='Pgto venceu').length;
+  const card=(n,l,c)=>'<div style="flex:1;min-width:74px;background:var(--card);border-radius:12px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:800;color:'+c+'">'+n+'</div><div style="font-size:11px;color:var(--sub)">'+l+'</div></div>';
+  stats.innerHTML=card(TODOS.length,'Total','#eaf1ff')+card(nTeste,'Em teste','#1f8fff')+card(nPago,'Pagantes','#22c55e')+card(nVenc,'Vencidos','#ff6b6b');
+  const lista=document.getElementById('lista');
+  if(!us.length){ lista.innerHTML='<div style="text-align:center;color:var(--sub);padding:30px">'+(TODOS.length?'Nenhum resultado.':'Nenhum cliente ainda.')+'</div>'; return; }
+  const bA='background:#1f3a5f;color:#9cc7ff;border:0;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:600';
+  const bG='background:#16442e;color:#5ee08a;border:0;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:600';
+  const bR='background:#4a1f1f;color:#ff9a9a;border:0;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:600';
+  lista.innerHTML=us.map(function(u){
+    const s=st(u);
+    const venc=u.status==='pago'?('Pago até '+fmt(u.pago_ate)):('Teste até '+fmt(u.teste_fim));
+    const uso=USO[u.user_id]||{};
+    return '<div style="background:var(--card);border-radius:14px;padding:14px;margin-bottom:12px">'+
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">'+
+        '<div style="min-width:0"><div style="font-weight:700;color:var(--txt);font-size:15px">'+_esc(u.nome||'(sem nome)')+'</div>'+
+        '<div style="font-size:12px;color:var(--sub);margin-top:2px;word-break:break-all">'+_esc(u.email||'')+'</div>'+
+        '<div style="font-size:12px;color:var(--sub)">📱 '+_esc(u.whatsapp||'—')+'</div></div>'+
+        '<span style="background:'+s.c+'22;color:'+s.c+';font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;white-space:nowrap">'+s.t+'</span>'+
+      '</div>'+
+      '<div style="font-size:11px;color:#6b7da0;margin-top:6px">'+venc+' · cadastro '+fmt(u.criado_em)+' · últ. acesso '+fmt(u.ultimo_acesso)+'</div>'+
+      '<div style="font-size:11px;color:#6b7da0;margin-top:3px">🔑 '+(uso.logins||0)+' logins · ⏱️ '+fmtMin(uso.tempo_uso_min)+' de uso · 1º acesso '+fmt(uso.primeiro_acesso)+'</div>'+
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">'+
+        '<button onclick="admDias(\''+u.user_id+'\',7)" style="'+bA+'">+7 dias</button>'+
+        '<button onclick="admDias(\''+u.user_id+'\',30)" style="'+bA+'">+30 dias</button>'+
+        '<button onclick="admPago(\''+u.user_id+'\')" style="'+bG+'">Marcar pago</button>'+
+        '<button onclick="admLiberar(\''+u.user_id+'\')" style="'+bG+'">Liberar total</button>'+
+        '<button onclick="admBloq(\''+u.user_id+'\')" style="'+bR+'">Bloquear</button>'+
+      '</div></div>';
+  }).join('');
+}
+
+/* ---------- ações ---------- */
+async function admDias(uid,dias){
+  const {error}=await sb.rpc('admin_liberar_dias',{alvo:uid,dias:dias});
+  if(error){toast('Erro: '+error.message,true);return}
+  toast('+'+dias+' dias liberados ✓'); carregar();
+}
+async function admPago(uid){
+  const meses=await perguntar('Marcar como PAGO por quantos meses?\n(deixe vazio para sem vencimento)');
+  if(meses===null) return;
+  let ate=null;
+  if(meses.trim()!==''){ const m=parseInt(meses); if(isNaN(m)){toast('Número inválido',true);return} const d=new Date(); d.setMonth(d.getMonth()+m); ate=d.toISOString(); }
+  const {error}=await sb.rpc('admin_marcar_pago',{alvo:uid,ate:ate,plano_nome:'mensal'});
+  if(error){toast('Erro: '+error.message,true);return}
+  toast('Marcado como pago ✓'); carregar();
+}
+async function admLiberar(uid){
+  if(!await confirmar('Liberar acesso TOTAL (sem vencimento) para este cliente?')) return;
+  const {error}=await sb.rpc('admin_liberar_total',{alvo:uid});
+  if(error){toast('Erro: '+error.message,true);return}
+  toast('Acesso liberado ✓'); carregar();
+}
+async function admBloq(uid){
+  if(!await confirmar('Bloquear este cliente agora?')) return;
+  const {error}=await sb.rpc('admin_bloquear',{alvo:uid});
+  if(error){toast('Erro: '+error.message,true);return}
+  toast('Cliente bloqueado'); carregar();
+}
+
+/* ---------- sessão persistida ---------- */
+(async function(){
+  try{ const {data}=await sb.auth.getSession(); if(data&&data.session){ abrirPainel(data.session.user); } }catch(e){}
+})();
+document.getElementById('senha').addEventListener('keydown',function(e){ if(e.key==='Enter') entrar(); });
+</script>
+</body>
+</html>
