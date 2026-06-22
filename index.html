@@ -296,6 +296,11 @@
 #telas .bn span{font-size:7px;color:#5e7099;display:flex;flex-direction:column;align-items:center;gap:2px}
 #telas .bn span b{font-size:12px;line-height:1}
 #telas .bn span.on{color:#3b9bff}
+
+#telas .demo{display:flex;flex-direction:column;align-items:center;gap:18px;margin-top:4px}
+#telas .demoframe{width:300px;max-width:82vw;aspect-ratio:9/16;border-radius:30px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.5);background:#0a1020}
+#telas .demoframe iframe{width:100%;height:100%;border:0;display:block}
+#telas .demobtn{font-size:14px}
 </style>
 <section id="telas">
   <div class="wrap">
@@ -304,67 +309,9 @@
       <h2>Bonito, simples e <span class="grad-text">feito pra impressão 3D</span></h2>
       <p>No celular ou no PC: lucro, faturamento, estoque de filamento e os produtos que mais vendem — tudo num lugar só.</p>
     </div>
-    <div class="shots">
-
-      <div class="shot reveal">
-        <div class="phone"><div class="scr">
-          <div class="body">
-            <div class="warn">⚠️ <b>1 filamento acabando:</b> Vermelho / PLA · toque para ver</div>
-            <div class="row2">
-              <div class="kc flex1"><div class="kl">Lucro total</div><div class="kv green">R$ 1.240</div><div class="ks">12 vendas</div></div>
-              <div class="kc flex1"><div class="kl">Faturamento</div><div class="kv">R$ 1.980</div><div class="ks">Custo R$ 740</div></div>
-            </div>
-            <div class="kc wide"><div class="kl">Estoque de filamento</div><div class="kv sm">4.250 g</div><div class="ks">Valor em estoque R$ 540,00</div></div>
-            <div class="st">🏆 Produtos mais vendidos</div>
-            <div class="chart">
-              <div class="cb"><i style="height:100%;background:#f5b544"></i></div>
-              <div class="cb"><i style="height:64%;background:#f5b544"></i></div>
-              <div class="cb"><i style="height:46%;background:#f5b544"></i></div>
-              <div class="cb"><i style="height:30%;background:#f5b544"></i></div>
-            </div>
-            <div class="lbls"><span>Vaso</span><span>Chaveiro</span><span>Suporte</span><span>Luminária</span></div>
-          </div>
-          <div class="bn"><span><b>💲</b>Dados</span><span><b>🎯</b>Filam.</span><span><b>📄</b>Orçar</span><span><b>🖼️</b>Venda</span><span><b>📦</b>Peças</span><span class="on"><b>📊</b>Resumo</span></div>
-        </div></div>
-        <div class="cap">Resumo do negócio</div>
-      </div>
-
-      <div class="shot reveal">
-        <div class="phone"><div class="scr">
-          <div class="body">
-            <div class="kc wide" style="display:flex;align-items:center;gap:9px"><span style="font-size:17px">📦</span><div><div class="fn" style="font-size:12px">Meu estoque</div><div class="ks">4 itens</div></div></div>
-            <div class="chips"><span class="chip on">Todos</span><span class="chip wn">⚠️ Acabando (1)</span><span class="chip">PETG</span><span class="chip">PLA</span></div>
-            <div class="fil"><div class="swatch" style="background:#15171d"></div><div style="flex:1"><div class="fn">Preto<span class="tagp" style="background:#3b9bff;color:#06203c">PLA</span></div><div class="fg">920 g de 1.000 g · R$ 0,12/g</div><div class="bar"><i style="width:92%;background:#3a3f4a"></i></div></div></div>
-            <div class="fil"><div class="swatch" style="background:#2748d8"></div><div style="flex:1"><div class="fn">Azul<span class="tagp" style="background:#2bd47d;color:#06210f">PETG</span></div><div class="fg">1.000 g de 1.000 g · R$ 0,13/g</div><div class="bar"><i style="width:100%;background:#2748d8"></i></div></div></div>
-            <div class="fil"><div class="swatch" style="background:#d23b3b"></div><div style="flex:1"><div class="fn">Vermelho<span class="tagp" style="background:#3b9bff;color:#06203c">PLA</span><span class="tagp" style="background:#f5a623;color:#3a2600">ACABANDO</span></div><div class="fg">150 g de 1.000 g · R$ 0,13/g</div><div class="bar"><i style="width:15%;background:#d23b3b"></i></div></div></div>
-            <div class="fil"><div class="swatch" style="background:#e6e6e6"></div><div style="flex:1"><div class="fn">Branco<span class="tagp" style="background:#3b9bff;color:#06203c">PLA</span></div><div class="fg">760 g de 1.000 g · R$ 0,12/g</div><div class="bar"><i style="width:76%;background:#cfd6e6"></i></div></div></div>
-          </div>
-          <div class="bn"><span><b>💲</b>Dados</span><span class="on"><b>🎯</b>Filam.</span><span><b>📄</b>Orçar</span><span><b>🖼️</b>Venda</span><span><b>📦</b>Peças</span><span><b>📊</b>Resumo</span></div>
-        </div></div>
-        <div class="cap">Estoque de filamento</div>
-      </div>
-
-      <div class="shot reveal">
-        <div class="phone"><div class="scr">
-          <div class="body">
-            <div class="st">💰 Produtos mais lucrativos</div>
-            <div class="chart">
-              <div class="cb"><i style="height:100%;background:#2f8fff"></i></div>
-              <div class="cb"><i style="height:56%;background:#2f8fff"></i></div>
-              <div class="cb"><i style="height:35%;background:#2f8fff"></i></div>
-              <div class="cb"><i style="height:22%;background:#2f8fff"></i></div>
-            </div>
-            <div class="lbls"><span>Vaso</span><span>Suporte</span><span>Chaveiro</span><span>Luminária</span></div>
-            <div class="st" style="margin-top:18px">🖨️ Horas por impressora</div>
-            <div class="hb"><span class="hn">Bambu P2S</span><div class="track"><i style="width:72%"></i></div></div>
-            <div class="hb"><span class="hn">Snapmaker U1</span><div class="track"><i style="width:44%"></i></div></div>
-            <div class="kc wide" style="margin-top:18px"><div class="kl">Perdas registradas</div><div class="kv sm" style="color:#f5b860">201 g · R$ 91,72</div><div class="ks">controle o que deu errado</div></div>
-          </div>
-          <div class="bn"><span><b>💲</b>Dados</span><span><b>🎯</b>Filam.</span><span><b>📄</b>Orçar</span><span><b>🖼️</b>Venda</span><span><b>📦</b>Peças</span><span class="on"><b>📊</b>Resumo</span></div>
-        </div></div>
-        <div class="cap">Gráficos e relatórios</div>
-      </div>
-
+    <div class="demo reveal">
+      <div class="demoframe"><iframe src="/video/" title="Gestor Impressão 3D em ação" loading="lazy"></iframe></div>
+      <a class="btn btn-ghost demobtn" href="/video/" target="_blank" rel="noopener">▶ Ver em tela cheia</a>
     </div>
   </div>
 </section>
