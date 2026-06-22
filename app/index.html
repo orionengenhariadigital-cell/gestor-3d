@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.7</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.8</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -918,7 +918,7 @@ function editar(tabela,id){
   const box=document.getElementById('editCampos');
   let html=def.campos.map(c=>{
     let val=rec[c.k]; if(val==null)val='';
-    if(c.tipo==='num'){ const n=+val; val=(val===''||isNaN(n))?'':String(n).replace('.',','); return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="num" type="text" inputmode="decimal" value="${val}">`; }
+    if(c.tipo==='num'){ const n=+val; val=(val===''||isNaN(n))?'':String(Math.round(n*100)/100).replace('.',','); return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="num" type="text" inputmode="decimal" value="${val}">`; }
     if(c.tipo==='color'){ return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="color" type="color" value="${val||'#1f8fff'}" style="width:54px;height:42px;padding:2px;border-radius:10px;cursor:pointer;display:block">`; }
     if(c.tipo==='date'){ return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="text" type="date" value="${(''+val).slice(0,10)}">`; }
     if(c.tipo==='select'){ return `<label>${c.lbl}</label><select data-k="${c.k}" data-t="text">${c.ops.map(o=>`<option ${o===val?'selected':''}>${o}</option>`).join('')}</select>`; }
@@ -2402,17 +2402,35 @@ async function salvarPeca(){
 }
 async function venderPeca(id){
   const p=db.pecas.find(x=>x.id===id); if(!p)return;
-  if(!confirm('Vender "'+p.nome+'" por '+BRL(p.valor)+'?\n\nIsso soma no faturamento e tira do estoque de peças (NÃO mexe no filamento).'))return;
-  // registra como venda (entra no faturamento), sem baixar filamento
-  await sb.from('vendas').insert({
-    nome:p.nome+' (peça pronta)', gramas:0, perda_g:0, tempo_horas:0,
-    cores:[], custo:+p.custo||0, venda:+p.valor||0, lucro:(+p.valor||0)-(+p.custo||0),
-    obs:'Venda de peça pronta'+(p.obs?' · '+p.obs:'')
-  });
-  // baixa 1 unidade ou remove
-  if((+p.qtd||1)>1){ await sb.from('pecas').update({qtd:(+p.qtd)-1}).eq('id',id); }
-  else { await sb.from('pecas').update({qtd:0,vendida:true}).eq('id',id); }
-  await carregarTudo(); toast('Peça vendida ✓ (entrou no faturamento)');
+  const disp=+p.qtd||1;
+  let qtd=disp;
+  if(disp>1){
+    const r=prompt('Quantas unidades de "'+p.nome+'" vender?\n\nEm estoque: '+disp+' un \u00b7 '+BRL(p.valor)+' cada',String(disp));
+    if(r===null) return;
+    qtd=Math.floor(numF(r));
+    if(!(qtd>0)){ toast('Quantidade inv\u00e1lida',true); return; }
+    if(qtd>disp){ toast('Voc\u00ea s\u00f3 tem '+disp+' em estoque',true); return; }
+  } else {
+    if(!confirm('Vender "'+p.nome+'" por '+BRL(p.valor)+'?\n\nEntra no faturamento e sai do estoque de pe\u00e7as (n\u00e3o mexe no filamento).')) return;
+  }
+  const vUnit=+p.valor||0, cUnit=+p.custo||0;
+  toast('Salvando...');
+  const insV=await sb.from('vendas').insert({
+    nome:p.nome+(qtd>1?' (pe\u00e7a pronta x'+qtd+')':' (pe\u00e7a pronta)'), numero:proxNumero(db.vendas),
+    gramas:0, perda_g:0, tempo_horas:0, cores:[],
+    custo:Math.round(cUnit*qtd*100)/100, venda:Math.round(vUnit*qtd*100)/100, lucro:Math.round((vUnit-cUnit)*qtd*100)/100,
+    obs:'Venda de pe\u00e7a pronta'+(p.obs?' \u00b7 '+p.obs:'')
+  }).select();
+  if(insV.error){ toast('Erro: '+insV.error.message,true); return; }
+  const resta=disp-qtd;
+  if(resta>0){
+    await sb.from('pecas').update({qtd:resta}).eq('id',id);
+    await sb.from('pecas').insert({ nome:p.nome, cores:p.cores||'', peso:+p.peso||0, medida:p.medida||'', custo:cUnit, valor:vUnit, qtd:qtd, vendida:true, obs:p.obs||'' });
+  } else {
+    await sb.from('pecas').update({vendida:true}).eq('id',id);
+  }
+  await logAcao('Vendeu pe\u00e7a: '+p.nome+(qtd>1?' x'+qtd:''),'venda',{venda_id:insV.data&&insV.data[0]?insV.data[0].id:null});
+  await carregarTudo(); toast(qtd>1?qtd+' pe\u00e7as vendidas \u2713 (no faturamento)':'Pe\u00e7a vendida \u2713 (no faturamento)');
 }
 async function delPeca(id){ if(!confirm('Remover esta peça do estoque?'))return; await sb.from('pecas').delete().eq('id',id); await carregarTudo(); }
 
@@ -2512,10 +2530,12 @@ function renderPecas(){
   }
   const boxV=document.getElementById('listaPecasVend');
   if(boxV){
-    document.getElementById('pecasVendCount').textContent=vendidas.length?vendidas.length+' vendidas':'';
-    boxV.innerHTML=vendidas.length?vendidas.map(p=>`<div class="item"><div class="thumb" style="display:flex;align-items:center;justify-content:center;font-size:20px;opacity:.5">✅</div>
-      <div class="main"><div class="t" style="opacity:.7">${p.nome}</div><div class="s">vendida por ${BRL(p.valor)}</div></div>
-      <button class="x" onclick="delPeca('${p.id}')">×</button></div>`).join(''):'<div class="empty" style="padding:12px">Nenhuma ainda.</div>';
+    const totVendP=vendidas.reduce((s,p)=>s+(+p.valor||0)*(+p.qtd||1),0);
+    const unVendP=vendidas.reduce((s,p)=>s+(+p.qtd||1),0);
+    document.getElementById('pecasVendCount').textContent=vendidas.length?unVendP+' un · '+BRL(totVendP):'';
+    boxV.innerHTML=vendidas.length?vendidas.map(p=>{const q=+p.qtd||1; return `<div class="item"><div class="thumb" style="display:flex;align-items:center;justify-content:center;font-size:20px;opacity:.5">✅</div>
+      <div class="main"><div class="t" style="opacity:.7">${p.nome} ${q>1?`<span class="badge" style="background:var(--brand-soft)">${q}un</span>`:''}</div><div class="s">vendida${q>1?'s':''} por ${BRL((+p.valor||0)*q)}${q>1?' ('+BRL(p.valor)+' cada)':''}</div></div>
+      <button class="x" onclick="delPeca('${p.id}')">×</button></div>`;}).join(''):'<div class="empty" style="padding:12px">Nenhuma ainda.</div>';
   }
 }
 function renderImp(){
