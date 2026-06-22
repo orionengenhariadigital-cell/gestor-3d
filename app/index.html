@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.9</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v3.0</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -976,6 +976,49 @@ async function salvarEdit(){
 }
 const MAT_COLORS = {PLA:'var(--pla)',PETG:'var(--petg)',ABS:'var(--abs)',ASA:'var(--asa)',TPU:'#c77dff',Nylon:'#9aa7b5',PC:'#74e0d4','PLA-CF':'#7a8a99','PETG-CF':'#4a9e7a',HIPS:'#ffd47f',PVA:'#b0e57c',Outros:'var(--outros)'};
 const MAT_HEX = {PLA:'#5ac8fa',PETG:'#2ed47a',ABS:'#ff8a5c',ASA:'#ffb547',TPU:'#c77dff',Nylon:'#9aa7b5',PC:'#74e0d4','PLA-CF':'#7a8a99','PETG-CF':'#4a9e7a',HIPS:'#ffd47f',PVA:'#b0e57c',Outros:'#6cc0ff'};
+function _dlgEsc(s){ return (''+s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function confirmar(msg){
+  return new Promise(function(resolve){
+    var ov=document.createElement('div');
+    ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px';
+    var card=document.createElement('div');
+    card.style.cssText='background:#0e1830;border:1px solid #24375c;border-radius:18px;max-width:380px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.5)';
+    card.innerHTML='<div style="font-size:15px;line-height:1.5;color:#eaf1ff;white-space:pre-line;margin-bottom:18px">'+_dlgEsc(msg)+'</div>';
+    var row=document.createElement('div'); row.style.cssText='display:flex;gap:10px';
+    var bC=document.createElement('button'); bC.textContent='Cancelar';
+    bC.style.cssText='flex:1;background:transparent;color:#9fb2d4;border:1px solid #2a3e63;border-radius:12px;padding:13px;font-size:15px;font-weight:600;cursor:pointer';
+    var bO=document.createElement('button'); bO.textContent='Confirmar';
+    bO.style.cssText='flex:1;background:var(--brand,#1f8fff);color:#fff;border:0;border-radius:12px;padding:13px;font-size:15px;font-weight:700;cursor:pointer';
+    function close(v){ try{document.body.removeChild(ov);}catch(e){} resolve(v); }
+    bC.onclick=function(){close(false);}; bO.onclick=function(){close(true);};
+    ov.onclick=function(e){ if(e.target===ov) close(false); };
+    row.appendChild(bC); row.appendChild(bO); card.appendChild(row); ov.appendChild(card); document.body.appendChild(ov);
+    try{bO.focus();}catch(e){}
+  });
+}
+function perguntar(msg, def){
+  return new Promise(function(resolve){
+    var ov=document.createElement('div');
+    ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99999;display:flex;align-items:center;justify-content:center;padding:24px';
+    var card=document.createElement('div');
+    card.style.cssText='background:#0e1830;border:1px solid #24375c;border-radius:18px;max-width:380px;width:100%;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.5)';
+    card.innerHTML='<div style="font-size:15px;line-height:1.5;color:#eaf1ff;white-space:pre-line;margin-bottom:14px">'+_dlgEsc(msg)+'</div>';
+    var inp=document.createElement('input'); inp.type='text'; inp.value=(def==null?'':def);
+    inp.style.cssText='width:100%;box-sizing:border-box;background:#0a1322;color:#eaf1ff;border:1px solid #2a3e63;border-radius:12px;padding:13px;font-size:16px;margin-bottom:16px';
+    card.appendChild(inp);
+    var row=document.createElement('div'); row.style.cssText='display:flex;gap:10px';
+    var bC=document.createElement('button'); bC.textContent='Cancelar';
+    bC.style.cssText='flex:1;background:transparent;color:#9fb2d4;border:1px solid #2a3e63;border-radius:12px;padding:13px;font-size:15px;font-weight:600;cursor:pointer';
+    var bO=document.createElement('button'); bO.textContent='OK';
+    bO.style.cssText='flex:1;background:var(--brand,#1f8fff);color:#fff;border:0;border-radius:12px;padding:13px;font-size:15px;font-weight:700;cursor:pointer';
+    function close(v){ try{document.body.removeChild(ov);}catch(e){} resolve(v); }
+    bC.onclick=function(){close(null);}; bO.onclick=function(){close(inp.value);};
+    inp.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); close(inp.value); } };
+    ov.onclick=function(e){ if(e.target===ov) close(null); };
+    row.appendChild(bC); row.appendChild(bO); card.appendChild(row); ov.appendChild(card); document.body.appendChild(ov);
+    setTimeout(function(){ try{inp.focus();inp.select();}catch(e){} },60);
+  });
+}
 let _pendingCollapse=null;
 function toast(m,err=false){const e=document.getElementById('toast');e.textContent=m;e.classList.toggle('err',err);e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200);
   try{ if(_pendingCollapse){ if(err){ _pendingCollapse=null; } else if((m||'').indexOf('Salvando')<0){ var h=_pendingCollapse,b=h.nextElementSibling; if(b&&b.classList.contains('sec-body')){ b.style.display='none'; h.classList.remove('acc-open'); } _pendingCollapse=null; } } }catch(_e){} }
@@ -1408,7 +1451,7 @@ async function admDias(uid,dias){
   toast('+'+dias+' dias liberados \u2713'); carregarAdmin();
 }
 async function admPago(uid){
-  const meses=prompt('Marcar como PAGO por quantos meses?\n(deixe vazio para sem vencimento)');
+  const meses=await perguntar('Marcar como PAGO por quantos meses?\n(deixe vazio para sem vencimento)');
   if(meses===null) return;
   let ate=null;
   if(meses.trim()!==''){ const m=parseInt(meses); if(isNaN(m)){toast('N\u00famero inv\u00e1lido',true);return} const d=new Date(); d.setMonth(d.getMonth()+m); ate=d.toISOString(); }
@@ -1417,13 +1460,13 @@ async function admPago(uid){
   toast('Marcado como pago \u2713'); carregarAdmin();
 }
 async function admLiberar(uid){
-  if(!confirm('Liberar acesso TOTAL (sem vencimento) para este cliente?')) return;
+  if(!await confirmar('Liberar acesso TOTAL (sem vencimento) para este cliente?')) return;
   const {error}=await sb.rpc('admin_liberar_total',{alvo:uid});
   if(error){toast('Erro: '+error.message,true);return}
   toast('Acesso liberado \u2713'); carregarAdmin();
 }
 async function admBloq(uid){
-  if(!confirm('Bloquear este cliente agora?')) return;
+  if(!await confirmar('Bloquear este cliente agora?')) return;
   const {error}=await sb.rpc('admin_bloquear',{alvo:uid});
   if(error){toast('Erro: '+error.message,true);return}
   toast('Cliente bloqueado'); carregarAdmin();
@@ -1666,7 +1709,7 @@ async function salvarMaquina(){
   document.getElementById('m_dep').textContent='R$ 0,0000';
   await carregarTudo(); toast('Máquina adicionada ✓');
 }
-async function delMaq(id){ if(!confirm('Remover?'))return; await sb.from('maquinas').delete().eq('id',id); await carregarTudo(); }
+async function delMaq(id){ if(!await confirmar('Remover?'))return; await sb.from('maquinas').delete().eq('id',id); await carregarTudo(); }
 function renderMaq(){
   const box=document.getElementById('listaMaq');
   document.getElementById('maqCount').textContent=db.maquinas.length?db.maquinas.length+' itens':'';
@@ -1787,7 +1830,7 @@ async function salvarFilamento(){
   document.getElementById('f_prev').src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' fill='%230a1322'/><text x='32' y='38' font-size='24' text-anchor='middle' fill='%238095b4'>🧵</text></svg>";
   await carregarTudo(); toast('Filamento no estoque ✓');
 }
-async function delFil(id){ if(!confirm('Remover filamento?'))return; await sb.from('filamentos').delete().eq('id',id); await carregarTudo(); }
+async function delFil(id){ if(!await confirmar('Remover filamento?'))return; await sb.from('filamentos').delete().eq('id',id); await carregarTudo(); }
 let _filFiltro='todos';
 function setFilFiltro(t){ _filFiltro=t; renderFil(); }
 function verAcabando(){ _filFiltro='acabando'; go('fil'); renderFil(); window.scrollTo(0,0); }
@@ -2029,7 +2072,7 @@ async function salvarOrcamento(){
 async function delOrc(id){
   const o=db.orcamentos.find(x=>x.id===id);
   const nome=o?(o.numero?nfOrc(o.numero)+' - ':'')+o.nome:'este orçamento';
-  if(!confirm('⚠️ Excluir o orçamento:\n\n"'+nome+'"\n\nEssa ação NÃO pode ser desfeita. Tem certeza?'))return;
+  if(!await confirmar('⚠️ Excluir o orçamento:\n\n"'+nome+'"\n\nEssa ação NÃO pode ser desfeita. Tem certeza?'))return;
   await sb.from('orcamentos').delete().eq('id',id); await carregarTudo(); toast('Orçamento excluído');
 }
 async function orcStatus(id,status){
@@ -2158,7 +2201,7 @@ function escolherCli(cid){
 }
 async function delCliente(cid){
   const c=db.clientes.find(x=>x.id===cid);
-  if(!confirm('Remover '+(c&&c.nome?c.nome:'este cliente')+' da agenda?'))return;
+  if(!await confirmar('Remover '+(c&&c.nome?c.nome:'este cliente')+' da agenda?'))return;
   await sb.from('clientes').delete().eq('id',cid);
   await carregarTudo(); renderCliLista();
 }
@@ -2206,7 +2249,7 @@ async function registrarImpressaoPropria(){
     if(!f){toast('Selecione o filamento em todas as cores',true);return}
     const gReal=c.g*fatorPerda; const restante=+f.restante;
     if(gReal>restante){
-      const novo=prompt('Estoque insuficiente de '+nomeFil(f)+'.\nEm estoque: '+restante+' g\nPrecisa: '+gReal.toFixed(1)+' g\n\nDigite o estoque real (g) para corrigir, ou cancele:',Math.ceil(gReal).toString());
+      const novo=await perguntar('Estoque insuficiente de '+nomeFil(f)+'.\nEm estoque: '+restante+' g\nPrecisa: '+gReal.toFixed(1)+' g\n\nDigite o estoque real (g) para corrigir, ou cancele:',Math.ceil(gReal).toString());
       if(novo===null)return;
       const ne=numF(novo); if(ne<gReal){toast('Valor ainda insuficiente',true);return}
       await sb.from('filamentos').update({restante:ne}).eq('id',f.id); f.restante=ne;
@@ -2236,7 +2279,7 @@ async function impVirarVenda(id){
   const o=db.impressoes.find(x=>x.id===id); if(!o)return;
   const margem=(db.config&&+db.config.margem_padrao)||3;
   const sug=((+o.custo||0)*margem).toFixed(2).replace('.',',');
-  const v=prompt('Virar esta impressão própria em VENDA.\n\nO filamento já foi baixado quando você registrou a impressão — aqui entra só o faturamento.\n\nPreço de venda (R$):', sug);
+  const v=await perguntar('Virar esta impressão própria em VENDA.\n\nO filamento já foi baixado quando você registrou a impressão — aqui entra só o faturamento.\n\nPreço de venda (R$):', sug);
   if(v===null) return;
   const venda=numF(v); if(!(venda>0)){ toast('Informe um preço válido',true); return; }
   const custo=+o.custo||0;
@@ -2251,7 +2294,7 @@ async function impVirarVenda(id){
   await logAcao('Impressão virou venda: '+o.nome,'venda',{venda_id:ins.data&&ins.data[0]?ins.data[0].id:null});
   await carregarTudo(); toast('Virou venda ✓ (faturamento lançado)');
 }
-async function delImp(id){ if(!confirm('Remover esta impressão própria?'))return; await sb.from('impressoes').delete().eq('id',id); await carregarTudo(); }
+async function delImp(id){ if(!await confirmar('Remover esta impressão própria?'))return; await sb.from('impressoes').delete().eq('id',id); await carregarTudo(); }
 
 /* ================= PERDAS / FALHAS ================= */
 function calcPerda(pref){ pref=pref||'pd';
@@ -2269,7 +2312,7 @@ async function registrarPerda(pref){ pref=pref||'pd';
   const custo=g*precoPorGrama(f);
   const restante=+f.restante;
   if(g>restante){
-    const novo=prompt('Estoque insuficiente de '+nomeFil(f)+'.\nEm estoque: '+restante+' g\nPerda: '+g+' g\n\nDigite o estoque real (g), ou cancele:',Math.ceil(g).toString());
+    const novo=await perguntar('Estoque insuficiente de '+nomeFil(f)+'.\nEm estoque: '+restante+' g\nPerda: '+g+' g\n\nDigite o estoque real (g), ou cancele:',Math.ceil(g).toString());
     if(novo===null)return; const ne=numF(novo); if(ne<g){toast('Valor insuficiente',true);return}
     await sb.from('filamentos').update({restante:ne}).eq('id',f.id); f.restante=ne;
   }
@@ -2287,7 +2330,7 @@ async function registrarPerda(pref){ pref=pref||'pd';
   document.getElementById(pref+'_fil').value=''; document.getElementById(pref+'_valor').textContent='R$ 0,00';
   await carregarTudo(); toast('Perda registrada ✓ (estoque baixado)');
 }
-async function delPerda(id){ if(!confirm('Remover este registro de perda?'))return; await sb.from('perdas').delete().eq('id',id); await carregarTudo(); }
+async function delPerda(id){ if(!await confirmar('Remover este registro de perda?'))return; await sb.from('perdas').delete().eq('id',id); await carregarTudo(); }
 function renderPd(){
   ['pd','pd2'].forEach(pref=>{
     const sel=document.getElementById(pref+'_fil');
@@ -2374,7 +2417,7 @@ async function salvarPeca(){
       if(!f){toast('Selecione o filamento em todas as cores',true);return}
       const gReal=c.g*fatorPerda*qtd; const restante=+f.restante;
       if(gReal>restante){
-        const novo=prompt('Estoque insuficiente de '+nomeFil(f)+'.\nEm estoque: '+restante+' g\nPrecisa ('+qtd+'un): '+gReal.toFixed(1)+' g\n\nDigite o estoque real (g), ou cancele:',Math.ceil(gReal).toString());
+        const novo=await perguntar('Estoque insuficiente de '+nomeFil(f)+'.\nEm estoque: '+restante+' g\nPrecisa ('+qtd+'un): '+gReal.toFixed(1)+' g\n\nDigite o estoque real (g), ou cancele:',Math.ceil(gReal).toString());
         if(novo===null)return; const ne=numF(novo); if(ne<gReal){toast('Valor insuficiente',true);return}
         await sb.from('filamentos').update({restante:ne}).eq('id',f.id); f.restante=ne;
       }
@@ -2410,13 +2453,13 @@ async function venderPeca(id){
   const disp=+p.qtd||1;
   let qtd=disp;
   if(disp>1){
-    const r=prompt('Quantas unidades de "'+p.nome+'" vender?\n\nEm estoque: '+disp+' un \u00b7 '+BRL(p.valor)+' cada',String(disp));
+    const r=await perguntar('Quantas unidades de "'+p.nome+'" vender?\n\nEm estoque: '+disp+' un \u00b7 '+BRL(p.valor)+' cada',String(disp));
     if(r===null) return;
     qtd=Math.floor(numF(r));
     if(!(qtd>0)){ toast('Quantidade inv\u00e1lida',true); return; }
     if(qtd>disp){ toast('Voc\u00ea s\u00f3 tem '+disp+' em estoque',true); return; }
   } else {
-    if(!confirm('Vender "'+p.nome+'" por '+BRL(p.valor)+'?\n\nEntra no faturamento e sai do estoque de pe\u00e7as (n\u00e3o mexe no filamento).')) return;
+    if(!await confirmar('Vender "'+p.nome+'" por '+BRL(p.valor)+'?\n\nEntra no faturamento e sai do estoque de pe\u00e7as (n\u00e3o mexe no filamento).')) return;
   }
   const vUnit=+p.valor||0, cUnit=+p.custo||0;
   toast('Salvando...');
@@ -2437,11 +2480,11 @@ async function venderPeca(id){
   await logAcao('Vendeu pe\u00e7a: '+p.nome+(qtd>1?' x'+qtd:''),'venda',{venda_id:insV.data&&insV.data[0]?insV.data[0].id:null});
   await carregarTudo(); toast(qtd>1?qtd+' pe\u00e7as vendidas \u2713 (no faturamento)':'Pe\u00e7a vendida \u2713 (no faturamento)');
 }
-async function delPeca(id){ if(!confirm('Remover esta peça do estoque?'))return; await sb.from('pecas').delete().eq('id',id); await carregarTudo(); }
+async function delPeca(id){ if(!await confirmar('Remover esta peça do estoque?'))return; await sb.from('pecas').delete().eq('id',id); await carregarTudo(); }
 
 async function refugarPeca(id){
   const p=db.pecas.find(x=>x.id===id); if(!p)return;
-  if(!confirm('Refugar "'+p.nome+'"?\n\nA peça quebrada sai do estoque e o custo do material ('+BRL(p.custo)+') entra como perda. NÃO mexe no filamento (já foi descontado quando imprimiu).'))return;
+  if(!await confirmar('Refugar "'+p.nome+'"?\n\nA peça quebrada sai do estoque e o custo do material ('+BRL(p.custo)+') entra como perda. NÃO mexe no filamento (já foi descontado quando imprimiu).'))return;
   // registra como perda (custo do material desperdiçado)
   const ins=await sb.from('perdas').insert({
     filamento_id:null, filamento_nome:p.nome+' (peça refugada)', gramas:+p.peso||0, custo:+p.custo||0,
@@ -2465,7 +2508,7 @@ async function salvarAcessorio(){
   ['ac_nome','ac_custo','ac_qtd'].forEach(i=>document.getElementById(i).value='');
   await carregarTudo(); toast('Acessório adicionado ✓');
 }
-async function delAc(id){ if(!confirm('Remover este acessório?'))return; await sb.from('acessorios').delete().eq('id',id); await carregarTudo(); }
+async function delAc(id){ if(!await confirmar('Remover este acessório?'))return; await sb.from('acessorios').delete().eq('id',id); await carregarTudo(); }
 function renderAc(){
   const box=document.getElementById('listaAc'); if(!box)return;
   document.getElementById('acCount').textContent=db.acessorios.length?db.acessorios.length+' itens':'';
@@ -2489,7 +2532,7 @@ async function salvarLink(){
   ['lk_titulo','lk_url'].forEach(i=>document.getElementById(i).value='');
   await carregarTudo(); toast('Link adicionado ✓');
 }
-async function delLink(id){ if(!confirm('Remover este link?'))return; await sb.from('links').delete().eq('id',id); await carregarTudo(); }
+async function delLink(id){ if(!await confirmar('Remover este link?'))return; await sb.from('links').delete().eq('id',id); await carregarTudo(); }
 function renderLk(){
   const box=document.getElementById('listaLk'); if(!box)return;
   document.getElementById('lkCount').textContent=db.links.length?db.links.length+' links':'';
@@ -2599,7 +2642,7 @@ function renderOrc(){
 }
 let _vendaSrcOrc=null;
 function _abrirSecaoDe(elId){ try{ var el=document.getElementById(elId); var b=el&&el.closest('.sec-body'); if(b){ b.style.display=''; var h=b.previousElementSibling; if(h&&h.classList.contains('acc'))h.classList.add('acc-open'); } }catch(e){} }
-function orcVirarVenda(id){
+async function orcVirarVenda(id){
   const o=db.orcamentos.find(x=>x.id===id); if(!o)return;
   go('venda');
   window.scrollTo(0,0);
@@ -2616,7 +2659,7 @@ function orcVirarVenda(id){
   calcVenda();
   _abrirSecaoDe('v_nome');
   _vendaSrcOrc=id;
-  if(confirm('Registrar esta venda agora?\n\nVai baixar o filamento, lançar o faturamento e concluir o orçamento (ele sai da lista de orçamentos).')){
+  if(await confirmar('Registrar esta venda agora?\n\nVai baixar o filamento, lançar o faturamento e concluir o orçamento (ele sai da lista de orçamentos).')){
     registrarVenda();
   } else {
     toast('Orçamento carregado na Venda — confira e toque em Registrar venda');
@@ -2683,7 +2726,7 @@ async function registrarVenda(){
     if(gReal>restante){
       const nomeF=(f.cor||f.tipo)+' '+f.tipo;
       const falta=(gReal-restante).toFixed(1);
-      const novo=prompt(
+      const novo=await perguntar(
         'Estoque insuficiente de '+nomeF+'.\n\n'+
         'Em estoque: '+restante.toLocaleString('pt-BR')+' g\n'+
         'Esta peça precisa: '+gReal.toLocaleString('pt-BR')+' g\n'+
@@ -2737,7 +2780,7 @@ async function registrarVenda(){
 async function delVenda(id){
   const v=db.vendas.find(x=>x.id===id);
   const nome=v?(v.numero?nfVenda(v.numero)+' - ':'')+v.nome:'esta venda';
-  if(!confirm('⚠️ Excluir a venda:\n\n"'+nome+'"\n\nO filamento NÃO volta ao estoque e essa ação NÃO pode ser desfeita. Tem certeza?'))return;
+  if(!await confirmar('⚠️ Excluir a venda:\n\n"'+nome+'"\n\nO filamento NÃO volta ao estoque e essa ação NÃO pode ser desfeita. Tem certeza?'))return;
   await sb.from('vendas').delete().eq('id',id); await carregarTudo(); toast('Venda excluída');
 }
 function renderVendas(){
@@ -2859,10 +2902,10 @@ async function moverMaquina(){
   const maqs=db.maquinas;
   if(maqs.length<2){ toast('Você precisa de 2 máquinas cadastradas',true); return; }
   const lista=maqs.map((m,i)=>(i+1)+') '+m.nome).join('\n');
-  const de=prompt('Mover registros DE qual máquina?\n\n'+lista+'\n\nDigite o número:','');
+  const de=await perguntar('Mover registros DE qual máquina?\n\n'+lista+'\n\nDigite o número:','');
   if(de===null)return;
   const iDe=parseInt(de)-1; if(!(iDe>=0&&iDe<maqs.length)){toast('Opção inválida',true);return;}
-  const para=prompt('Mover PARA qual máquina?\n\n'+lista+'\n\nDigite o número:','');
+  const para=await perguntar('Mover PARA qual máquina?\n\n'+lista+'\n\nDigite o número:','');
   if(para===null)return;
   const iPara=parseInt(para)-1; if(!(iPara>=0&&iPara<maqs.length)){toast('Opção inválida',true);return;}
   if(iDe===iPara){toast('Escolha máquinas diferentes',true);return;}
@@ -2871,7 +2914,7 @@ async function moverMaquina(){
   const orcs=db.orcamentos.filter(o=>o.maquina_id===mDe.id);
   const vens=db.vendas.filter(v=>v.maquina_id===mDe.id);
   if(!orcs.length && !vens.length){ toast('Nenhum registro na '+mDe.nome); return; }
-  if(!confirm('🔀 Mover registros\n\nDe: '+mDe.nome+'\nPara: '+mPara.nome+'\n\n• '+orcs.length+' orçamentos\n• '+vens.length+' vendas\n\nA energia e o desgaste serão recalculados para a máquina nova. Material e preço de venda NÃO mudam.\n\n⚠️ Backup antes.\n\nContinuar?'))return;
+  if(!await confirmar('🔀 Mover registros\n\nDe: '+mDe.nome+'\nPara: '+mPara.nome+'\n\n• '+orcs.length+' orçamentos\n• '+vens.length+' vendas\n\nA energia e o desgaste serão recalculados para a máquina nova. Material e preço de venda NÃO mudam.\n\n⚠️ Backup antes.\n\nContinuar?'))return;
   toast('Movendo...');
   const delta=(tempo)=>{
     const eDe=(mDe.potencia_w/1000)*tempo*c.preco_kwh, dgDe=depHora(mDe.valor_compra,mDe.vida_util_horas)*tempo;
@@ -2901,7 +2944,7 @@ async function recalcularCustos(){
   let maq=maqs.find(m=>/bambu/i.test(m.nome||'')) || maqs[0];
   if(maqs.length>1){
     const lista=maqs.map((m,i)=>(i+1)+') '+m.nome).join('\n');
-    const esc=prompt('Qual máquina foi usada nesses registros antigos?\n\n'+lista+'\n\nDigite o número:','1');
+    const esc=await perguntar('Qual máquina foi usada nesses registros antigos?\n\n'+lista+'\n\nDigite o número:','1');
     if(esc===null)return;
     const idx=parseInt(esc)-1;
     if(idx>=0 && idx<maqs.length) maq=maqs[idx]; else { toast('Opção inválida',true); return; }
@@ -2911,7 +2954,7 @@ async function recalcularCustos(){
   const orcSem=db.orcamentos.filter(o=>!o.maquina_id && (+o.tempo_horas)>0);
   const venSem=db.vendas.filter(v=>!v.maquina_id && (+v.tempo_horas)>0);
   if(!orcSem.length && !venSem.length){ toast('Nenhum registro sem máquina encontrado'); return; }
-  if(!confirm('⚡ Atribuir máquina e somar energia\n\nMáquina: '+maq.nome+' ('+maq.potencia_w+'W)\n\nVai atualizar:\n• '+orcSem.length+' orçamentos sem máquina\n• '+venSem.length+' vendas sem máquina\n\nSoma a energia + desgaste ao custo (o material e o preço de venda NÃO mudam).\n\n⚠️ Faça um backup antes.\n\nContinuar?'))return;
+  if(!await confirmar('⚡ Atribuir máquina e somar energia\n\nMáquina: '+maq.nome+' ('+maq.potencia_w+'W)\n\nVai atualizar:\n• '+orcSem.length+' orçamentos sem máquina\n• '+venSem.length+' vendas sem máquina\n\nSoma a energia + desgaste ao custo (o material e o preço de venda NÃO mudam).\n\n⚠️ Faça um backup antes.\n\nContinuar?'))return;
   toast('Atualizando...');
   let okO=0, okV=0;
   for(const o of orcSem){
@@ -3033,7 +3076,7 @@ async function salvarManutencao(){
   ['mt_peca','mt_desc','mt_custo','mt_parada'].forEach(i=>document.getElementById(i).value='');
   await carregarTudo(); toast('Manutenção registrada ✓');
 }
-async function delMt(id){ if(!confirm('Remover esta manutenção?'))return; await sb.from('manutencoes').delete().eq('id',id); await carregarTudo(); }
+async function delMt(id){ if(!await confirmar('Remover esta manutenção?'))return; await sb.from('manutencoes').delete().eq('id',id); await carregarTudo(); }
 
 /* ================= PRODUTOS (catálogo) ================= */
 function renderProdutos(){
@@ -3080,7 +3123,7 @@ async function salvarComoProduto(){
   await carregarTudo();
   toast(existe?'Produto atualizado no catálogo ✓':'Produto salvo no catálogo ✓');
 }
-async function delProduto(id){ if(!confirm('Remover este produto do catálogo? (não afeta vendas já feitas)'))return; await sb.from('produtos').delete().eq('id',id); await carregarTudo(); }
+async function delProduto(id){ if(!await confirmar('Remover este produto do catálogo? (não afeta vendas já feitas)'))return; await sb.from('produtos').delete().eq('id',id); await carregarTudo(); }
 
 /* ================= HISTÓRICO / REVERTER ================= */
 function renderHist(){
@@ -3100,7 +3143,7 @@ function renderHist(){
 
 async function reverter(histId){
   const h=db.historico.find(x=>x.id===histId); if(!h)return;
-  if(!confirm('Reverter "'+h.acao+'"?')) return;
+  if(!await confirmar('Reverter "'+h.acao+'"?')) return;
   toast('Revertendo...');
   const s=h.snapshot||{};
   try{
