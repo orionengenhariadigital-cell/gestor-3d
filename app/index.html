@@ -176,7 +176,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.8</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v2.9</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -190,7 +190,6 @@
       <p id="hdSub">Impressão 3D</p>
       <span id="statusBadge" style="display:none;align-items:center;gap:6px;margin-top:5px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;line-height:1.2;width:fit-content"></span>
     </div>
-    <button class="out" onclick="abrirPersonalizar()" style="margin-right:8px" title="Personalizar abas">⚙️</button>
     <button class="out" onclick="abrirAjuda()" style="margin-right:8px" title="Como começar">❓</button>
     <button class="out" onclick="sair()">Sair</button>
   </header>
@@ -586,6 +585,12 @@
       <button class="act" onclick="guard(recalcularCustos)">⚡ Atribuir máquina e somar energia</button>
       <button class="act ghost" style="margin-top:10px" onclick="guard(moverMaquina)">🔀 Mover registros de uma máquina para outra</button>
     </div>
+    </div>
+
+    <h2 class="sec">👁️ Abas visíveis no app</h2>
+    <div class="card">
+      <small class="note" style="margin-top:0">Escolha quais abas opcionais aparecem na barra de baixo. Por padrão, todas aparecem — esconda as que você não usa.</small>
+      <button class="act" style="margin-top:12px" onclick="abrirPersonalizar()">⚙️ Escolher abas visíveis</button>
     </div>
 
     <h2 class="sec">🎨 Personalização (tema)</h2>
