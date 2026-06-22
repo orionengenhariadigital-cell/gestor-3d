@@ -160,6 +160,7 @@
     </a>
     <div class="nav-links">
       <a class="ln" href="#recursos">Recursos</a>
+      <a class="ln" href="#telas">Telas</a>
       <a class="ln" href="#preco">Preço</a>
       <a class="ln" href="#faq">Dúvidas</a>
       <a class="btn btn-primary" href="/app/">Começar grátis</a>
@@ -248,6 +249,122 @@
       <div class="fcard reveal"><div class="fi">🧵</div><h3>Estoque de filamento</h3><p>Saiba o que tem, o custo por grama e o que está acabando.</p></div>
       <div class="fcard reveal"><div class="fi">📱</div><h3>Em qualquer lugar</h3><p>Mesmo login no celular, no PC e no tablet. Seus dados ficam na nuvem.</p></div>
       <div class="fcard reveal"><div class="fi">🏢</div><h3>A sua marca</h3><p>Logo, nome e cor do seu negócio no app e nos orçamentos que você envia.</p></div>
+    </div>
+  </div>
+</section>
+
+<style>
+#telas .shots{display:flex;gap:24px;justify-content:center;align-items:flex-start;flex-wrap:wrap;margin-top:8px}
+@media(max-width:900px){#telas .shots{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;scroll-snap-type:x mandatory;padding:4px 4px 16px;-webkit-overflow-scrolling:touch}}
+#telas .shot{flex:0 0 auto;width:268px;scroll-snap-align:center}
+#telas .phone{width:100%;background:#0b1322;border:9px solid #1a2440;border-radius:38px;padding:11px;box-shadow:0 30px 70px rgba(0,0,0,.55)}
+#telas .scr{background:#0a111f;border-radius:27px;height:520px;overflow:hidden;display:flex;flex-direction:column}
+#telas .scr .body{padding:13px;flex:1;overflow:hidden}
+#telas .cap{text-align:center;font-family:var(--disp);font-weight:600;color:var(--cyan);margin-top:13px;font-size:13.5px}
+#telas .warn{background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.4);color:#f5b860;font-size:10px;border-radius:10px;padding:8px 10px;margin-bottom:10px;line-height:1.35}
+#telas .row2{display:flex;gap:8px;margin-bottom:8px}
+#telas .kc{background:#101c34;border:1px solid #1c2c4e;border-radius:14px;padding:11px}
+#telas .kc.flex1{flex:1}
+#telas .kc.wide{margin-bottom:11px}
+#telas .kl{font-size:8px;letter-spacing:.5px;color:#7d8eae;text-transform:uppercase}
+#telas .kv{font-size:19px;font-weight:800;color:#eaf1ff;margin-top:2px;line-height:1.1}
+#telas .kv.green{color:#46e08a}
+#telas .kv.sm{font-size:17px}
+#telas .ks{font-size:9px;color:#7d8eae;margin-top:2px}
+#telas .st{font-size:12px;font-weight:700;color:#eaf1ff;margin:6px 0 8px}
+#telas .fil{background:#101c34;border:1px solid #1c2c4e;border-radius:12px;padding:9px 10px;margin-bottom:8px;display:flex;align-items:center;gap:9px}
+#telas .swatch{width:8px;height:36px;border-radius:5px;flex:0 0 auto}
+#telas .fn{font-size:11px;font-weight:700;color:#eaf1ff}
+#telas .tagp{font-size:7px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px}
+#telas .fg{font-size:9px;color:#8095b4;margin-top:2px}
+#telas .bar{height:5px;border-radius:4px;background:#1c2c4e;margin-top:6px;overflow:hidden}
+#telas .bar>i{display:block;height:100%;border-radius:4px}
+#telas .chips{display:flex;gap:5px;margin-bottom:11px;flex-wrap:wrap}
+#telas .chip{font-size:9px;padding:4px 9px;border-radius:14px;border:1px solid #28385c;color:#9fb2d4}
+#telas .chip.on{background:#2bd47d;color:#06210f;border-color:#2bd47d;font-weight:700}
+#telas .chip.wn{border-color:#f5a623;color:#f5b860}
+#telas .chart{display:flex;align-items:flex-end;gap:10px;height:140px;padding:6px 2px 0;border-bottom:1px solid #1c2c4e}
+#telas .chart .cb{flex:1;display:flex;align-items:flex-end;height:100%}
+#telas .chart .cb>i{width:100%;border-radius:6px 6px 0 0;display:block}
+#telas .lbls{display:flex;gap:10px;margin-top:6px}
+#telas .lbls span{flex:1;font-size:8px;color:#8095b4;text-align:center;line-height:1.2}
+#telas .hb{display:flex;align-items:center;gap:8px;margin-top:12px}
+#telas .hb .hn{font-size:9px;color:#8095b4;width:62px;flex:0 0 auto}
+#telas .hb .track{flex:1;height:24px;background:#16223c;border-radius:7px;overflow:hidden}
+#telas .hb .track>i{display:block;height:100%;border-radius:7px;background:linear-gradient(90deg,#5db4ff,#8fccff)}
+#telas .bn{display:flex;justify-content:space-around;align-items:center;padding:8px 2px;border-top:1px solid #16223c;background:#0a111f}
+#telas .bn span{font-size:7px;color:#5e7099;display:flex;flex-direction:column;align-items:center;gap:2px}
+#telas .bn span b{font-size:12px;line-height:1}
+#telas .bn span.on{color:#3b9bff}
+</style>
+<section id="telas">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">📱 O app por dentro</span>
+      <h2>Bonito, simples e <span class="grad-text">feito pra impressão 3D</span></h2>
+      <p>No celular ou no PC: lucro, faturamento, estoque de filamento e os produtos que mais vendem — tudo num lugar só.</p>
+    </div>
+    <div class="shots">
+
+      <div class="shot reveal">
+        <div class="phone"><div class="scr">
+          <div class="body">
+            <div class="warn">⚠️ <b>1 filamento acabando:</b> Vermelho / PLA · toque para ver</div>
+            <div class="row2">
+              <div class="kc flex1"><div class="kl">Lucro total</div><div class="kv green">R$ 1.240</div><div class="ks">12 vendas</div></div>
+              <div class="kc flex1"><div class="kl">Faturamento</div><div class="kv">R$ 1.980</div><div class="ks">Custo R$ 740</div></div>
+            </div>
+            <div class="kc wide"><div class="kl">Estoque de filamento</div><div class="kv sm">4.250 g</div><div class="ks">Valor em estoque R$ 540,00</div></div>
+            <div class="st">🏆 Produtos mais vendidos</div>
+            <div class="chart">
+              <div class="cb"><i style="height:100%;background:#f5b544"></i></div>
+              <div class="cb"><i style="height:64%;background:#f5b544"></i></div>
+              <div class="cb"><i style="height:46%;background:#f5b544"></i></div>
+              <div class="cb"><i style="height:30%;background:#f5b544"></i></div>
+            </div>
+            <div class="lbls"><span>Vaso</span><span>Chaveiro</span><span>Suporte</span><span>Luminária</span></div>
+          </div>
+          <div class="bn"><span><b>💲</b>Dados</span><span><b>🎯</b>Filam.</span><span><b>📄</b>Orçar</span><span><b>🖼️</b>Venda</span><span><b>📦</b>Peças</span><span class="on"><b>📊</b>Resumo</span></div>
+        </div></div>
+        <div class="cap">Resumo do negócio</div>
+      </div>
+
+      <div class="shot reveal">
+        <div class="phone"><div class="scr">
+          <div class="body">
+            <div class="kc wide" style="display:flex;align-items:center;gap:9px"><span style="font-size:17px">📦</span><div><div class="fn" style="font-size:12px">Meu estoque</div><div class="ks">4 itens</div></div></div>
+            <div class="chips"><span class="chip on">Todos</span><span class="chip wn">⚠️ Acabando (1)</span><span class="chip">PETG</span><span class="chip">PLA</span></div>
+            <div class="fil"><div class="swatch" style="background:#15171d"></div><div style="flex:1"><div class="fn">Preto<span class="tagp" style="background:#3b9bff;color:#06203c">PLA</span></div><div class="fg">920 g de 1.000 g · R$ 0,12/g</div><div class="bar"><i style="width:92%;background:#3a3f4a"></i></div></div></div>
+            <div class="fil"><div class="swatch" style="background:#2748d8"></div><div style="flex:1"><div class="fn">Azul<span class="tagp" style="background:#2bd47d;color:#06210f">PETG</span></div><div class="fg">1.000 g de 1.000 g · R$ 0,13/g</div><div class="bar"><i style="width:100%;background:#2748d8"></i></div></div></div>
+            <div class="fil"><div class="swatch" style="background:#d23b3b"></div><div style="flex:1"><div class="fn">Vermelho<span class="tagp" style="background:#3b9bff;color:#06203c">PLA</span><span class="tagp" style="background:#f5a623;color:#3a2600">ACABANDO</span></div><div class="fg">150 g de 1.000 g · R$ 0,13/g</div><div class="bar"><i style="width:15%;background:#d23b3b"></i></div></div></div>
+            <div class="fil"><div class="swatch" style="background:#e6e6e6"></div><div style="flex:1"><div class="fn">Branco<span class="tagp" style="background:#3b9bff;color:#06203c">PLA</span></div><div class="fg">760 g de 1.000 g · R$ 0,12/g</div><div class="bar"><i style="width:76%;background:#cfd6e6"></i></div></div></div>
+          </div>
+          <div class="bn"><span><b>💲</b>Dados</span><span class="on"><b>🎯</b>Filam.</span><span><b>📄</b>Orçar</span><span><b>🖼️</b>Venda</span><span><b>📦</b>Peças</span><span><b>📊</b>Resumo</span></div>
+        </div></div>
+        <div class="cap">Estoque de filamento</div>
+      </div>
+
+      <div class="shot reveal">
+        <div class="phone"><div class="scr">
+          <div class="body">
+            <div class="st">💰 Produtos mais lucrativos</div>
+            <div class="chart">
+              <div class="cb"><i style="height:100%;background:#2f8fff"></i></div>
+              <div class="cb"><i style="height:56%;background:#2f8fff"></i></div>
+              <div class="cb"><i style="height:35%;background:#2f8fff"></i></div>
+              <div class="cb"><i style="height:22%;background:#2f8fff"></i></div>
+            </div>
+            <div class="lbls"><span>Vaso</span><span>Suporte</span><span>Chaveiro</span><span>Luminária</span></div>
+            <div class="st" style="margin-top:18px">🖨️ Horas por impressora</div>
+            <div class="hb"><span class="hn">Bambu P2S</span><div class="track"><i style="width:72%"></i></div></div>
+            <div class="hb"><span class="hn">Snapmaker U1</span><div class="track"><i style="width:44%"></i></div></div>
+            <div class="kc wide" style="margin-top:18px"><div class="kl">Perdas registradas</div><div class="kv sm" style="color:#f5b860">201 g · R$ 91,72</div><div class="ks">controle o que deu errado</div></div>
+          </div>
+          <div class="bn"><span><b>💲</b>Dados</span><span><b>🎯</b>Filam.</span><span><b>📄</b>Orçar</span><span><b>🖼️</b>Venda</span><span><b>📦</b>Peças</span><span class="on"><b>📊</b>Resumo</span></div>
+        </div></div>
+        <div class="cap">Gráficos e relatórios</div>
+      </div>
+
     </div>
   </div>
 </section>
