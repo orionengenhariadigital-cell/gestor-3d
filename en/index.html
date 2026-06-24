@@ -173,7 +173,7 @@
       <input id="cad_tel" type="text" inputmode="numeric" placeholder="Ex: 19999999999">
       <button class="act" onclick="criarConta()">✅ Create account & start</button>
       <button class="act ghost" style="margin-top:10px" onclick="mostrarCadastro(false)">I already have an account</button>
-      <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
+      <small class="note">30-day free trial. No card. Cancel anytime.</small>
     </div>
   </div>
   <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">3D Print Manager v3.0</div>
@@ -197,9 +197,9 @@
   <div id="avisoEstoque" style="display:none;background:rgba(255,181,71,.12);border:1px solid var(--amber);border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:13px;color:var(--amber);cursor:pointer" onclick="verAcabando()"></div>
 
   <div class="summary">
-    <div class="stat lucro"><div class="k">Total profit</div><div class="v" id="sumLucro">R$ 0,00</div><div class="sub" id="sumVendas">0 vendas</div></div>
-    <div class="stat"><div class="k">Revenue</div><div class="v" id="sumFat">R$ 0,00</div><div class="sub" id="sumCusto">Custo R$ 0,00</div></div>
-    <div class="stat full"><div class="k">Filament stock</div><div class="v" id="sumEstoque">0 g</div><div class="sub" id="sumEstoqueVal">Valor em estoque R$ 0,00</div></div>
+    <div class="stat lucro"><div class="k">Total profit</div><div class="v" id="sumLucro">R$ 0,00</div><div class="sub" id="sumVendas">0 sales</div></div>
+    <div class="stat"><div class="k">Revenue</div><div class="v" id="sumFat">R$ 0,00</div><div class="sub" id="sumCusto">Cost $0.00</div></div>
+    <div class="stat full"><div class="k">Filament stock</div><div class="v" id="sumEstoque">0 g</div><div class="sub" id="sumEstoqueVal">Stock value $0.00</div></div>
   </div>
 
   <!-- ===== VENDA ===== -->
@@ -253,8 +253,8 @@
       </div>
 
       <div class="calcbox"><span>Custo filamento <span id="v_gtot">(0 g)</span></span><b id="v_cfil" class="custo">R$ 0,00</b></div>
-      <div class="calcbox"><span>+ Energia · desgaste · mão de obra</span><b id="v_cextra" class="custo">R$ 0,00</b></div>
-      <div class="calcbox big"><span>Custo total da peça</span><b id="v_custo" class="custo">R$ 0,00</b></div>
+      <div class="calcbox"><span>+ Energy · wear · labor</span><b id="v_cextra" class="custo">R$ 0,00</b></div>
+      <div class="calcbox big"><span>Total part cost</span><b id="v_custo" class="custo">R$ 0,00</b></div>
 
       <label>Preço sugerido (custo × margem) <span id="v_margemtag" style="color:var(--brand-soft)"></span></label>
       <input id="v_sugerido" type="text" readonly style="color:var(--brand-soft);font-weight:700">
@@ -264,7 +264,7 @@
       <label>Note (optional)</label>
       <input id="v_obs" type="text" placeholder="e.g. client asked no supports, special color..." autocomplete="off">
 
-      <div class="calcbox big"><span>Lucro desta venda</span><b id="v_lucro">R$ 0,00</b></div>
+      <div class="calcbox big"><span>Profit from this sale</span><b id="v_lucro">R$ 0,00</b></div>
       <button class="act green" onclick="guard(registrarVenda)">Record sale & deduct stock</button>
       <button class="act ghost" onclick="guard(salvarComoProduto)">⭐ Save as catalog product</button>
     </div>
@@ -284,8 +284,8 @@
 
       <label>Sale type *</label>
       <select id="o_tipo" onchange="calcOrc()">
-        <option value="direta">Venda direta (margem padrão)</option>
-        <option value="revenda">Revenda (margem de revenda)</option>
+        <option value="direta">Direct sale (default margin)</option>
+        <option value="revenda">Resale (resale margin)</option>
       </select>
 
       <label>Part photo (optional)</label>
@@ -324,8 +324,8 @@
       </div>
 
       <div class="calcbox"><span>Custo filamento <b id="o_gtot" style="color:var(--muted);font-weight:600"></b></span><b id="o_cfil" class="custo">R$ 0,00</b></div>
-      <div class="calcbox"><span>+ Energia · desgaste · mão de obra</span><b id="o_cextra" class="custo">R$ 0,00</b></div>
-      <div class="calcbox"><span>Custo total da peça</span><b id="o_custo" class="custo">R$ 0,00</b></div>
+      <div class="calcbox"><span>+ Energy · wear · labor</span><b id="o_cextra" class="custo">R$ 0,00</b></div>
+      <div class="calcbox"><span>Total part cost</span><b id="o_custo" class="custo">R$ 0,00</b></div>
 
       <label>Preço sugerido (custo × margem) <span id="o_margemtag" style="color:var(--brand-soft)"></span></label>
       <input id="o_sugerido" type="text" readonly style="color:var(--brand-soft);font-weight:800">
@@ -335,7 +335,7 @@
         <div style="flex:1"><label>Discount (%)</label>
         <input id="o_desc" type="text" inputmode="decimal" placeholder="0" oninput="calcOrc()"></div>
       </div>
-      <div class="calcbox big"><span>Valor final</span><b id="o_final" class="pos">R$ 0,00</b></div>
+      <div class="calcbox big"><span>Final value</span><b id="o_final" class="pos">R$ 0,00</b></div>
       <label>Part size (cm)</label>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
         <input id="o_larg" type="text" inputmode="decimal" placeholder="width">
@@ -345,7 +345,7 @@
       <div class="row">
         <div><label>Delivery / pickup</label>
           <select id="o_entrega">
-            <option value="">— não informar —</option>
+            <option value="">— not specified —</option>
             <option value="Retirar no local">Retirar no local</option>
             <option value="Entrega">Entrega</option>
             <option value="Retirar ou entregar (combinar)">Combinar</option>
@@ -357,9 +357,9 @@
       <input id="o_obs" type="text" placeholder="e.g. 5-day deadline, shipping separate..." autocomplete="off">
 
       <div class="calcbox big"><span>Lucro previsto <b id="o_lucropct" style="font-weight:700"></b></span><b id="o_lucro">R$ 0,00</b></div>
-      <div id="o_editaviso" style="display:none;background:rgba(31,143,255,.12);border:1px solid var(--brand-soft);border-radius:10px;padding:9px 12px;margin-bottom:8px;font-size:12.5px;color:var(--brand-soft)">✏️ Editando um orçamento existente. <span onclick="cancelarEdicaoOrc()" style="text-decoration:underline;cursor:pointer">Cancelar edição</span></div>
+      <div id="o_editaviso" style="display:none;background:rgba(31,143,255,.12);border:1px solid var(--brand-soft);border-radius:10px;padding:9px 12px;margin-bottom:8px;font-size:12.5px;color:var(--brand-soft)">✏️ Editando um orçamento existente. <span onclick="cancelarEdicaoOrc()" style="text-decoration:underline;cursor:pointer">Cancel editing</span></div>
       <button class="act" id="btnSalvarOrc" onclick="guard(salvarOrcamento)">💾 Save quote</button>
-      <button class="act ghost" id="btnRegImp" onclick="guard(registrarImpressaoPropria)">🖨️ Registrar impressão própria (baixa estoque, sem faturar)</button>
+      <button class="act ghost" id="btnRegImp" onclick="guard(registrarImpressaoPropria)">🖨️ Record own print (deduct stock, no revenue)</button>
       <small class="note">"Impressão própria" é pra peças suas / protótipos: gasta o filamento do estoque mas NÃO entra no faturamento nem no lucro.</small>
     </div>
 
@@ -402,8 +402,8 @@
       </div>
 
       <div class="calcbox"><span>Custo filamento <b id="p_gtot" style="color:var(--muted);font-weight:600"></b></span><b id="p_cfil" class="custo">R$ 0,00</b></div>
-      <div class="calcbox"><span>+ Energia · desgaste · mão de obra · acessórios</span><b id="p_cextra" class="custo">R$ 0,00</b></div>
-      <div class="calcbox"><span>Custo total da peça</span><b id="p_custo" class="custo">R$ 0,00</b></div>
+      <div class="calcbox"><span>+ Energy · wear · labor · accessories</span><b id="p_cextra" class="custo">R$ 0,00</b></div>
+      <div class="calcbox"><span>Total part cost</span><b id="p_custo" class="custo">R$ 0,00</b></div>
 
       <label>Preço sugerido (custo × margem) <span id="p_margemtag" style="color:var(--brand-soft)"></span></label>
       <input id="p_sugerido" type="text" readonly style="color:var(--brand-soft);font-weight:800">
@@ -444,8 +444,8 @@
       <input id="pd2_motivo" type="text" placeholder="e.g. warped, clogged, canceled" autocomplete="off">
       <label>Date</label>
       <input id="pd2_data" type="date">
-      <div class="calcbox big"><span>Valor perdido</span><b id="pd2_valor" class="neg">R$ 0,00</b></div>
-      <button class="act" onclick="guard(()=>registrarPerda('pd2'))">❌ Registrar perda (baixa estoque)</button>
+      <div class="calcbox big"><span>Value lost</span><b id="pd2_valor" class="neg">R$ 0,00</b></div>
+      <button class="act" onclick="guard(()=>registrarPerda('pd2'))">❌ Record loss (deduct stock)</button>
       <small class="note">Pra impressão que falhou/cancelou. Baixa o filamento do estoque e guarda o registro pra você ver quanto perde com falhas.</small>
     </div>
     <h2 class="sec">Perdas registradas <span class="count" id="pdCount"></span></h2>
@@ -460,7 +460,7 @@
       <select id="inv_fil" onchange="invPreencher()"><option value="">— selecione —</option></select>
       <label>Actual amount left (g)</label>
       <input id="inv_restante" type="text" inputmode="decimal" placeholder="e.g. weight on scale" min="0" step="1">
-      <div class="calcbox"><span>Preço por grama (do cadastro)</span><b id="inv_porg">R$ 0,0000</b></div>
+      <div class="calcbox"><span>Price per gram (from registry)</span><b id="inv_porg">R$ 0,0000</b></div>
 
       <label class="check" style="display:flex;align-items:center;gap:9px;margin:10px 0;cursor:pointer;font-size:13.5px">
         <input type="checkbox" id="inv_corrigepreco" onchange="invTogglePreco()" style="width:18px;height:18px">
@@ -510,7 +510,7 @@
         <div><label>Manufacture date</label><input id="f_fab" type="date"></div>
         <div><label>Expiry</label><input id="f_val" type="date"></div>
       </div>
-      <div class="calcbox"><span>Preço por grama</span><b id="f_porg">R$ 0,0000</b></div>
+      <div class="calcbox"><span>Price per gram</span><b id="f_porg">R$ 0,0000</b></div>
       <button class="act" onclick="guard(salvarFilamento)">Add to stock</button>
     </div>
     <h2 class="sec">Meu estoque <span class="count" id="filCount"></span></h2>
@@ -536,7 +536,7 @@
       <input id="c_whats" type="text" inputmode="decimal" placeholder="Ex: 19989543506 (com DDD)">
       <small class="note" style="margin-top:0">Só números, com DDD. Esse número fica salvo pro botão "Enviar pro meu WhatsApp".</small>
       <button class="act" onclick="guard(salvarConfig)">Save costs</button>
-      <small class="note">Esses valores entram no cálculo automático do custo de cada peça.</small>
+      <small class="note">These values feed the automatic cost of each part.</small>
     </div>
 
     <h2 class="sec">🏢 My Business</h2>
@@ -587,9 +587,9 @@
     <div style="display:none">
     <h2 class="sec">⚡ Assign machine to old records</h2>
     <div class="card">
-      <p style="color:var(--muted);font-size:13px;margin:0 0 12px">Os registros antigos ficaram <b>sem máquina</b> (sem custo de energia). Isto atribui a máquina usada e <b>soma a energia + desgaste</b> ao custo. O material e o preço de venda NÃO mudam. <b>Faça um backup antes.</b></p>
+      <p style="color:var(--muted);font-size:13px;margin:0 0 12px">Os registros antigos ficaram <b>no machine</b> (sem custo de energia). Isto atribui a máquina usada e <b>soma a energia + desgaste</b> ao custo. O material e o preço de venda NÃO mudam. <b>Make a backup first.</b></p>
       <button class="act" onclick="guard(recalcularCustos)">⚡ Assign machine & add energy</button>
-      <button class="act ghost" style="margin-top:10px" onclick="guard(moverMaquina)">🔀 Mover registros de uma máquina para outra</button>
+      <button class="act ghost" style="margin-top:10px" onclick="guard(moverMaquina)">🔀 Move records between machines</button>
     </div>
     </div>
 
@@ -651,7 +651,7 @@
         <div><label>Amount paid</label><input id="m_valor" type="text" inputmode="decimal" placeholder="0,00" step="1"></div>
         <div><label>Lifespan (hours)</label><input id="m_vida" type="text" inputmode="decimal" placeholder="5000" step="100"></div>
       </div>
-      <div class="calcbox"><span>Depreciação por hora</span><b id="m_dep">R$ 0,0000</b></div>
+      <div class="calcbox"><span>Depreciation per hour</span><b id="m_dep">R$ 0,0000</b></div>
       <button class="act" onclick="guard(salvarMaquina)">Add machine/tool</button>
       <small class="note">Depreciação = valor ÷ vida útil. Some o desgaste no custo de cada impressão.</small>
     </div>
@@ -674,7 +674,7 @@
         </div>
         <div>
           <label>Unit</label>
-          <select id="mt_unid"><option value="h">hours</option><option value="d">dias</option></select>
+          <select id="mt_unid"><option value="h">hours</option><option value="d">days</option></select>
         </div>
       </div>
       <label>Date</label>
@@ -724,7 +724,7 @@
   <!-- ===== AGENDA DE CLIENTES (modal) ===== -->
   <div id="cliModal" style="display:none;position:fixed;inset:0;z-index:62;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding:calc(env(safe-area-inset-top) + 20px) 20px 20px;overflow-y:auto" onclick="if(event.target===this)fecharCli()">
     <div style="background:var(--panel);border:1px solid var(--line);border-radius:20px;max-width:420px;width:100%;padding:22px;margin:auto">
-      <div style="font-weight:800;font-size:17px;margin-bottom:14px">📱 Enviar orçamento</div>
+      <div style="font-weight:800;font-size:17px;margin-bottom:14px">📱 Send quote</div>
       <label>Client name (optional)</label>
       <input id="cli_nome" type="text" placeholder="e.g. John" autocomplete="off">
       <label>WhatsApp (numbers only)</label>
@@ -753,7 +753,7 @@
   <div id="cartaoModal" style="display:none;position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px" onclick="if(event.target===this)fecharCartao()">
     <div style="background:var(--panel);border:1px solid var(--line);border-radius:20px;max-width:380px;width:100%;padding:26px 22px;text-align:center">
       <div class="logo" style="width:90px;height:auto;margin:0 auto 14px;border-radius:16px;overflow:hidden;background:#000"><img src="" id="logoImg3" style="width:100%;display:block"></div>
-      <div style="font-weight:800;font-size:18px" id="cartaoNome">Meu Negócio</div>
+      <div style="font-weight:800;font-size:18px" id="cartaoNome">My Business</div>
       <div style="color:var(--muted);font-size:13px;margin-bottom:18px" id="cartaoSub">3D Printing</div>
       <div id="cartaoLinks" style="display:flex;flex-direction:column;gap:10px"></div>
       <button class="act ghost" onclick="fecharCartao()" style="margin-top:18px">Close</button>
@@ -765,7 +765,7 @@
 
     <div class="card" style="margin-bottom:16px;background:linear-gradient(135deg,rgba(31,143,255,.12),rgba(31,143,255,.03))">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <h3 style="margin:0;font-size:15px">📅 Fechamento do mês</h3>
+        <h3 style="margin:0;font-size:15px">📅 Month closing</h3>
         <select id="mesResumo" onchange="renderFechamento()" style="width:auto;padding:6px 10px;font-size:13px"></select>
       </div>
       <div id="fechamentoBox" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
@@ -773,24 +773,24 @@
     </div>
 
     <div class="summary" style="margin-bottom:16px">
-      <div class="stat"><div class="k">Perda total</div><div class="v" id="kPerdaG" style="color:var(--red)">0 g</div><div class="sub" id="kPerdaR">R$ 0,00 desperdiçado</div></div>
-      <div class="stat"><div class="k">Margem média</div><div class="v" id="kMargem" style="color:var(--green-soft)">0%</div><div class="sub">lucro ÷ faturamento</div></div>
-      <div class="stat"><div class="k">Horas de impressão</div><div class="v" id="kHoras">0 h</div><div class="sub">tempo total</div></div>
-      <div class="stat"><div class="k">Custo manutenção</div><div class="v" id="kManut" style="color:var(--amber)">R$ 0,00</div><div class="sub" id="kParada">0h parada</div></div>
+      <div class="stat"><div class="k">Total loss</div><div class="v" id="kPerdaG" style="color:var(--red)">0 g</div><div class="sub" id="kPerdaR">$0.00 wasted</div></div>
+      <div class="stat"><div class="k">Average margin</div><div class="v" id="kMargem" style="color:var(--green-soft)">0%</div><div class="sub">profit ÷ revenue</div></div>
+      <div class="stat"><div class="k">Print hours</div><div class="v" id="kHoras">0 h</div><div class="sub">tempo total</div></div>
+      <div class="stat"><div class="k">Maintenance cost</div><div class="v" id="kManut" style="color:var(--amber)">R$ 0,00</div><div class="sub" id="kParada">0h parada</div></div>
     </div>
-    <div class="chartcard"><h3>Lucro por mês</h3><div class="chartwrap"><canvas id="cMes"></canvas></div></div>
+    <div class="chartcard"><h3>Profit per month</h3><div class="chartwrap"><canvas id="cMes"></canvas></div></div>
     <div class="chartcard"><h3>🏆 Produtos mais vendidos</h3><div class="chartwrap"><canvas id="cTop"></canvas></div></div>
     <div class="chartcard"><h3>💰 Produtos mais lucrativos</h3><div class="chartwrap"><canvas id="cLucro"></canvas></div></div>
-    <div class="chartcard"><h3>🖨️ Horas por impressora</h3><div class="chartwrap"><canvas id="cHoras"></canvas></div></div>
-    <div class="chartcard"><h3>🔧 Custo de manutenção por impressora</h3><div class="chartwrap"><canvas id="cManut"></canvas></div></div>
+    <div class="chartcard"><h3>🖨️ Hours per printer</h3><div class="chartwrap"><canvas id="cHoras"></canvas></div></div>
+    <div class="chartcard"><h3>🔧 Maintenance cost per printer</h3><div class="chartwrap"><canvas id="cManut"></canvas></div></div>
     <div class="chartcard"><h3>⏸️ Tempo parada por impressora (h)</h3><div class="chartwrap"><canvas id="cParada"></canvas></div></div>
-    <div class="chartcard"><h3>🗑️ Perda por impressora (g)</h3><div class="chartwrap"><canvas id="cPerda"></canvas></div></div>
-    <div class="chartcard"><h3>Estoque por material</h3><div class="chartwrap tall"><canvas id="cEstoque"></canvas></div></div>
+    <div class="chartcard"><h3>🗑️ Loss per printer (g)</h3><div class="chartwrap"><canvas id="cPerda"></canvas></div></div>
+    <div class="chartcard"><h3>Stock by material</h3><div class="chartwrap tall"><canvas id="cEstoque"></canvas></div></div>
   </section>
 
   <!-- ===== HISTÓRICO ===== -->
   <section id="tab-hist">
-    <h2 class="sec">Histórico <span class="count">últimas ações</span></h2>
+    <h2 class="sec">Histórico <span class="count">recent actions</span></h2>
     <div id="listaHist"></div>
     <small class="note">Toque em "Reverter" para desfazer uma ação. Reverter uma venda devolve o filamento ao estoque.</small>
   </section>
@@ -803,11 +803,11 @@
 <nav class="tabs" id="nav" style="display:none">
   <button class="tab active" data-tab="custos" onclick="go('custos')"><span class="ti">💲</span>Dados</button>
   <button class="tab" data-tab="fil" onclick="go('fil')"><span class="ti">🎯</span>Filamento</button>
-  <button class="tab" data-tab="orc" onclick="go('orc')"><span class="ti">📄</span>Orçar</button>
-  <button class="tab" data-tab="venda" onclick="go('venda')"><span class="ti">🖼️</span>Venda</button>
-  <button class="tab" data-tab="pecas" onclick="go('pecas')"><span class="ti">📦</span>Peças</button>
+  <button class="tab" data-tab="orc" onclick="go('orc')"><span class="ti">📄</span>Quote</button>
+  <button class="tab" data-tab="venda" onclick="go('venda')"><span class="ti">🖼️</span>Sale</button>
+  <button class="tab" data-tab="pecas" onclick="go('pecas')"><span class="ti">📦</span>Products</button>
   <button class="tab" data-tab="graf" onclick="go('graf')"><span class="ti">📊</span>Summary</button>
-  <button class="tab" data-tab="hist" onclick="go('hist')"><span class="ti">🕐</span>Histórico</button>
+  <button class="tab" data-tab="hist" onclick="go('hist')"><span class="ti">🕐</span>History</button>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -917,7 +917,7 @@ const EDIT_DEFS={
 };
 function editar(tabela,id){
   const def=EDIT_DEFS[tabela]; if(!def)return;
-  const rec=(db[tabela]||[]).find(x=>x.id===id); if(!rec){toast('Item não encontrado',true);return}
+  const rec=(db[tabela]||[]).find(x=>x.id===id); if(!rec){toast('Item not found',true);return}
   _editCtx={tabela,id}; pendingEditPhoto=null;
   document.getElementById('editTitulo').textContent=def.titulo;
   document.getElementById('editSub').textContent=def.sub||'';
@@ -928,7 +928,7 @@ function editar(tabela,id){
     if(c.tipo==='color'){ return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="color" type="color" value="${val||'#1f8fff'}" style="width:54px;height:42px;padding:2px;border-radius:10px;cursor:pointer;display:block">`; }
     if(c.tipo==='date'){ return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="text" type="date" value="${(''+val).slice(0,10)}">`; }
     if(c.tipo==='select'){ return `<label>${c.lbl}</label><select data-k="${c.k}" data-t="text">${c.ops.map(o=>`<option ${o===val?'selected':''}>${o}</option>`).join('')}</select>`; }
-    if(c.tipo==='maq'){ return `<label>${c.lbl}</label><select data-k="${c.k}" data-t="text"><option value="">— sem máquina —</option>${db.maquinas.map(m=>`<option value="${m.id}" ${m.id===val?'selected':''}>${m.nome}</option>`).join('')}</select>`; }
+    if(c.tipo==='maq'){ return `<label>${c.lbl}</label><select data-k="${c.k}" data-t="text"><option value="">— no machine —</option>${db.maquinas.map(m=>`<option value="${m.id}" ${m.id===val?'selected':''}>${m.nome}</option>`).join('')}</select>`; }
     return `<label>${c.lbl}</label><input data-k="${c.k}" data-t="text" type="text" value="${(''+val).replace(/"/g,'&quot;')}">`;
   }).join('');
   // bloco de foto (se a tabela tiver foto)
@@ -1049,10 +1049,10 @@ async function criarConta(){
   const tel=(document.getElementById('cad_tel').value||'').replace(/\D/g,'');
   if(!email||!pass){toast('Preencha email e senha',true);return}
   if(pass.length<6){toast('A senha precisa de ao menos 6 caracteres',true);return}
-  if(!nome){toast('Digite o nome do seu negócio',true);return}
-  if(tel.length<10){toast('Digite seu WhatsApp com DDD',true);return}
+  if(!nome){toast('Enter your business name',true);return}
+  if(tel.length<10){toast('Enter your WhatsApp number',true);return}
   const {data,error}=await sb.auth.signUp({email,password:pass});
-  if(error){toast('Não foi possível cadastrar: '+error.message,true);return}
+  if(error){toast('Could not sign up: '+error.message,true);return}
   // cria o perfil da empresa com 30 dias de teste
   if(data.user){
     user=data.user;
@@ -1060,9 +1060,9 @@ async function criarConta(){
     await sb.from('empresa').insert({nome,whatsapp:tel,telefone:tel,ramo:'Impressão 3D',ultimo_acesso:new Date().toISOString()});
     await sb.from('assinatura').insert({status:'teste',teste_fim:fim.toISOString()});
   }
-  toast('Conta criada! Bem-vindo 🎉');
+  toast('Account created! Welcome 🎉');
   if(data.session){ user=data.user; await iniciarApp(); }
-  else { toast('Confirme seu email para entrar (verifique a caixa de entrada)'); mostrarCadastro(false); }
+  else { toast('Confirm your email to log in (check your inbox)'); mostrarCadastro(false); }
 }
 
 function atualizarStatusBadge(ac){
@@ -1153,7 +1153,7 @@ async function checkSession(){
   const boot=document.getElementById('boot');
   // se a biblioteca do Supabase não carregou (internet ruim no 1º acesso), avisa
   if(typeof supabase==='undefined' || !supabase.createClient){
-    boot.innerHTML='<div style="padding:40px 24px;text-align:center;color:#8095b4;font-size:14px;line-height:1.6">Não consegui carregar a conexão com a nuvem.<br>Verifique sua internet e <b style="color:#6cc0ff">recarregue a página</b>.<br><br><button onclick="location.reload()" style="margin-top:8px;background:#1f8fff;color:#fff;border:0;border-radius:12px;padding:12px 22px;font-size:14px;font-weight:700">Try again</button></div>';
+    boot.innerHTML='<div style="padding:40px 24px;text-align:center;color:#8095b4;font-size:14px;line-height:1.6">Could not load the cloud connection.<br>Verifique sua internet e <b style="color:#6cc0ff">reload the page</b>.<br><br><button onclick="location.reload()" style="margin-top:8px;background:#1f8fff;color:#fff;border:0;border-radius:12px;padding:12px 22px;font-size:14px;font-weight:700">Try again</button></div>';
     return;
   }
   // failsafe: se em 8s nada acontecer, mostra o login mesmo assim
@@ -1421,7 +1421,7 @@ async function carregarAdmin(){
   const nVenc=us.filter(u=>st(u).t==='Teste acabou'||st(u).t==='Pgto venceu').length;
   const card=(n,l,c)=>'<div style="flex:1;min-width:74px;background:#13203a;border-radius:12px;padding:12px;text-align:center"><div style="font-size:24px;font-weight:800;color:'+c+'">'+n+'</div><div style="font-size:11px;color:#8095b4">'+l+'</div></div>';
   stats.innerHTML=card(us.length,'Total','#eaf1ff')+card(nTeste,'Em teste','#1f8fff')+card(nPago,'Pagantes','#22c55e')+card(nVenc,'Vencidos','#ff6b6b');
-  if(!us.length){ lista.innerHTML='<div style="text-align:center;color:#8095b4;padding:30px">Nenhum cliente ainda.</div>'; return; }
+  if(!us.length){ lista.innerHTML='<div style="text-align:center;color:#8095b4;padding:30px">No clients yet.</div>'; return; }
   const btnA='background:#1f3a5f;color:#9cc7ff;border:0;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:600;cursor:pointer';
   const btnG='background:#16442e;color:#5ee08a;border:0;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:600;cursor:pointer';
   const btnR='background:#4a1f1f;color:#ff9a9a;border:0;border-radius:8px;padding:8px 10px;font-size:12px;font-weight:600;cursor:pointer';
@@ -1470,7 +1470,7 @@ async function admBloq(uid){
   if(!await confirmar('Bloquear este cliente agora?')) return;
   const {error}=await sb.rpc('admin_bloquear',{alvo:uid});
   if(error){toast('Erro: '+error.message,true);return}
-  toast('Cliente bloqueado'); carregarAdmin();
+  toast('Client blocked'); carregarAdmin();
 }
 
 /* ================= CARREGAR DADOS ================= */
@@ -1697,7 +1697,7 @@ function liveMaq(){
 }
 async function salvarMaquina(){
   const nome=(document.getElementById('m_nome').value||'').trim();
-  if(!nome){toast('Dê um nome à máquina',true);return}
+  if(!nome){toast('Name the machine',true);return}
   const payload={
     nome,tipo:document.getElementById('m_tipo').value,
     potencia_w:numF(document.getElementById('m_pot').value)||0,
@@ -1708,15 +1708,15 @@ async function salvarMaquina(){
   if(error){toast('Erro: '+error.message,true);return}
   ['m_nome','m_pot','m_valor','m_vida'].forEach(i=>document.getElementById(i).value='');
   document.getElementById('m_dep').textContent='R$ 0,0000';
-  await carregarTudo(); toast('Máquina adicionada ✓');
+  await carregarTudo(); toast('Machine added ✓');
 }
 async function delMaq(id){ if(!await confirmar('Remover?'))return; await sb.from('maquinas').delete().eq('id',id); await carregarTudo(); }
 function renderMaq(){
   const box=document.getElementById('listaMaq');
   document.getElementById('maqCount').textContent=db.maquinas.length?db.maquinas.length+' itens':'';
   const sel=document.getElementById('v_maq');
-  sel.innerHTML='<option value="">— selecione a máquina —</option>'+maqsOrd().map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');
-  if(!db.maquinas.length){box.innerHTML='<div class="empty"><span class="em">🛠️</span>Nenhuma máquina cadastrada.</div>';return}
+  sel.innerHTML='<option value="">— select the machine —</option>'+maqsOrd().map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');
+  if(!db.maquinas.length){box.innerHTML='<div class="empty"><span class="em">🛠️</span>No machines yet.</div>';return}
   box.innerHTML=maqsOrd().map(m=>`<div class="item">
     <div class="main"><div class="t">${m.nome} <span class="badge" style="background:var(--brand-soft)">${m.tipo||''}</span></div>
     <div class="s">${m.potencia_w||0} W · ${BRL(m.valor_compra)} · ${m.vida_util_horas||0}h vida · desgaste ${BRL(depHora(m.valor_compra,m.vida_util_horas))}/h</div></div>
@@ -1740,7 +1740,7 @@ function _printSetup(){
 }
 function imprimirOrc(id){
   const o=db.orcamentos.find(x=>x.id===id);
-  if(!o){ toast('Orçamento não encontrado',true); return; }
+  if(!o){ toast('Quote not found',true); return; }
   _printSetup();
   const nome=EMP.nome||'Meu Negócio';
   const logo=EMP.logo_url||LOGO_DATA;
@@ -1758,25 +1758,25 @@ function imprimirOrc(id){
         <div style="font-size:12px;color:#666">${contato}</div>
       </div>
       <div style="text-align:right">
-        <div style="font-size:12px;color:#888;letter-spacing:1px">ORÇAMENTO</div>
+        <div style="font-size:12px;color:#888;letter-spacing:1px">QUOTE</div>
         <div style="font-size:20px;font-weight:800">${nfOrc(o.numero)||''}</div>
         <div style="font-size:12px;color:#888">${data}</div>
       </div>
     </div>
-    <div style="font-size:15px;margin-bottom:14px"><b>Cliente / Projeto:</b> ${o.nome||'-'}</div>
+    <div style="font-size:15px;margin-bottom:14px"><b>Client / Project:</b> ${o.nome||'-'}</div>
     <table style="width:100%;border-collapse:collapse;margin-bottom:14px;font-size:14px">
       <thead><tr style="background:${cor};color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact"><th style="text-align:left;padding:8px 10px">Item / Cor</th><th style="text-align:right;padding:8px 10px">Material</th></tr></thead>
       <tbody>${itens||'<tr><td colspan="2" style="padding:8px 10px">—</td></tr>'}</tbody>
     </table>
     <div style="font-size:13px;color:#444;line-height:1.8;margin-bottom:16px">
       ${o.gramas?`<div><b>Peso total:</b> ${(+o.gramas).toLocaleString(CUR.locale)} g</div>`:''}
-      ${dim?`<div><b>Dimensões:</b> ${dim}</div>`:''}
+      ${dim?`<div><b>Dimensions:</b> ${dim}</div>`:''}
       ${o.prazo?`<div><b>Prazo de entrega:</b> ${o.prazo}</div>`:''}
-      ${o.obs?`<div><b>Observações:</b> ${o.obs}</div>`:''}
+      ${o.obs?`<div><b>Notes:</b> ${o.obs}</div>`:''}
     </div>
     <div style="border-top:2px solid #eee;padding-top:14px;text-align:right">
       ${+o.desconto>0?`<div style="font-size:13px;color:#777">Subtotal: ${BRL(valorOrig)}</div><div style="font-size:13px;color:#777">Desconto: − ${BRL(o.desconto)}</div>`:''}
-      <div style="font-size:12px;color:#888;margin-top:4px;letter-spacing:1px">VALOR TOTAL</div>
+      <div style="font-size:12px;color:#888;margin-top:4px;letter-spacing:1px">TOTAL VALUE</div>
       <div style="font-size:30px;font-weight:800;color:${cor}">${BRL(o.valor)}</div>
     </div>
     <div style="margin-top:26px;font-size:11px;color:#999;text-align:center;border-top:1px solid #eee;padding-top:10px">Orçamento gerado por ${nome} · Valores sujeitos a alteração · Validade: 7 dias</div>
@@ -1831,7 +1831,7 @@ async function salvarFilamento(){
   document.getElementById('f_porg').textContent='R$ 0,0000';
   pendingPhoto.f=null;
   document.getElementById('f_prev').src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' fill='%230a1322'/><text x='32' y='38' font-size='24' text-anchor='middle' fill='%238095b4'>🧵</text></svg>";
-  await carregarTudo(); toast('Filamento no estoque ✓');
+  await carregarTudo(); toast('Filament added to stock ✓');
 }
 async function delFil(id){ if(!await confirmar('Remover filamento?'))return; await sb.from('filamentos').delete().eq('id',id); await carregarTudo(); }
 let _filFiltro='todos';
@@ -1853,13 +1853,13 @@ function renderFil(){
         tipos.map(t=>`<button class="chip ${_filFiltro===t?'on':''}" onclick="setFilFiltro('${t}')">${t}</button>`).join('');
     } else { fc.style.display='none'; }
   }
-  if(!db.filamentos.length){box.innerHTML='<div class="empty"><span class="em">🧵</span>Nenhum filamento ainda.</div>';return}
+  if(!db.filamentos.length){box.innerHTML='<div class="empty"><span class="em">🧵</span>No filament yet.</div>';return}
   let lista;
   if(_filFiltro==='acabando') lista=db.filamentos.filter(f=>(+f.restante)<150);
   else if(_filFiltro==='todos') lista=db.filamentos.slice();
   else lista=db.filamentos.filter(f=>f.tipo===_filFiltro);
   lista=lista.slice().sort((a,b)=>nomeFil(a).localeCompare(nomeFil(b),CUR.locale,{sensitivity:'base'}));
-  if(!lista.length){box.innerHTML='<div class="empty" style="padding:14px">Nenhum filamento aqui.</div>';return}
+  if(!lista.length){box.innerHTML='<div class="empty" style="padding:14px">No filament here.</div>';return}
   box.innerHTML=lista.map(f=>{
     const pct=f.qtd_inicial>0?Math.max(0,Math.min(100,f.restante/f.qtd_inicial*100)):0;
     const corMat=MAT_COLORS[f.tipo]||'var(--outros)';
@@ -1892,7 +1892,7 @@ function checarEstoqueCores(cores, elId){
   });
   if(faltas.length){
     var fmt=function(n){return (Math.round(n*10)/10).toLocaleString(CUR.locale);};
-    el.innerHTML='\u26a0\ufe0f <b>Filamento insuficiente no estoque</b><br>'+faltas.map(function(x){
+    el.innerHTML='\u26a0\ufe0f <b>Not enough filament in stock</b><br>'+faltas.map(function(x){
       return '\u2022 '+x.nome+': precisa de '+fmt(x.prec)+'g, tem '+fmt(x.rest)+'g <b>(faltam '+fmt(x.falta)+'g)</b>';
     }).join('<br>');
     el.style.display='block';
@@ -1902,7 +1902,7 @@ function filsVelhos(){ return db.filamentos.slice().sort(function(a,b){var ka=St
 function corOptions(sel){ return '<option value="">— escolha o filamento —</option>'+filsVelhos().map(f=>`<option value="${f.id}" ${f.id===sel?'selected':''}>${nomeFil(f)} · ${f.tipo} (${(+f.restante).toLocaleString(CUR.locale)}g)</option>`).join(''); }
 function addCorRow(filId='',g=''){
   const box=document.getElementById('v_cores');
-  if(box.children.length>=6){toast('Máximo de 6 cores',true);return}
+  if(box.children.length>=6){toast('Maximum of 6 colors',true);return}
   const div=document.createElement('div');div.className='cor-row';
   div.innerHTML=`<select onchange="calcVenda()">${corOptions(filId)}</select>
     <input type="text" inputmode="decimal" placeholder="grams" min="0" step="0.1" value="${g}" oninput="calcVenda()">
@@ -1916,7 +1916,7 @@ function getCores(){
   })).filter(c=>c.filId&&c.g>0);
 }
 /* ===== ACESSÓRIOS em venda/orçamento ===== */
-function acOptions(sel){ return '<option value="">— acessório —</option>'+acsOrd().map(a=>`<option value="${a.id}" ${a.id===sel?'selected':''}>${a.nome} (${(+a.qtd).toLocaleString(CUR.locale)} · ${BRL(a.custo_unit)})</option>`).join(''); }
+function acOptions(sel){ return '<option value="">— accessory —</option>'+acsOrd().map(a=>`<option value="${a.id}" ${a.id===sel?'selected':''}>${a.nome} (${(+a.qtd).toLocaleString(CUR.locale)} · ${BRL(a.custo_unit)})</option>`).join(''); }
 function addAcRow(pref,acId='',q=''){
   const box=document.getElementById(pref+'_acess'); if(!box)return;
   const recalc=pref==='v'?'calcVenda()':'calcOrc()';
@@ -1942,7 +1942,7 @@ function refreshAcRows(pref){
 /* ================= ORÇAMENTO ================= */
 function addCorRowO(filId='',g=''){
   const box=document.getElementById('o_cores');
-  if(box.children.length>=6){toast('Máximo de 6 cores',true);return}
+  if(box.children.length>=6){toast('Maximum of 6 colors',true);return}
   const div=document.createElement('div');div.className='cor-row';
   div.innerHTML=`<select onchange="calcOrc()">${corOptions(filId)}</select>
     <input type="text" inputmode="decimal" placeholder="grams" value="${g}" oninput="calcOrc()">
@@ -2023,10 +2023,10 @@ function orcEditarCompleto(id){
   (o.cores||[]).forEach(c=>addCorRowO(c.filId||'',c.g));
   if(o.maquina_id) document.getElementById('o_maq').value=o.maquina_id;
   const btn=document.getElementById('btnSalvarOrc'); if(btn) btn.textContent='✅ Atualizar orçamento';
-  const av=document.getElementById('o_editaviso'); if(av){ av.innerHTML='✏️ Editando um orçamento existente. <span onclick="cancelarEdicaoOrc()" style="text-decoration:underline;cursor:pointer">Cancelar edição</span>'; av.style.display='block'; }
+  const av=document.getElementById('o_editaviso'); if(av){ av.innerHTML='✏️ Editando um orçamento existente. <span onclick="cancelarEdicaoOrc()" style="text-decoration:underline;cursor:pointer">Cancel editing</span>'; av.style.display='block'; }
   _abrirSecaoDe('o_nome');
   calcOrc();
-  toast('Orçamento carregado — ajuste e atualize');
+  toast('Quote loaded — adjust and update');
 }
 function impEditarCompleto(id){
   const o=db.impressoes.find(x=>x.id===id); if(!o)return;
@@ -2044,10 +2044,10 @@ function impEditarCompleto(id){
   (o.cores||[]).forEach(function(c){ var fid=c.filId||''; if(!fid){ var f=db.filamentos.find(function(x){return x.tipo===c.tipo && nomeFil(x)===c.cor;}); if(f)fid=f.id; } addCorRowO(fid, c.g); });
   if(o.maquina_id) document.getElementById('o_maq').value=o.maquina_id;
   const btn=document.getElementById('btnRegImp'); if(btn) btn.textContent='✅ Atualizar impressão própria';
-  const av=document.getElementById('o_editaviso'); if(av){ av.innerHTML='✏️ Editando uma impressão própria. <span onclick="cancelarEdicaoOrc()" style="text-decoration:underline;cursor:pointer">Cancelar edição</span>'; av.style.display='block'; }
+  const av=document.getElementById('o_editaviso'); if(av){ av.innerHTML='✏️ Editando uma impressão própria. <span onclick="cancelarEdicaoOrc()" style="text-decoration:underline;cursor:pointer">Cancel editing</span>'; av.style.display='block'; }
   _abrirSecaoDe('o_nome');
   calcOrc();
-  toast('Impressão carregada — ajuste e atualize');
+  toast('Print loaded — adjust and update');
 }
 function cancelarEdicaoOrc(){
   _editandoOrcId=null; _editandoImpId=null;
@@ -2057,15 +2057,15 @@ function cancelarEdicaoOrc(){
   const btn=document.getElementById('btnSalvarOrc'); if(btn) btn.textContent='💾 Salvar orçamento';
   const bti=document.getElementById('btnRegImp'); if(bti) bti.textContent=_TXT_REGIMP;
   const av=document.getElementById('o_editaviso'); if(av) av.style.display='none';
-  calcOrc(); _recolherSecaoDe('o_nome'); toast('Edição cancelada');
+  calcOrc(); _recolherSecaoDe('o_nome'); toast('Edit canceled');
 }
 async function salvarOrcamento(){
   const nome=(document.getElementById('o_nome').value||'').trim();
   const {gTotal,custo,cores,perda,tempo,trabMin,valor,desconto,descPct}=calcOrc();
-  if(!nome){toast('Dê um nome ao orçamento',true);return}
-  if(!cores.length){toast('Adicione ao menos 1 cor',true);return}
-  if(!document.getElementById('o_maq').value){toast('Selecione a máquina usada',true);document.getElementById('o_maq').focus();return}
-  if(!(valor>0)){toast('Informe o valor do orçamento',true);document.getElementById('o_valor').focus();return}
+  if(!nome){toast('Name the quote',true);return}
+  if(!cores.length){toast('Add at least 1 color',true);return}
+  if(!document.getElementById('o_maq').value){toast('Select the machine used',true);document.getElementById('o_maq').focus();return}
+  if(!(valor>0)){toast('Enter the quote value',true);document.getElementById('o_valor').focus();return}
   let foto_url=null; if(pendingPhoto.o){ toast('Enviando foto...'); foto_url=await uploadPhoto(pendingPhoto.o); }
   const dados={
     nome,gramas:gTotal,perda_g:perda,tempo_horas:tempo,trab_min:trabMin,
@@ -2101,7 +2101,7 @@ async function delOrc(id){
   const o=db.orcamentos.find(x=>x.id===id);
   const nome=o?(o.numero?nfOrc(o.numero)+' - ':'')+o.nome:'este orçamento';
   if(!await confirmar('⚠️ Excluir o orçamento:\n\n"'+nome+'"\n\nEssa ação NÃO pode ser desfeita. Tem certeza?'))return;
-  await sb.from('orcamentos').delete().eq('id',id); await carregarTudo(); toast('Orçamento excluído');
+  await sb.from('orcamentos').delete().eq('id',id); await carregarTudo(); toast('Quote deleted');
 }
 async function orcStatus(id,status){
   await sb.from('orcamentos').update({status}).eq('id',id);
@@ -2149,7 +2149,7 @@ async function prodStatus(id,etapa){
   const o=db.orcamentos.find(x=>x.id===id);
   if(!etapa){
     await sb.from('orcamentos').update({status_prod:'',status_prod_datas:{}}).eq('id',id);
-    await carregarTudo(); toast('Status de produção cancelado'); return;
+    await carregarTudo(); toast('Production status canceled'); return;
   }
   const datas=Object.assign({}, (o&&o.status_prod_datas)||{});
   if(!datas[etapa]) datas[etapa]=new Date().toISOString();
@@ -2212,8 +2212,8 @@ function fecharCli(){ document.getElementById('cliModal').style.display='none'; 
 function renderCliLista(){
   const box=document.getElementById('cli_lista'); if(!box)return;
   const cls=(db.clientes||[]).slice().sort((a,b)=>(a.nome||a.telefone).localeCompare(b.nome||b.telefone,CUR.locale));
-  if(!cls.length){ box.innerHTML='<div style="color:var(--muted);font-size:12px;text-align:center;padding:8px">Seus clientes vão aparecer aqui conforme você usa.</div>'; return; }
-  box.innerHTML='<div style="color:var(--muted);font-size:12px;margin:10px 0 6px">Ou escolha um cliente salvo:</div>'+
+  if(!cls.length){ box.innerHTML='<div style="color:var(--muted);font-size:12px;text-align:center;padding:8px">Your clients will appear here as you use the app.</div>'; return; }
+  box.innerHTML='<div style="color:var(--muted);font-size:12px;margin:10px 0 6px">Or pick a saved client:</div>'+
     cls.map(c=>`<div style="display:flex;align-items:center;gap:8px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px">
       <div style="flex:1;cursor:pointer" onclick="escolherCli('${c.id}')">
         <div style="font-weight:600">${c.nome||'(sem nome)'}</div>
@@ -2237,7 +2237,7 @@ async function confirmarCli(){
   const o=db.orcamentos.find(x=>x.id===_cliOrcId); if(!o){fecharCli();return}
   const nome=(document.getElementById('cli_nome').value||'').trim();
   let n=(document.getElementById('cli_tel').value||'').replace(/\D/g,'');
-  if(n.length<10){ toast('Número inválido',true); return; }
+  if(n.length<10){ toast('Invalid number',true); return; }
   // grava telefone no orçamento
   await sb.from('orcamentos').update({tel_cliente:n}).eq('id',o.id);
   o.tel_cliente=n;
@@ -2254,8 +2254,8 @@ async function confirmarCli(){
 async function registrarImpressaoPropria(){
   const nome=(document.getElementById('o_nome').value||'').trim();
   const {gTotal,custo,cores,perda,tempo,trabMin}=calcOrc();
-  if(!nome){toast('Dê um nome à peça',true);return}
-  if(!cores.length){toast('Adicione ao menos 1 cor',true);return}
+  if(!nome){toast('Name the part',true);return}
+  if(!cores.length){toast('Add at least 1 color',true);return}
   if(_editandoImpId){
     const upd={ nome, gramas:gTotal, perda_g:perda, tempo_horas:tempo, trab_min:trabMin,
       cores:cores.map(c=>{const f=db.filamentos.find(x=>x.id===c.filId);return{tipo:f?f.tipo:'',cor:f?nomeFil(f):'',g:c.g}}),
@@ -2267,7 +2267,7 @@ async function registrarImpressaoPropria(){
     document.getElementById('o_cores').innerHTML='';
     const bti=document.getElementById('btnRegImp'); if(bti) bti.textContent=_TXT_REGIMP;
     const av=document.getElementById('o_editaviso'); if(av) av.style.display='none';
-    await carregarTudo(); calcOrc(); _recolherSecaoDe('o_nome'); toast('Impressão própria atualizada ✓');
+    await carregarTudo(); calcOrc(); _recolherSecaoDe('o_nome'); toast('Own print updated ✓');
     return;
   }
   // baixa estoque (peça + perda proporcional), igual à venda
@@ -2279,7 +2279,7 @@ async function registrarImpressaoPropria(){
     if(gReal>restante){
       const novo=await perguntar('Estoque insuficiente de '+nomeFil(f)+'.\nEm estoque: '+restante+' g\nPrecisa: '+gReal.toFixed(1)+' g\n\nDigite o estoque real (g) para corrigir, ou cancele:',Math.ceil(gReal).toString());
       if(novo===null)return;
-      const ne=numF(novo); if(ne<gReal){toast('Valor ainda insuficiente',true);return}
+      const ne=numF(novo); if(ne<gReal){toast('Value still insufficient',true);return}
       await sb.from('filamentos').update({restante:ne}).eq('id',f.id); f.restante=ne;
     }
   }
@@ -2301,7 +2301,7 @@ async function registrarImpressaoPropria(){
   await logAcao('Impressão própria: '+nome,'impressao',{imp_id:ins.data&&ins.data[0]?ins.data[0].id:null,baixas});
   ['o_nome','o_th','o_tm','o_trab','o_perda','o_valor','o_obs'].forEach(i=>document.getElementById(i).value='');
   document.getElementById('o_cores').innerHTML='';
-  await carregarTudo(); calcOrc(); _recolherSecaoDe('o_nome'); toast('Impressão própria registrada ✓ (estoque baixado)');
+  await carregarTudo(); calcOrc(); _recolherSecaoDe('o_nome'); toast('Own print recorded ✓ (stock deducted)');
 }
 async function impVirarVenda(id){
   const o=db.impressoes.find(x=>x.id===id); if(!o)return;
@@ -2309,7 +2309,7 @@ async function impVirarVenda(id){
   const sug=((+o.custo||0)*margem).toFixed(2).replace('.',',');
   const v=await perguntar('Virar esta impressão própria em VENDA.\n\nO filamento já foi baixado quando você registrou a impressão — aqui entra só o faturamento.\n\nPreço de venda (R$):', sug);
   if(v===null) return;
-  const venda=numF(v); if(!(venda>0)){ toast('Informe um preço válido',true); return; }
+  const venda=numF(v); if(!(venda>0)){ toast('Enter a valid price',true); return; }
   const custo=+o.custo||0;
   toast('Salvando...');
   const ins=await sb.from('vendas').insert({
@@ -2320,7 +2320,7 @@ async function impVirarVenda(id){
   if(ins.error){ toast('Erro: '+ins.error.message,true); return; }
   await sb.from('impressoes').delete().eq('id',id);
   await logAcao('Impressão virou venda: '+o.nome,'venda',{venda_id:ins.data&&ins.data[0]?ins.data[0].id:null});
-  await carregarTudo(); toast('Virou venda ✓ (faturamento lançado)');
+  await carregarTudo(); toast('Converted to sale ✓ (revenue logged)');
 }
 async function delImp(id){ if(!await confirmar('Remover esta impressão própria?'))return; await sb.from('impressoes').delete().eq('id',id); await carregarTudo(); }
 
@@ -2341,7 +2341,7 @@ async function registrarPerda(pref){ pref=pref||'pd';
   const restante=+f.restante;
   if(g>restante){
     const novo=await perguntar('Estoque insuficiente de '+nomeFil(f)+'.\nEm estoque: '+restante+' g\nPerda: '+g+' g\n\nDigite o estoque real (g), ou cancele:',Math.ceil(g).toString());
-    if(novo===null)return; const ne=numF(novo); if(ne<g){toast('Valor insuficiente',true);return}
+    if(novo===null)return; const ne=numF(novo); if(ne<g){toast('Insufficient value',true);return}
     await sb.from('filamentos').update({restante:ne}).eq('id',f.id); f.restante=ne;
   }
   toast('Salvando...');
@@ -2356,7 +2356,7 @@ async function registrarPerda(pref){ pref=pref||'pd';
   await logAcao('Perda/falha: '+nomeFil(f)+' ('+g+'g)','perda',{pd_id:ins.data&&ins.data[0]?ins.data[0].id:null,filId:f.id,g});
   [pref+'_g',pref+'_motivo'].forEach(i=>document.getElementById(i).value='');
   document.getElementById(pref+'_fil').value=''; document.getElementById(pref+'_valor').textContent='R$ 0,00';
-  await carregarTudo(); toast('Perda registrada ✓ (estoque baixado)');
+  await carregarTudo(); toast('Loss recorded ✓ (stock deducted)');
 }
 async function delPerda(id){ if(!await confirmar('Remover este registro de perda?'))return; await sb.from('perdas').delete().eq('id',id); await carregarTudo(); }
 function renderPd(){
@@ -2364,14 +2364,14 @@ function renderPd(){
     const sel=document.getElementById(pref+'_fil');
     if(sel){const a=sel.value;sel.innerHTML='<option value="">— selecione —</option>'+filsOrd().map(f=>`<option value="${f.id}">${nomeFil(f)} · ${f.tipo} (${(+f.restante).toLocaleString(CUR.locale)}g)</option>`).join('');sel.value=a;}
     const selM=document.getElementById(pref+'_maq');
-    if(selM){const a=selM.value;selM.innerHTML='<option value="">— selecione a máquina —</option>'+maqsOrd().map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');selM.value=a;}
+    if(selM){const a=selM.value;selM.innerHTML='<option value="">— select the machine —</option>'+maqsOrd().map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');selM.value=a;}
     const dt=document.getElementById(pref+'_data'); if(dt&&!dt.value) dt.value=new Date().toISOString().slice(0,10);
   });
   const box=document.getElementById('listaPd'); if(!box)return;
   const total=db.perdas.reduce((s,p)=>s+(+p.custo||0),0);
   const totalG=db.perdas.reduce((s,p)=>s+(+p.gramas||0),0);
   document.getElementById('pdCount').textContent=db.perdas.length?totalG.toLocaleString(CUR.locale)+'g · '+BRL(total)+' perdido':'';
-  if(!db.perdas.length){box.innerHTML='<div class="empty"><span class="em">❌</span>Nenhuma perda registrada.</div>';return}
+  if(!db.perdas.length){box.innerHTML='<div class="empty"><span class="em">❌</span>No losses recorded.</div>';return}
   const maqNome=id=>{const m=db.maquinas.find(x=>x.id===id);return m?m.nome:''};
   box.innerHTML=db.perdas.map(p=>{
     const d=p.data?new Date(p.data+'T00:00').toLocaleDateString(CUR.locale,{day:'2-digit',month:'short'}):'';
@@ -2387,7 +2387,7 @@ function renderPd(){
 function getTempoP(){ return numF(document.getElementById('p_th').value)+numF(document.getElementById('p_tm').value)/60; }
 function addCorRowP(filId='',g=''){
   const box=document.getElementById('p_filcores');
-  if(box.children.length>=6){toast('Máximo de 6 cores',true);return}
+  if(box.children.length>=6){toast('Maximum of 6 colors',true);return}
   const div=document.createElement('div');div.className='cor-row';
   div.innerHTML=`<select onchange="calcPeca()">${corOptions(filId)}</select>
     <input type="text" inputmode="decimal" placeholder="grams" value="${g}" oninput="calcPeca()">
@@ -2430,14 +2430,14 @@ function calcPeca(){
 }
 async function salvarPeca(){
   const nome=(document.getElementById('p_nome').value||'').trim();
-  if(!nome){toast('Dê um nome à peça',true);return}
-  if(!document.getElementById('p_maq').value){toast('Selecione a máquina usada',true);document.getElementById('p_maq').focus();return}
+  if(!nome){toast('Name the part',true);return}
+  if(!document.getElementById('p_maq').value){toast('Select the machine used',true);document.getElementById('p_maq').focus();return}
   const {gTotal,custoUnit,cores,perda,qtd}=calcPeca();
   const abate=document.getElementById('p_abate').checked;
   const coresTxt=cores.map(c=>{const f=db.filamentos.find(x=>x.id===c.filId);return f?nomeFil(f):'';}).filter(Boolean).join(' + ');
   let baixas=[];
   if(abate){
-    if(!cores.length){toast('Adicione as cores (ou desmarque o abate)',true);return}
+    if(!cores.length){toast('Add the colors (or uncheck deduction)',true);return}
     const fatorPerda=gTotal>0?(gTotal+perda)/gTotal:1;
     // gramas por cor x quantidade produzida
     for(const c of cores){
@@ -2446,7 +2446,7 @@ async function salvarPeca(){
       const gReal=c.g*fatorPerda*qtd; const restante=+f.restante;
       if(gReal>restante){
         const novo=await perguntar('Estoque insuficiente de '+nomeFil(f)+'.\nEm estoque: '+restante+' g\nPrecisa ('+qtd+'un): '+gReal.toFixed(1)+' g\n\nDigite o estoque real (g), ou cancele:',Math.ceil(gReal).toString());
-        if(novo===null)return; const ne=numF(novo); if(ne<gReal){toast('Valor insuficiente',true);return}
+        if(novo===null)return; const ne=numF(novo); if(ne<gReal){toast('Insufficient value',true);return}
         await sb.from('filamentos').update({restante:ne}).eq('id',f.id); f.restante=ne;
       }
     }
@@ -2524,7 +2524,7 @@ async function refugarPeca(id){
   if((+p.qtd||1)>1){ await sb.from('pecas').update({qtd:(+p.qtd)-1}).eq('id',id); }
   else { await sb.from('pecas').update({qtd:0,vendida:true}).eq('id',id); }
   await logAcao('Peça refugada: '+p.nome,'perda',{pd_id:ins.data&&ins.data[0]?ins.data[0].id:null,filId:null,g:0});
-  await carregarTudo(); toast('Peça refugada ♻️ (custo lançado como perda)');
+  await carregarTudo(); toast('Part scrapped ♻️ (cost logged as loss)');
 }
 
 /* ================= ACESSÓRIOS ================= */
@@ -2534,7 +2534,7 @@ async function salvarAcessorio(){
   const ins=await sb.from('acessorios').insert({nome,custo_unit:numF(document.getElementById('ac_custo').value),qtd:numF(document.getElementById('ac_qtd').value)});
   if(ins.error){toast('Erro: '+ins.error.message,true);return}
   ['ac_nome','ac_custo','ac_qtd'].forEach(i=>document.getElementById(i).value='');
-  await carregarTudo(); toast('Acessório adicionado ✓');
+  await carregarTudo(); toast('Accessory added ✓');
 }
 async function delAc(id){ if(!await confirmar('Remover este acessório?'))return; await sb.from('acessorios').delete().eq('id',id); await carregarTudo(); }
 function renderAc(){
@@ -2546,14 +2546,14 @@ function renderAc(){
       <div class="main"><div class="t">${a.nome} ${low?'<span class="badge" style="background:var(--amber)">POUCO</span>':''}</div>
       <div class="s">${(+a.qtd).toLocaleString(CUR.locale)} em estoque · ${BRL(a.custo_unit)}/un</div></div>
       <button class="ed" onclick="editar('acessorios','${a.id}')">✏️</button><button class="x" onclick="delAc('${a.id}')">×</button></div>`;
-  }).join(''):'<div class="empty" style="padding:12px">Nenhum acessório cadastrado.</div>';
+  }).join(''):'<div class="empty" style="padding:12px">No accessories yet.</div>';
 }
 
 /* ================= LINKS / CARTÃO ================= */
 async function salvarLink(){
   const titulo=(document.getElementById('lk_titulo').value||'').trim();
   let url=(document.getElementById('lk_url').value||'').trim();
-  if(!titulo||!url){toast('Preencha título e link',true);return}
+  if(!titulo||!url){toast('Fill in title and link',true);return}
   if(!/^https?:\/\//i.test(url)) url='https://'+url;
   const ins=await sb.from('links').insert({titulo,url,ordem:db.links.length});
   if(ins.error){toast('Erro: '+ins.error.message,true);return}
@@ -2566,7 +2566,7 @@ function renderLk(){
   document.getElementById('lkCount').textContent=db.links.length?db.links.length+' links':'';
   box.innerHTML=db.links.length?db.links.map(l=>`<div class="item"><div class="thumb" style="display:flex;align-items:center;justify-content:center;font-size:20px">🌐</div>
     <div class="main"><div class="t">${l.titulo}</div><div class="s" style="word-break:break-all">${l.url}</div></div>
-    <button class="x" onclick="delLink('${l.id}')">×</button></div>`).join(''):'<div class="empty" style="padding:12px">Nenhum link ainda.</div>';
+    <button class="x" onclick="delLink('${l.id}')">×</button></div>`).join(''):'<div class="empty" style="padding:12px">No links yet.</div>';
 }
 function abrirCartao(){
   const wrap=document.getElementById('cartaoLinks');
@@ -2583,7 +2583,7 @@ function abrirCartao(){
 function fecharCartao(){ document.getElementById('cartaoModal').style.display='none'; }
 function renderPecas(){
   const sel=document.getElementById('p_maq');
-  if(sel){const a=sel.value;sel.innerHTML='<option value="">— selecione a máquina —</option>'+maqsOrd().map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');sel.value=a;}
+  if(sel){const a=sel.value;sel.innerHTML='<option value="">— select the machine —</option>'+maqsOrd().map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');sel.value=a;}
   document.querySelectorAll('#p_filcores .cor-row select').forEach(s=>{const a=s.value;s.innerHTML=corOptions(a);s.value=a;});
   refreshAcRows('p');
   const emEstoque=abc(db.pecas.filter(p=>!p.vendida && (+p.qtd||0)>0),p=>p.nome);
@@ -2602,7 +2602,7 @@ function renderPecas(){
         </div>
         </div>
         <button class="ed" onclick="editar('pecas','${p.id}')">✏️</button><button class="x" onclick="delPeca('${p.id}')">×</button></div>`;
-    }).join(''):'<div class="empty"><span class="em">📦</span>Nenhuma peça em estoque.</div>';
+    }).join(''):'<div class="empty"><span class="em">📦</span>No products in stock.</div>';
   }
   const boxV=document.getElementById('listaPecasVend');
   if(boxV){
@@ -2611,14 +2611,14 @@ function renderPecas(){
     document.getElementById('pecasVendCount').textContent=vendidas.length?unVendP+' un · '+BRL(totVendP):'';
     boxV.innerHTML=vendidas.length?vendidas.map(p=>{const q=+p.qtd||1; return `<div class="item"><div class="thumb" style="display:flex;align-items:center;justify-content:center;font-size:20px;opacity:.5">✅</div>
       <div class="main"><div class="t" style="opacity:.7">${p.nome} ${q>1?`<span class="badge" style="background:var(--brand-soft)">${q}un</span>`:''}</div><div class="s">vendida${q>1?'s':''} por ${BRL((+p.valor||0)*q)}${q>1?' ('+BRL(p.valor)+' cada)':''}</div></div>
-      <button class="x" onclick="delPeca('${p.id}')">×</button></div>`;}).join(''):'<div class="empty" style="padding:12px">Nenhuma ainda.</div>';
+      <button class="x" onclick="delPeca('${p.id}')">×</button></div>`;}).join(''):'<div class="empty" style="padding:12px">None yet.</div>';
   }
 }
 function renderImp(){
   const box=document.getElementById('listaImp'); if(!box)return;
   const total=db.impressoes.reduce((s,i)=>s+(+i.custo||0),0);
   document.getElementById('impCount').textContent=db.impressoes.length?db.impressoes.length+' · '+BRL(total)+' em filamento':'';
-  if(!db.impressoes.length){box.innerHTML='<div class="empty"><span class="em">🖨️</span>Nenhuma impressão própria ainda.</div>';return}
+  if(!db.impressoes.length){box.innerHTML='<div class="empty"><span class="em">🖨️</span>No own prints yet.</div>';return}
   const maqNome=id=>{const m=db.maquinas.find(x=>x.id===id);return m?m.nome:''};
   box.innerHTML=db.impressoes.map(i=>{
     const d=new Date(i.criado_em).toLocaleDateString(CUR.locale,{day:'2-digit',month:'short'});
@@ -2626,21 +2626,21 @@ function renderImp(){
       <div class="main"><div class="t">${i.nome}</div>
       <div class="s">${d} · ${(+i.gramas).toLocaleString(CUR.locale)}g · ${i.tempo_horas||0}h ${maqNome(i.maquina_id)?'· '+maqNome(i.maquina_id):''}${i.obs?'<br>📝 '+i.obs:''}</div>
       <div style="margin-top:8px"><button class="addcor" style="margin:0;border-color:var(--green);color:var(--green);font-size:12px;padding:6px 14px" onclick="impVirarVenda('${i.id}')">➡️ Convert to sale</button></div></div>
-      <div class="right"><div class="big">${BRL(i.custo)}</div><div class="lbl">custo</div></div>
+      <div class="right"><div class="big">${BRL(i.custo)}</div><div class="lbl">cost</div></div>
       <button class="ed" onclick="impEditarCompleto('${i.id}')">✏️</button><button class="x" onclick="delImp('${i.id}')">×</button></div>`;
   }).join('');
 }
 function renderOrc(){
   const sel=document.getElementById('o_maq');
-  if(sel){const a=sel.value;sel.innerHTML='<option value="">— selecione a máquina —</option>'+maqsOrd().map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');sel.value=a;}
+  if(sel){const a=sel.value;sel.innerHTML='<option value="">— select the machine —</option>'+maqsOrd().map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');sel.value=a;}
   if(!document.querySelectorAll('#o_cores .cor-row').length) addCorRowO();
   refreshCorRowsO();
   const box=document.getElementById('listaOrc'); if(!box)return;
   document.getElementById('orcCount').textContent=db.orcamentos.length?db.orcamentos.length+' salvos':'';
-  if(!db.orcamentos.length){box.innerHTML='<div class="empty"><span class="em">📄</span>Nenhum orçamento ainda.</div>';return}
+  if(!db.orcamentos.length){box.innerHTML='<div class="empty"><span class="em">📄</span>No quotes yet.</div>';return}
   const busca=(document.getElementById('buscaOrc')?.value||'').toLowerCase().trim();
   const listaO=busca?db.orcamentos.filter(o=>(o.nome||'').toLowerCase().includes(busca)):db.orcamentos;
-  if(!listaO.length){box.innerHTML='<div class="empty" style="padding:14px">Nenhum orçamento encontrado.</div>';return}
+  if(!listaO.length){box.innerHTML='<div class="empty" style="padding:14px">No quotes found.</div>';return}
   box.innerHTML=listaO.map(o=>{
     const dias=Math.floor((Date.now()-new Date(o.criado_em).getTime())/86400000);
     const diasTxt=dias<=0?'hoje':(dias===1?'há 1 dia':'há '+dias+' dias');
@@ -2664,7 +2664,7 @@ function renderOrc(){
       </div>
       ${o.status==='aprovado'?prodBlock(o):''}
       </div>
-      <div class="right"><div class="big ${cls}">${BRL(o.valor)}</div><div class="lbl">orçado</div></div>
+      <div class="right"><div class="big ${cls}">${BRL(o.valor)}</div><div class="lbl">quoted</div></div>
       <button class="ed" onclick="editar('orcamentos','${o.id}')">✏️</button><button class="x" onclick="delOrc('${o.id}')">×</button></div>`;
   }).join('');
 }
@@ -2690,7 +2690,7 @@ async function orcVirarVenda(id){
   if(await confirmar('Registrar esta venda agora?\n\nVai baixar o filamento, lançar o faturamento e concluir o orçamento (ele sai da lista de orçamentos).')){
     registrarVenda();
   } else {
-    toast('Orçamento carregado na Venda — confira e toque em Registrar venda');
+    toast('Quote loaded into Sale — review and tap Record sale');
   }
 }
 
@@ -2741,9 +2741,9 @@ async function registrarVenda(){
   const {gTotal,custo,cores,perda}=calcVenda();
   const venda=numF(document.getElementById('v_venda').value)||0;
   const tempo=getTempo();
-  if(!nome){toast('Dê um nome à peça',true);return}
-  if(!cores.length){toast('Adicione ao menos 1 cor com gramas',true);return}
-  if(!document.getElementById('v_maq').value){toast('Selecione a máquina usada',true);document.getElementById('v_maq').focus();return}
+  if(!nome){toast('Name the part',true);return}
+  if(!cores.length){toast('Add at least 1 color with grams',true);return}
+  if(!document.getElementById('v_maq').value){toast('Select the machine used',true);document.getElementById('v_maq').focus();return}
   // perda é distribuída proporcionalmente entre as cores usadas
   const fatorPerda = gTotal>0 ? (gTotal+perda)/gTotal : 1;
   // valida estoque (força número, e oferece corrigir o estoque se faltar)
@@ -2765,7 +2765,7 @@ async function registrarVenda(){
       );
       if(novo===null){ return; } // cancelou
       const novoEstoque=numF(novo);
-      if(novoEstoque<gReal){ toast('Valor ainda insuficiente. Verifique.',true); return; }
+      if(novoEstoque<gReal){ toast('Value still insufficient. Please check.',true); return; }
       // corrige o estoque antes de seguir
       await sb.from('filamentos').update({restante:novoEstoque}).eq('id',f.id);
       f.restante=novoEstoque; // atualiza local para a baixa logo abaixo
@@ -2810,15 +2810,15 @@ async function delVenda(id){
   const v=db.vendas.find(x=>x.id===id);
   const nome=v?(v.numero?nfVenda(v.numero)+' - ':'')+v.nome:'esta venda';
   if(!await confirmar('⚠️ Excluir a venda:\n\n"'+nome+'"\n\nO filamento NÃO volta ao estoque e essa ação NÃO pode ser desfeita. Tem certeza?'))return;
-  await sb.from('vendas').delete().eq('id',id); await carregarTudo(); toast('Venda excluída');
+  await sb.from('vendas').delete().eq('id',id); await carregarTudo(); toast('Sale deleted');
 }
 function renderVendas(){
   const box=document.getElementById('listaVendas');
   document.getElementById('vendaCount').textContent=db.vendas.length?db.vendas.length+' registros':'';
-  if(!db.vendas.length){box.innerHTML='<div class="empty"><span class="em">📦</span>Nenhuma venda ainda.</div>';return}
+  if(!db.vendas.length){box.innerHTML='<div class="empty"><span class="em">📦</span>No sales yet.</div>';return}
   const busca=(document.getElementById('buscaVenda')?.value||'').toLowerCase().trim();
   const listaV=busca?db.vendas.filter(v=>(v.nome||'').toLowerCase().includes(busca)):db.vendas;
-  if(!listaV.length){box.innerHTML='<div class="empty" style="padding:14px">Nenhuma venda encontrada.</div>';return}
+  if(!listaV.length){box.innerHTML='<div class="empty" style="padding:14px">No sales found.</div>';return}
   box.innerHTML=listaV.slice(0,40).map(v=>{
     const d=new Date(v.criado_em).toLocaleDateString(CUR.locale,{day:'2-digit',month:'short'});
     const cls=v.lucro>=0?'pos':'neg';
@@ -2929,20 +2929,20 @@ function custoOrcDeDados(o){
 }
 async function moverMaquina(){
   const maqs=db.maquinas;
-  if(maqs.length<2){ toast('Você precisa de 2 máquinas cadastradas',true); return; }
+  if(maqs.length<2){ toast('You need 2 machines registered',true); return; }
   const lista=maqs.map((m,i)=>(i+1)+') '+m.nome).join('\n');
   const de=await perguntar('Mover registros DE qual máquina?\n\n'+lista+'\n\nDigite o número:','');
   if(de===null)return;
-  const iDe=parseInt(de)-1; if(!(iDe>=0&&iDe<maqs.length)){toast('Opção inválida',true);return;}
+  const iDe=parseInt(de)-1; if(!(iDe>=0&&iDe<maqs.length)){toast('Invalid option',true);return;}
   const para=await perguntar('Mover PARA qual máquina?\n\n'+lista+'\n\nDigite o número:','');
   if(para===null)return;
-  const iPara=parseInt(para)-1; if(!(iPara>=0&&iPara<maqs.length)){toast('Opção inválida',true);return;}
-  if(iDe===iPara){toast('Escolha máquinas diferentes',true);return;}
+  const iPara=parseInt(para)-1; if(!(iPara>=0&&iPara<maqs.length)){toast('Invalid option',true);return;}
+  if(iDe===iPara){toast('Choose different machines',true);return;}
   const mDe=maqs[iDe], mPara=maqs[iPara];
   const c=cfg(); const taxa=1+(c.taxa_falha||0)/100;
   const orcs=db.orcamentos.filter(o=>o.maquina_id===mDe.id);
   const vens=db.vendas.filter(v=>v.maquina_id===mDe.id);
-  if(!orcs.length && !vens.length){ toast('Nenhum registro na '+mDe.nome); return; }
+  if(!orcs.length && !vens.length){ toast('No records in '+mDe.nome); return; }
   if(!await confirmar('🔀 Mover registros\n\nDe: '+mDe.nome+'\nPara: '+mPara.nome+'\n\n• '+orcs.length+' orçamentos\n• '+vens.length+' vendas\n\nA energia e o desgaste serão recalculados para a máquina nova. Material e preço de venda NÃO mudam.\n\n⚠️ Backup antes.\n\nContinuar?'))return;
   toast('Movendo...');
   const delta=(tempo)=>{
@@ -2968,7 +2968,7 @@ async function moverMaquina(){
 async function recalcularCustos(){
   // Atribui uma máquina aos registros que estão SEM máquina e soma energia + desgaste ao custo.
   const maqs=db.maquinas;
-  if(!maqs.length){ toast('Cadastre a máquina primeiro',true); return; }
+  if(!maqs.length){ toast('Add the machine first',true); return; }
   // escolhe a máquina (Bambu por padrão, se houver)
   let maq=maqs.find(m=>/bambu/i.test(m.nome||'')) || maqs[0];
   if(maqs.length>1){
@@ -2976,13 +2976,13 @@ async function recalcularCustos(){
     const esc=await perguntar('Qual máquina foi usada nesses registros antigos?\n\n'+lista+'\n\nDigite o número:','1');
     if(esc===null)return;
     const idx=parseInt(esc)-1;
-    if(idx>=0 && idx<maqs.length) maq=maqs[idx]; else { toast('Opção inválida',true); return; }
+    if(idx>=0 && idx<maqs.length) maq=maqs[idx]; else { toast('Invalid option',true); return; }
   }
   const c=cfg();
   const taxa=1+(c.taxa_falha||0)/100;
   const orcSem=db.orcamentos.filter(o=>!o.maquina_id && (+o.tempo_horas)>0);
   const venSem=db.vendas.filter(v=>!v.maquina_id && (+v.tempo_horas)>0);
-  if(!orcSem.length && !venSem.length){ toast('Nenhum registro sem máquina encontrado'); return; }
+  if(!orcSem.length && !venSem.length){ toast('No records without a machine found'); return; }
   if(!await confirmar('⚡ Atribuir máquina e somar energia\n\nMáquina: '+maq.nome+' ('+maq.potencia_w+'W)\n\nVai atualizar:\n• '+orcSem.length+' orçamentos sem máquina\n• '+venSem.length+' vendas sem máquina\n\nSoma a energia + desgaste ao custo (o material e o preço de venda NÃO mudam).\n\n⚠️ Faça um backup antes.\n\nContinuar?'))return;
   toast('Atualizando...');
   let okO=0, okV=0;
@@ -3035,7 +3035,7 @@ function resetTema(){
   document.getElementById('t_brand').value=TEMA_PADRAO.brand;
   document.getElementById('t_soft').value=TEMA_PADRAO.soft;
   document.getElementById('t_bg').value=TEMA_PADRAO.bg;
-  toast('Tema padrão restaurado');
+  toast('Default theme restored');
 }
 /* cores dos campos (cálculo vs preenchimento) */
 const CAMPOS_PADRAO={calc_bg:'#0a1322',calc_txt:'#8899aa',calc_brd:'#1d2b45',input_bg:'#0a1322',input_txt:'#e8ecf0',input_brd:'#1d2b45'};
@@ -3064,17 +3064,17 @@ function resetCampos(){
   aplicarCampos(CAMPOS_PADRAO);
   const ids={calc_bg:'t_calc_bg',calc_txt:'t_calc_txt',calc_brd:'t_calc_brd',input_bg:'t_input_bg',input_txt:'t_input_txt',input_brd:'t_input_brd'};
   Object.entries(ids).forEach(([k,id])=>{const el=document.getElementById(id);if(el)el.value=CAMPOS_PADRAO[k];});
-  toast('Cores dos campos padrão');
+  toast('Default field colors');
 }
 
 /* ================= MANUTENÇÕES ================= */
 function renderMt(){
   const sel=document.getElementById('mt_maq');
-  if(sel){const at=sel.value;sel.innerHTML='<option value="">— selecione a máquina —</option>'+maqsOrd().map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');sel.value=at;}
+  if(sel){const at=sel.value;sel.innerHTML='<option value="">— select the machine —</option>'+maqsOrd().map(m=>`<option value="${m.id}">${m.nome}</option>`).join('');sel.value=at;}
   const dt=document.getElementById('mt_data'); if(dt&&!dt.value) dt.value=new Date().toISOString().slice(0,10);
   const box=document.getElementById('listaMt'); if(!box)return;
   document.getElementById('mtCount').textContent=db.manutencoes.length?db.manutencoes.length+' registros':'';
-  if(!db.manutencoes.length){box.innerHTML='<div class="empty"><span class="em">🔧</span>Nenhuma manutenção registrada.</div>';return}
+  if(!db.manutencoes.length){box.innerHTML='<div class="empty"><span class="em">🔧</span>No maintenance recorded.</div>';return}
   const nome=id=>{const m=db.maquinas.find(x=>x.id===id);return m?m.nome:'Máquina'};
   box.innerHTML=db.manutencoes.map(mt=>{
     const d=mt.data?new Date(mt.data+'T00:00').toLocaleDateString(CUR.locale,{day:'2-digit',month:'short',year:'2-digit'}):'';
@@ -3089,7 +3089,7 @@ function renderMt(){
 }
 async function salvarManutencao(){
   const maq=document.getElementById('mt_maq').value;
-  if(!maq){toast('Selecione a máquina',true);return}
+  if(!maq){toast('Select the machine',true);return}
   let parada=numF(document.getElementById('mt_parada').value)||0;
   if(document.getElementById('mt_unid').value==='d') parada=parada*24; // dias -> horas
   const payload={
@@ -3103,7 +3103,7 @@ async function salvarManutencao(){
   if(ins.error){toast('Erro: '+ins.error.message,true);return}
   await logAcao('Registrou manutenção: '+(payload.peca||'serviço'),'manutencao',{id:ins.data&&ins.data[0]?ins.data[0].id:null});
   ['mt_peca','mt_desc','mt_custo','mt_parada'].forEach(i=>document.getElementById(i).value='');
-  await carregarTudo(); toast('Manutenção registrada ✓');
+  await carregarTudo(); toast('Maintenance recorded ✓');
 }
 async function delMt(id){ if(!await confirmar('Remover esta manutenção?'))return; await sb.from('manutencoes').delete().eq('id',id); await carregarTudo(); }
 
@@ -3137,8 +3137,8 @@ function carregarProduto(){
 async function salvarComoProduto(){
   const nome=(document.getElementById('v_nome').value||'').trim();
   const cores=getCores();
-  if(!nome){toast('Dê um nome à peça primeiro',true);return}
-  if(!cores.length){toast('Adicione as cores antes de salvar',true);return}
+  if(!nome){toast('Name the part first',true);return}
+  if(!cores.length){toast('Add the colors before saving',true);return}
   const tempo=getTempo();
   const gTotal=cores.reduce((s,c)=>s+c.g,0);
   const receita=cores.map(c=>{const f=db.filamentos.find(x=>x.id===c.filId);return{tipo:f?f.tipo:'',cor:f?f.cor:'',g:c.g}});
@@ -3158,7 +3158,7 @@ async function delProduto(id){ if(!await confirmar('Remover este produto do cat�
 function renderHist(){
   const box=document.getElementById('listaHist'); if(!box)return;
   const lista=db.historico.filter(h=>!h.revertido);
-  if(!lista.length){box.innerHTML='<div class="empty"><span class="em">↩️</span>Nenhuma ação para reverter.</div>';return}
+  if(!lista.length){box.innerHTML='<div class="empty"><span class="em">↩️</span>No action to undo.</div>';return}
   const ic={venda:'📦',filamento:'🧵',maquina:'🛠️',produto:'⭐',config:'⚙️'};
   box.innerHTML=lista.map(h=>{
     const d=new Date(h.criado_em).toLocaleString(CUR.locale,{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
@@ -3210,7 +3210,7 @@ async function reverter(histId){
     }
     await sb.from('historico').update({revertido:true}).eq('id',histId);
     await carregarTudo();
-    toast('Ação revertida ✓');
+    toast('Action undone ✓');
   }catch(e){ toast('Erro ao reverter: '+e.message,true); }
 }
 
