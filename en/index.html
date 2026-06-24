@@ -190,7 +190,7 @@
       <p id="hdSub">3D Printing</p>
       <span id="statusBadge" style="display:none;align-items:center;gap:6px;margin-top:5px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px;line-height:1.2;width:fit-content"></span>
     </div>
-    <button class="out" onclick="abrirAjuda()" style="margin-right:8px" title="Como começar">❓</button>
+    <button class="out" onclick="abrirAjuda()" style="margin-right:8px" title="How to start">❓</button>
     <button class="out" onclick="sair()">Log out</button>
   </header>
 
@@ -256,7 +256,7 @@
       <div class="calcbox"><span>+ Energy · wear · labor</span><b id="v_cextra" class="custo">R$ 0,00</b></div>
       <div class="calcbox big"><span>Total part cost</span><b id="v_custo" class="custo">R$ 0,00</b></div>
 
-      <label>Preço sugerido (custo × margem) <span id="v_margemtag" style="color:var(--brand-soft)"></span></label>
+      <label>Suggested price (cost × margin) <span id="v_margemtag" style="color:var(--brand-soft)"></span></label>
       <input id="v_sugerido" type="text" readonly style="color:var(--brand-soft);font-weight:700">
 
       <label>Sale value</label>
@@ -327,7 +327,7 @@
       <div class="calcbox"><span>+ Energy · wear · labor</span><b id="o_cextra" class="custo">R$ 0,00</b></div>
       <div class="calcbox"><span>Total part cost</span><b id="o_custo" class="custo">R$ 0,00</b></div>
 
-      <label>Preço sugerido (custo × margem) <span id="o_margemtag" style="color:var(--brand-soft)"></span></label>
+      <label>Suggested price (cost × margin) <span id="o_margemtag" style="color:var(--brand-soft)"></span></label>
       <input id="o_sugerido" type="text" readonly style="color:var(--brand-soft);font-weight:800">
       <div class="row">
         <div style="flex:1"><label>Quote value</label>
@@ -357,17 +357,17 @@
       <input id="o_obs" type="text" placeholder="e.g. 5-day deadline, shipping separate..." autocomplete="off">
 
       <div class="calcbox big"><span>Lucro previsto <b id="o_lucropct" style="font-weight:700"></b></span><b id="o_lucro">R$ 0,00</b></div>
-      <div id="o_editaviso" style="display:none;background:rgba(31,143,255,.12);border:1px solid var(--brand-soft);border-radius:10px;padding:9px 12px;margin-bottom:8px;font-size:12.5px;color:var(--brand-soft)">✏️ Editando um orçamento existente. <span onclick="cancelarEdicaoOrc()" style="text-decoration:underline;cursor:pointer">Cancel editing</span></div>
+      <div id="o_editaviso" style="display:none;background:rgba(31,143,255,.12);border:1px solid var(--brand-soft);border-radius:10px;padding:9px 12px;margin-bottom:8px;font-size:12.5px;color:var(--brand-soft)">✏️ Editing an existing quote. <span onclick="cancelarEdicaoOrc()" style="text-decoration:underline;cursor:pointer">Cancel editing</span></div>
       <button class="act" id="btnSalvarOrc" onclick="guard(salvarOrcamento)">💾 Save quote</button>
       <button class="act ghost" id="btnRegImp" onclick="guard(registrarImpressaoPropria)">🖨️ Record own print (deduct stock, no revenue)</button>
-      <small class="note">"Impressão própria" é pra peças suas / protótipos: gasta o filamento do estoque mas NÃO entra no faturamento nem no lucro.</small>
+      <small class="note">"Own print" is for your own parts / prototypes: it uses filament from stock but does NOT count toward revenue or profit.</small>
     </div>
 
-    <h2 class="sec">Orçamentos salvos <span class="count" id="orcCount"></span></h2>
+    <h2 class="sec">Saved quotes <span class="count" id="orcCount"></span></h2>
     <input id="buscaOrc" type="text" placeholder="🔍 Search quote by name..." autocomplete="off" oninput="renderOrc()" style="margin-bottom:10px">
     <div id="listaOrc"></div>
 
-    <h2 class="sec">🖨️ Impressões próprias <span class="count" id="impCount"></span></h2>
+    <h2 class="sec">🖨️ Own prints <span class="count" id="impCount"></span></h2>
     <div id="listaImp"></div>
   </section>
 
@@ -405,7 +405,7 @@
       <div class="calcbox"><span>+ Energy · wear · labor · accessories</span><b id="p_cextra" class="custo">R$ 0,00</b></div>
       <div class="calcbox"><span>Total part cost</span><b id="p_custo" class="custo">R$ 0,00</b></div>
 
-      <label>Preço sugerido (custo × margem) <span id="p_margemtag" style="color:var(--brand-soft)"></span></label>
+      <label>Suggested price (cost × margin) <span id="p_margemtag" style="color:var(--brand-soft)"></span></label>
       <input id="p_sugerido" type="text" readonly style="color:var(--brand-soft);font-weight:800">
       <label>Sale value</label>
       <input id="p_valor" type="text" inputmode="decimal" placeholder="0,00">
@@ -419,17 +419,17 @@
 
       <label class="check" style="display:flex;align-items:center;gap:9px;margin:12px 0;cursor:pointer;font-size:13.5px">
         <input type="checkbox" id="p_abate" style="width:18px;height:18px">
-        Abater do estoque agora (estou imprimindo esta peça)
+        Deduct from stock now (I am printing this part)
       </label>
-      <small class="note">O custo é sempre calculado automático. Marque a caixa só se está imprimindo agora — aí baixa o filamento e os acessórios do estoque. Se a peça já estava pronta, deixe desmarcado (só registra o custo).</small>
+      <small class="note">The cost is always calculated automatically. Check the box only if you are printing now — then it deducts filament and accessories from stock. If the part was already made, leave it unchecked (only logs the cost).</small>
 
       <button class="act" onclick="guard(salvarPeca)">📦 Add to product stock</button>
     </div>
 
-    <h2 class="sec">Peças em estoque <span class="count" id="pecasCount"></span></h2>
+    <h2 class="sec">Products in stock <span class="count" id="pecasCount"></span></h2>
     <div id="listaPecas"></div>
 
-    <h2 class="sec">Peças vendidas <span class="count" id="pecasVendCount"></span></h2>
+    <h2 class="sec">Products sold <span class="count" id="pecasVendCount"></span></h2>
     <div id="listaPecasVend"></div>
 
     <h2 class="sec">❌ Record loss / failure</h2>
@@ -446,7 +446,7 @@
       <input id="pd2_data" type="date">
       <div class="calcbox big"><span>Value lost</span><b id="pd2_valor" class="neg">R$ 0,00</b></div>
       <button class="act" onclick="guard(()=>registrarPerda('pd2'))">❌ Record loss (deduct stock)</button>
-      <small class="note">Pra impressão que falhou/cancelou. Baixa o filamento do estoque e guarda o registro pra você ver quanto perde com falhas.</small>
+      <small class="note">For prints that failed/were canceled. Deducts filament from stock and keeps a record so you can see how much you lose on failures.</small>
     </div>
     <h2 class="sec">Perdas registradas <span class="count" id="pdCount"></span></h2>
     <div id="listaPd"></div>
@@ -464,7 +464,7 @@
 
       <label class="check" style="display:flex;align-items:center;gap:9px;margin:10px 0;cursor:pointer;font-size:13.5px">
         <input type="checkbox" id="inv_corrigepreco" onchange="invTogglePreco()" style="width:18px;height:18px">
-        Também corrigir o preço deste filamento
+        Also fix the price of this filament
       </label>
 
       <div id="inv_blocoPreco" style="display:none">
@@ -472,11 +472,11 @@
           <div><label>Paid for the spool</label><input id="inv_preco" type="text" inputmode="decimal" placeholder="e.g. 99.99" min="0" step="0.01"></div>
           <div><label>Full spool weight (g)</label><input id="inv_peso" type="text" inputmode="decimal" placeholder="e.g. 1000" min="0" step="1"></div>
         </div>
-        <small class="note">⚠️ O "peso do rolo cheio" é o tamanho do rolo que você COMPROU (ex: 1000g), não o que sobrou. Assim o preço por grama fica certo.</small>
+        <small class="note">⚠️ The "full spool weight" is the size of the spool you BOUGHT (e.g. 1000g), not what is left. That keeps the price per gram correct.</small>
       </div>
 
       <button class="act" onclick="guard(ajustarInventario)">Fix stock</button>
-      <small class="note">Por padrão só ajusta o estoque (o que sobrou na balança). O preço por grama vem do cadastro e não muda — marque a caixa acima só se precisar corrigir o preço.</small>
+      <small class="note">By default it only adjusts stock (what is left on the scale). The price per gram comes from the registry and does not change — check the box above only if you need to fix the price.</small>
     </div>
 
     <h2 class="sec">Add / buy filament</h2>
@@ -491,7 +491,7 @@
       <small class="note">Digite a cor e a marca (ex: "Preto Master Print") e escolha a cor real no quadradinho — ela vira a bolinha colorida na lista.</small>
       <label>Label / note (optional)</label>
       <input id="f_tag" type="text" placeholder="e.g. bench, spool 2, 59g left" autocomplete="off">
-      <small class="note">Deixe vazio para somar a um rolo igual já cadastrado. Coloque uma etiqueta diferente (ex: "bancada") para criar um item separado — ótimo para controlar restos.</small>
+      <small class="note">Leave empty to merge with an identical spool already registered. Add a different label (e.g. "bench") to create a separate item — great for tracking leftovers.</small>
       <label>Spool photo (optional)</label>
       <div class="photo">
         <img class="prev" id="f_prev" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' fill='%230a1322'/><text x='32' y='38' font-size='24' text-anchor='middle' fill='%238095b4'>🧵</text></svg>">
@@ -534,14 +534,14 @@
       <input id="c_falha" type="text" inputmode="decimal" placeholder="5" step="1">
       <label>WhatsApp (to send quotes)</label>
       <input id="c_whats" type="text" inputmode="decimal" placeholder="Ex: 19989543506 (com DDD)">
-      <small class="note" style="margin-top:0">Só números, com DDD. Esse número fica salvo pro botão "Enviar pro meu WhatsApp".</small>
+      <small class="note" style="margin-top:0">Numbers only. This number is saved for the "Send to my WhatsApp" button.</small>
       <button class="act" onclick="guard(salvarConfig)">Save costs</button>
       <small class="note">These values feed the automatic cost of each part.</small>
     </div>
 
     <h2 class="sec">🏢 My Business</h2>
     <div class="card">
-      <p style="color:var(--muted);font-size:13px;margin:0 0 12px">Personalize o app com a sua marca. Esses dados aparecem no app e nas mensagens de orçamento que você envia.</p>
+      <p style="color:var(--muted);font-size:13px;margin:0 0 12px">Personalize the app with your brand. This info appears in the app and in the quote messages you send.</p>
       <label>Business logo</label>
       <div class="photo">
         <img class="prev" id="emp_prev" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' fill='%230a1322'/><text x='32' y='40' font-size='28' text-anchor='middle' fill='%238095b4'>🏢</text></svg>">
@@ -573,21 +573,21 @@
 
     <h2 class="sec">💡 Suggestions & support</h2>
     <div class="card">
-      <p style="color:var(--muted);font-size:13px;margin:0 0 12px">Tem uma ideia pra melhorar o app ou precisa de ajuda? Fale comigo! Suas sugestões ajudam a deixar o app cada vez melhor.</p>
+      <p style="color:var(--muted);font-size:13px;margin:0 0 12px">Have an idea to improve the app or need help? Talk to me! Your suggestions help make the app better and better.</p>
       <button class="act" onclick="falarSuporte('sugestao')">💡 Send suggestion</button>
       <button class="act ghost" style="margin-top:10px" onclick="falarSuporte('tempo')">⏰ Ask about my plan</button>
     </div>
 
     <h2 class="sec">💾 Data backup</h2>
     <div class="card">
-      <p style="color:var(--muted);font-size:13px;margin:0 0 12px">Baixe uma cópia de segurança de todos os seus dados (filamentos, vendas, orçamentos, peças...). Guarde o arquivo num lugar seguro.</p>
+      <p style="color:var(--muted);font-size:13px;margin:0 0 12px">Download a backup of all your data (filaments, sales, quotes, products...). Keep the file in a safe place.</p>
       <button class="act" onclick="exportarBackup()">⬇️ Download full backup</button>
     </div>
 
     <div style="display:none">
     <h2 class="sec">⚡ Assign machine to old records</h2>
     <div class="card">
-      <p style="color:var(--muted);font-size:13px;margin:0 0 12px">Os registros antigos ficaram <b>no machine</b> (sem custo de energia). Isto atribui a máquina usada e <b>soma a energia + desgaste</b> ao custo. O material e o preço de venda NÃO mudam. <b>Make a backup first.</b></p>
+      <p style="color:var(--muted);font-size:13px;margin:0 0 12px">Os registros antigos ficaram <b>no machine</b> (no energy cost). This assigns the machine used and <b>soma a energia + desgaste</b> to the cost. Material and sale price do NOT change. <b>Make a backup first.</b></p>
       <button class="act" onclick="guard(recalcularCustos)">⚡ Assign machine & add energy</button>
       <button class="act ghost" style="margin-top:10px" onclick="guard(moverMaquina)">🔀 Move records between machines</button>
     </div>
@@ -612,7 +612,7 @@
         <button class="act" style="flex:1" onclick="salvarTema()">Apply theme</button>
         <button class="act ghost" style="flex:1" onclick="resetTema()">Default</button>
       </div>
-      <small class="note">O tema fica salvo neste aparelho. Você pode personalizar as cores do seu jeito.</small>
+      <small class="note">The theme is saved on this device. You can customize the colors your way.</small>
 
       <div style="border-top:1px solid var(--line);margin:16px 0 4px"></div>
       <label style="font-weight:700">Calculation boxes (automatic results)</label>
@@ -639,7 +639,7 @@
       </div>
     </div>
 
-    <h2 class="sec">Máquinas e ferramentas <span class="count" id="maqCount"></span></h2>
+    <h2 class="sec">Machines and tools <span class="count" id="maqCount"></span></h2>
     <div class="card">
       <label>Name</label>
       <input id="m_nome" type="text" placeholder="e.g. Bambu Lab P2S" autocomplete="off">
@@ -653,11 +653,11 @@
       </div>
       <div class="calcbox"><span>Depreciation per hour</span><b id="m_dep">R$ 0,0000</b></div>
       <button class="act" onclick="guard(salvarMaquina)">Add machine/tool</button>
-      <small class="note">Depreciação = valor ÷ vida útil. Some o desgaste no custo de cada impressão.</small>
+      <small class="note">Depreciation = value ÷ lifespan. Adds wear to each print cost.</small>
     </div>
     <div id="listaMaq"></div>
 
-    <h2 class="sec">🔧 Manutenções <span class="count" id="mtCount"></span></h2>
+    <h2 class="sec">🔧 Maintenance <span class="count" id="mtCount"></span></h2>
     <div class="card">
       <label>Machine</label>
       <select id="mt_maq"></select>
@@ -680,11 +680,11 @@
       <label>Date</label>
       <input id="mt_data" type="date">
       <button class="act" onclick="guard(salvarManutencao)">Record maintenance</button>
-      <small class="note">Tempo parada = quanto a máquina ficou sem produzir (esperando peça, em conserto). Em dias, conta 24h por dia.</small>
+      <small class="note">Downtime = how long the machine was not producing (waiting for parts, under repair). In days, counts 24h per day.</small>
     </div>
     <div id="listaMt"></div>
 
-    <h2 class="sec">🔗 Acessórios / insumos <span class="count" id="acCount"></span></h2>
+    <h2 class="sec">🔗 Accessories / supplies <span class="count" id="acCount"></span></h2>
     <div class="card">
       <div class="row">
         <div><label>Name</label><input id="ac_nome" type="text" placeholder="e.g. chain, ring" autocomplete="off"></div>
@@ -693,18 +693,18 @@
       <label>Quantity in stock</label>
       <input id="ac_qtd" type="text" inputmode="decimal" placeholder="0">
       <button class="act" onclick="guard(salvarAcessorio)">Add accessory</button>
-      <small class="note">Itens que não são filamento (correntinha, pesinho, argola). Você adiciona na venda/orçamento e o app soma no custo e baixa do estoque.</small>
+      <small class="note">Items that are not filament (chain, weight, ring). You add them to the sale/quote and the app adds them to the cost and deducts from stock.</small>
     </div>
     <div id="listaAc"></div>
 
-    <h2 class="sec">🌐 Meus links (cartão) <span class="count" id="lkCount"></span></h2>
+    <h2 class="sec">🌐 My links (card) <span class="count" id="lkCount"></span></h2>
     <div class="card">
       <div class="row">
         <div><label>Title</label><input id="lk_titulo" type="text" placeholder="e.g. Instagram, Shopee" autocomplete="off"></div>
         <div><label>Link (URL)</label><input id="lk_url" type="text" placeholder="https://..." autocomplete="off"></div>
       </div>
       <button class="act" onclick="guard(salvarLink)">+ Add link</button>
-      <small class="note">Monte seu cartão de links pra mandar ao cliente. Toque em "Ver / compartilhar cartão" abaixo.</small>
+      <small class="note">Build your link card to send to clients. Tap "View / share card" below.</small>
     </div>
     <div id="listaLk"></div>
     <button class="act ghost" onclick="abrirCartao()" style="margin-top:6px">📇 View / share card</button>
@@ -790,9 +790,9 @@
 
   <!-- ===== HISTÓRICO ===== -->
   <section id="tab-hist">
-    <h2 class="sec">Histórico <span class="count">recent actions</span></h2>
+    <h2 class="sec">History <span class="count">recent actions</span></h2>
     <div id="listaHist"></div>
-    <small class="note">Toque em "Reverter" para desfazer uma ação. Reverter uma venda devolve o filamento ao estoque.</small>
+    <small class="note">Tap "Undo" to reverse an action. Undoing a sale returns the filament to stock.</small>
   </section>
 </div>
 </div>
@@ -828,10 +828,10 @@ const SUPORTE_WHATS = '5519994554271';
 function falarSuporte(assunto){
   const nome=EMP.nome?(' ('+EMP.nome+')'):'';
   const txt=assunto==='tempo'
-    ? 'Olá! Estou usando o Gestor Impressão 3D'+nome+' e gostaria de mais tempo de teste.'
+    ? 'Hi! I am using 3D Print Manager'+nome+' e gostaria de mais tempo de teste.'
     : assunto==='pagar'
-    ? 'Olá! Quero liberar / assinar o Gestor Impressão 3D'+nome+'. Como faço pra pagar e continuar usando?'
-    : 'Olá! Tenho uma sugestão para o Gestor Impressão 3D'+nome+':\n\n';
+    ? 'Hi! I want to unlock / subscribe to 3D Print Manager'+nome+'. How do I pay to keep using it?'
+    : 'Hi! I have a suggestion for 3D Print Manager'+nome+':\n\n';
   window.open('https://wa.me/'+SUPORTE_WHATS+'?text='+encodeURIComponent(txt),'_blank');
 }
 let user = null;
@@ -849,63 +849,63 @@ async function guard(fn){ if(_saving){return} _saving=true; try{ await fn(); } f
 let _editCtx=null;
 let pendingEditPhoto=null;
 const EDIT_DEFS={
-  filamentos:{titulo:'Editar filamento',sub:'Para estoque e preço use o Inventário',foto:true,campos:[
+  filamentos:{titulo:'Editar filamento',sub:'For stock and price use Inventory',foto:true,campos:[
     {k:'tipo',lbl:'Tipo',tipo:'select',ops:['PLA','PETG','ABS','ASA','TPU','Nylon','PC','PLA-CF','PETG-CF','HIPS','PVA','Outros']},
     {k:'cor',lbl:'Cor / marca',tipo:'text'},
     {k:'cor_hex',lbl:'Cor real',tipo:'color'},
     {k:'etiqueta',lbl:'Etiqueta / resto',tipo:'text'}
   ]},
-  acessorios:{titulo:'Editar acessório',campos:[
+  acessorios:{titulo:'Edit accessory',campos:[
     {k:'nome',lbl:'Nome',tipo:'text'},
-    {k:'custo_unit',lbl:'Custo unitário (R$)',tipo:'num'},
+    {k:'custo_unit',lbl:'Unit cost',tipo:'num'},
     {k:'qtd',lbl:'Quantidade em estoque',tipo:'num'}
   ]},
-  maquinas:{titulo:'Editar máquina',campos:[
+  maquinas:{titulo:'Edit machine',campos:[
     {k:'nome',lbl:'Nome',tipo:'text'},
-    {k:'potencia_w',lbl:'Potência (W)',tipo:'num'},
+    {k:'potencia_w',lbl:'Power (W)',tipo:'num'},
     {k:'valor_compra',lbl:'Valor pago (R$)',tipo:'num'},
-    {k:'vida_util_horas',lbl:'Vida útil (horas)',tipo:'num'}
+    {k:'vida_util_horas',lbl:'Lifespan (hours)',tipo:'num'}
   ]},
-  pecas:{titulo:'Editar peça',foto:true,campos:[
+  pecas:{titulo:'Edit product',foto:true,campos:[
     {k:'nome',lbl:'Nome',tipo:'text'},
     {k:'cores',lbl:'Cores',tipo:'text'},
     {k:'medida',lbl:'Medida',tipo:'text'},
     {k:'custo',lbl:'Custo (R$)',tipo:'num'},
     {k:'valor',lbl:'Valor de venda (R$)',tipo:'num'},
     {k:'qtd',lbl:'Quantidade',tipo:'num'},
-    {k:'obs',lbl:'Observação',tipo:'text'}
+    {k:'obs',lbl:'Note',tipo:'text'}
   ]},
-  vendas:{titulo:'Editar venda',sub:'Gramas/cores não editáveis (use Reverter no Histórico)',foto:true,campos:[
+  vendas:{titulo:'Editar venda',sub:'Grams/colors not editable (use Undo in History)',foto:true,campos:[
     {k:'nome',lbl:'Nome',tipo:'text'},
     {k:'venda',lbl:'Valor de venda (R$)',tipo:'num'},
-    {k:'obs',lbl:'Observação',tipo:'text'}
+    {k:'obs',lbl:'Note',tipo:'text'}
   ]},
-  orcamentos:{titulo:'Editar orçamento',foto:true,campos:[
-    {k:'nome',lbl:'Cliente / peça',tipo:'text'},
-    {k:'valor',lbl:'Valor orçado (R$)',tipo:'num'},
+  orcamentos:{titulo:'Edit quote',foto:true,campos:[
+    {k:'nome',lbl:'Client / part',tipo:'text'},
+    {k:'valor',lbl:'Quoted value',tipo:'num'},
     {k:'desconto_pct',lbl:'Desconto (%)',tipo:'num'},
     {k:'larg',lbl:'Largura (cm)',tipo:'num'},
     {k:'alt',lbl:'Altura (cm)',tipo:'num'},
     {k:'prof',lbl:'Profundidade (cm)',tipo:'num'},
     {k:'entrega',lbl:'Entrega / retirada',tipo:'text'},
     {k:'prazo',lbl:'Prazo',tipo:'text'},
-    {k:'obs',lbl:'Observação',tipo:'text'}
+    {k:'obs',lbl:'Note',tipo:'text'}
   ]},
-  manutencoes:{titulo:'Editar manutenção',campos:[
-    {k:'peca',lbl:'Peça trocada',tipo:'text'},
-    {k:'descricao',lbl:'Descrição',tipo:'text'},
+  manutencoes:{titulo:'Edit maintenance',campos:[
+    {k:'peca',lbl:'Part replaced',tipo:'text'},
+    {k:'descricao',lbl:'Description',tipo:'text'},
     {k:'custo',lbl:'Custo (R$)',tipo:'num'},
     {k:'tempo_parada_h',lbl:'Tempo parada (horas)',tipo:'num'},
     {k:'data',lbl:'Data',tipo:'date'}
   ]},
-  impressoes:{titulo:'Editar impressão própria',sub:'Edição completa — ajuste o que precisar',campos:[
+  impressoes:{titulo:'Edit own print',sub:'Full edit — adjust what you need',campos:[
     {k:'nome',lbl:'Nome',tipo:'text'},
     {k:'gramas',lbl:'Gramas',tipo:'num'},
     {k:'tempo_horas',lbl:'Tempo (horas)',tipo:'num'},
-    {k:'maquina_id',lbl:'Máquina',tipo:'maq'},
+    {k:'maquina_id',lbl:'Machine',tipo:'maq'},
     {k:'custo',lbl:'Custo (R$)',tipo:'num'},
     {k:'criado_em',lbl:'Data',tipo:'date'},
-    {k:'obs',lbl:'Observação',tipo:'text'}
+    {k:'obs',lbl:'Note',tipo:'text'}
   ]},
   perdas:{titulo:'Editar perda/falha',campos:[
     {k:'filamento_nome',lbl:'Filamento',tipo:'text'},
@@ -1040,7 +1040,7 @@ function mostrarCadastro(mostrar){
   document.getElementById('cadastroExtra').style.display=mostrar?'block':'none';
   document.getElementById('btnEntrar').style.display=mostrar?'none':'block';
   document.getElementById('btnIrCadastro').style.display=mostrar?'none':'block';
-  document.getElementById('lgSub').textContent=mostrar?'Crie sua conta — 30 dias grátis':'Gestão para impressão 3D';
+  document.getElementById('lgSub').textContent=mostrar?'Create your account — 30-day free trial':'Management for 3D printing';
 }
 async function criarConta(){
   const email=document.getElementById('lg_email').value.trim();
@@ -1057,7 +1057,7 @@ async function criarConta(){
   if(data.user){
     user=data.user;
     const fim=new Date(); fim.setDate(fim.getDate()+30);
-    await sb.from('empresa').insert({nome,whatsapp:tel,telefone:tel,ramo:'Impressão 3D',ultimo_acesso:new Date().toISOString()});
+    await sb.from('empresa').insert({nome,whatsapp:tel,telefone:tel,ramo:'3D Printing',ultimo_acesso:new Date().toISOString()});
     await sb.from('assinatura').insert({status:'teste',teste_fim:fim.toISOString()});
   }
   toast('Account created! Welcome 🎉');
@@ -1206,11 +1206,11 @@ function mostrarBloqueio(info){
   let el=document.getElementById('bloqueio');
   if(!el){ el=document.createElement('div'); el.id='bloqueio'; document.body.appendChild(el); }
   const venceu=info&&info.motivo==='pagamento_vencido';
-  const titulo=venceu?'Sua assinatura venceu':'Seu teste grátis acabou';
+  const titulo=venceu?'Sua assinatura venceu':'Your free trial has ended';
   el.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:90vh;max-width:360px;margin:0 auto;padding:0 22px;text-align:center';
   el.innerHTML='<div style="font-size:52px;margin-bottom:6px">⏰</div>'+
     '<h1 style="font-size:22px;margin:0 0 8px;color:#eaf1ff">'+titulo+'</h1>'+
-    '<p style="color:#8095b4;font-size:14px;line-height:1.6;margin:0 0 22px">Continue com o Gestor Impressão 3D por apenas R$ 19,90/mês. Assine e libere seu acesso.</p>'+
+    '<p style="color:#8095b4;font-size:14px;line-height:1.6;margin:0 0 22px">Continue with 3D Print Manager. Subscribe to unlock your access.</p>'+
     '<button onclick="assinarAgora()" style="background:#C6FF3D;color:#10204a;border:0;border-radius:14px;padding:15px 24px;font-size:15px;font-weight:800;width:100%;max-width:300px;margin-bottom:10px;box-shadow:0 8px 24px rgba(198,255,61,.3)">💳 Subscribe</button>'+
     '<button onclick="location.reload()" style="background:transparent;color:#6cc0ff;border:0;font-size:14px;padding:10px;cursor:pointer">I already paid — refresh access</button>'+
     '<button onclick="falarSuporte(\'pagar\')" style="background:transparent;color:#8095b4;border:0;font-size:13px;padding:8px;cursor:pointer">Chat on WhatsApp</button>'+
@@ -1273,7 +1273,7 @@ function montarAjuda(){
     '</div>'+
     lista+
     '<button onclick="fecharAjuda()" style="margin-top:18px;width:100%;background:#1f8fff;color:#fff;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:700;cursor:pointer">↩️ Back to app</button>'+
-    '<p style="text-align:center;color:#8095b4;font-size:12px;margin:16px 0 0;line-height:1.5">💡 Você pode rever isso quando quiser tocando no <b style="color:#ff6b6b">❓</b> aqui em cima.</p>'+
+    '<p style="text-align:center;color:#8095b4;font-size:12px;margin:16px 0 0;line-height:1.5">💡 You can review this anytime by tapping the <b style="color:#ff6b6b">❓</b> aqui em cima.</p>'+
     '<button onclick="naoMostrarMais()" style="margin-top:8px;width:100%;background:transparent;color:#8095b4;border:0;font-size:13px;padding:8px;cursor:pointer;text-decoration:underline">Do not show every time</button>'+
     '</div>';
   document.body.appendChild(ov);
@@ -1502,8 +1502,8 @@ async function carregarTudo(){
   aplicarAbas();
 }
 function aplicarMarca(){
-  const nome=EMP.nome||'Meu Negócio';
-  const ramo=EMP.ramo||'Impressão 3D';
+  const nome=EMP.nome||'My Business';
+  const ramo=EMP.ramo||'3D Printing';
   const logo=EMP.logo_url||LOGO_DATA;
   const set=(id,txt)=>{const e=document.getElementById(id); if(e)e.textContent=txt;};
   set('hdNome',nome); set('hdSub',ramo+(EMP.instagram?' · '+EMP.instagram:''));
@@ -1538,7 +1538,7 @@ async function salvarEmpresa(){
   if(pendingLogo){ toast('Enviando logo...'); const u=await uploadPhoto(pendingLogo); if(u)logo_url=u; }
   const dados={
     nome:(document.getElementById('emp_nome').value||'').trim(),
-    ramo:(document.getElementById('emp_ramo').value||'').trim()||'Impressão 3D',
+    ramo:(document.getElementById('emp_ramo').value||'').trim()||'3D Printing',
     slogan:(document.getElementById('emp_slogan').value||'').trim(),
     whatsapp:(document.getElementById('emp_whats').value||'').replace(/\D/g,''),
     instagram:(document.getElementById('emp_insta').value||'').trim(),
@@ -1571,7 +1571,7 @@ function flashSync(){const b=document.getElementById('syncBadge');document.getEl
 /* ================= NAV ================= */
 function go(t){
   _vendaSrcOrc=null; _editandoOrcId=null; _editandoImpId=null;
-  var _bo=document.getElementById('btnSalvarOrc'); if(_bo)_bo.textContent='💾 Salvar orçamento';
+  var _bo=document.getElementById('btnSalvarOrc'); if(_bo)_bo.textContent='💾 Save quote';
   var _bi=document.getElementById('btnRegImp'); if(_bi)_bi.textContent=_TXT_REGIMP;
   var _avo=document.getElementById('o_editaviso'); if(_avo)_avo.style.display='none';
   document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
@@ -1726,7 +1726,7 @@ function renderMaq(){
 /* ================= FILAMENTOS ================= */
 function precoPorGrama(f){ const q=+f.qtd_inicial; return q>0? (+f.preco_total)/q : 0; }
 function nomeFil(f){ return (f.cor||f.tipo) + (f.etiqueta?' · '+f.etiqueta:''); }
-// numeração sequencial (ORÇ-001 / VEN-001)
+// numeração sequencial (QUOTE-001 / VEN-001)
 function proxNumero(arr){ let max=0; arr.forEach(x=>{const n=+x.numero||0; if(n>max)max=n;}); return max+1; }
 function _printSetup(){
   if(!document.getElementById('printCSS')){
@@ -1742,7 +1742,7 @@ function imprimirOrc(id){
   const o=db.orcamentos.find(x=>x.id===id);
   if(!o){ toast('Quote not found',true); return; }
   _printSetup();
-  const nome=EMP.nome||'Meu Negócio';
+  const nome=EMP.nome||'My Business';
   const logo=EMP.logo_url||LOGO_DATA;
   const cor=EMP.cor_tema||'#1f8fff';
   const contato=[EMP.whatsapp?('WhatsApp '+EMP.whatsapp):'', EMP.instagram?('Instagram '+EMP.instagram):''].filter(Boolean).join('  ·  ');
@@ -1779,12 +1779,12 @@ function imprimirOrc(id){
       <div style="font-size:12px;color:#888;margin-top:4px;letter-spacing:1px">TOTAL VALUE</div>
       <div style="font-size:30px;font-weight:800;color:${cor}">${BRL(o.valor)}</div>
     </div>
-    <div style="margin-top:26px;font-size:11px;color:#999;text-align:center;border-top:1px solid #eee;padding-top:10px">Orçamento gerado por ${nome} · Valores sujeitos a alteração · Validade: 7 dias</div>
+    <div style="margin-top:26px;font-size:11px;color:#999;text-align:center;border-top:1px solid #eee;padding-top:10px">Quote generated by ${nome} · Prices subject to change · Valid for 7 days</div>
   </div>`;
   document.getElementById('printArea').innerHTML=html;
   setTimeout(function(){ window.print(); }, 60);
 }
-function nfOrc(n){ return n?'ORÇ-'+String(n).padStart(3,'0'):''; }
+function nfOrc(n){ return n?'QUOTE-'+String(n).padStart(3,'0'):''; }
 function nfVenda(n){ return n?'VEN-'+String(n).padStart(3,'0'):''; }
 // ordenação alfabética (pt-BR, ignora maiúsculas/acentos)
 function abc(arr,keyFn){ return arr.slice().sort((a,b)=>(keyFn(a)||'').localeCompare(keyFn(b)||'',CUR.locale,{sensitivity:'base'})); }
@@ -2000,7 +2000,7 @@ function calcOrc(){
 }
 let _editandoOrcId=null;
 let _editandoImpId=null;
-const _TXT_REGIMP='🖨️ Registrar impressão própria (baixa estoque, sem faturar)';
+const _TXT_REGIMP='🖨️ Record own print (deduct stock, no revenue)';
 function _recolherSecaoDe(elId){ try{ var el=document.getElementById(elId); var b=el&&el.closest('.sec-body'); if(b){ b.style.display='none'; var h=b.previousElementSibling; if(h&&h.classList.contains('acc'))h.classList.remove('acc-open'); } }catch(e){} }
 function orcEditarCompleto(id){
   const o=db.orcamentos.find(x=>x.id===id); if(!o)return;
@@ -2022,7 +2022,7 @@ function orcEditarCompleto(id){
   document.getElementById('o_cores').innerHTML='';
   (o.cores||[]).forEach(c=>addCorRowO(c.filId||'',c.g));
   if(o.maquina_id) document.getElementById('o_maq').value=o.maquina_id;
-  const btn=document.getElementById('btnSalvarOrc'); if(btn) btn.textContent='✅ Atualizar orçamento';
+  const btn=document.getElementById('btnSalvarOrc'); if(btn) btn.textContent='✅ Update quote';
   const av=document.getElementById('o_editaviso'); if(av){ av.innerHTML='✏️ Editando um orçamento existente. <span onclick="cancelarEdicaoOrc()" style="text-decoration:underline;cursor:pointer">Cancel editing</span>'; av.style.display='block'; }
   _abrirSecaoDe('o_nome');
   calcOrc();
@@ -2043,7 +2043,7 @@ function impEditarCompleto(id){
   document.getElementById('o_cores').innerHTML='';
   (o.cores||[]).forEach(function(c){ var fid=c.filId||''; if(!fid){ var f=db.filamentos.find(function(x){return x.tipo===c.tipo && nomeFil(x)===c.cor;}); if(f)fid=f.id; } addCorRowO(fid, c.g); });
   if(o.maquina_id) document.getElementById('o_maq').value=o.maquina_id;
-  const btn=document.getElementById('btnRegImp'); if(btn) btn.textContent='✅ Atualizar impressão própria';
+  const btn=document.getElementById('btnRegImp'); if(btn) btn.textContent='✅ Update own print';
   const av=document.getElementById('o_editaviso'); if(av){ av.innerHTML='✏️ Editando uma impressão própria. <span onclick="cancelarEdicaoOrc()" style="text-decoration:underline;cursor:pointer">Cancel editing</span>'; av.style.display='block'; }
   _abrirSecaoDe('o_nome');
   calcOrc();
@@ -2054,7 +2054,7 @@ function cancelarEdicaoOrc(){
   ['o_nome','o_th','o_tm','o_trab','o_perda','o_valor','o_obs','o_larg','o_alt','o_prof','o_prazo','o_desc'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
   document.getElementById('o_cores').innerHTML='';
   pendingPhoto.o=null; const op=document.getElementById('o_prev'); if(op)op.src='';
-  const btn=document.getElementById('btnSalvarOrc'); if(btn) btn.textContent='💾 Salvar orçamento';
+  const btn=document.getElementById('btnSalvarOrc'); if(btn) btn.textContent='💾 Save quote';
   const bti=document.getElementById('btnRegImp'); if(bti) bti.textContent=_TXT_REGIMP;
   const av=document.getElementById('o_editaviso'); if(av) av.style.display='none';
   calcOrc(); _recolherSecaoDe('o_nome'); toast('Edit canceled');
@@ -2092,24 +2092,24 @@ async function salvarOrcamento(){
   ['o_nome','o_th','o_tm','o_trab','o_perda','o_valor','o_obs','o_larg','o_alt','o_prof','o_prazo','o_desc'].forEach(i=>document.getElementById(i).value='');
   pendingPhoto.o=null; const op=document.getElementById('o_prev'); if(op)op.src='';
   document.getElementById('o_cores').innerHTML='';
-  const btn=document.getElementById('btnSalvarOrc'); if(btn) btn.textContent='💾 Salvar orçamento';
+  const btn=document.getElementById('btnSalvarOrc'); if(btn) btn.textContent='💾 Save quote';
   const av=document.getElementById('o_editaviso'); if(av) av.style.display='none';
   const bti=document.getElementById('btnRegImp'); if(bti) bti.textContent=_TXT_REGIMP;
-  await carregarTudo(); calcOrc(); _recolherSecaoDe('o_nome'); toast(eraEdicao?'Orçamento atualizado ✓':'Orçamento salvo ✓');
+  await carregarTudo(); calcOrc(); _recolherSecaoDe('o_nome'); toast(eraEdicao?'Quote updated ✓':'Quote saved ✓');
 }
 async function delOrc(id){
   const o=db.orcamentos.find(x=>x.id===id);
   const nome=o?(o.numero?nfOrc(o.numero)+' - ':'')+o.nome:'este orçamento';
-  if(!await confirmar('⚠️ Excluir o orçamento:\n\n"'+nome+'"\n\nEssa ação NÃO pode ser desfeita. Tem certeza?'))return;
+  if(!await confirmar('⚠️ Delete the quote:\n\n"'+nome+'"\n\nThis action canNOT be undone. Are you sure?'))return;
   await sb.from('orcamentos').delete().eq('id',id); await carregarTudo(); toast('Quote deleted');
 }
 async function orcStatus(id,status){
   await sb.from('orcamentos').update({status}).eq('id',id);
   await carregarTudo();
-  toast(status==='aprovado'?'Orçamento aprovado ✓':status==='recusado'?'Orçamento recusado':'Orçamento reaberto');
+  toast(status==='aprovado'?'Quote approved ✓':status==='recusado'?'Quote declined':'Quote reopened');
 }
 const PROD_ETAPAS=[
-  {k:'producao', lbl:'Em produção', emoji:'🛠️', cor:'var(--amber)'},
+  {k:'producao', lbl:'In production', emoji:'🛠️', cor:'var(--amber)'},
   {k:'pronto',   lbl:'Pronto',      emoji:'✅', cor:'var(--brand-soft)'},
   {k:'entregue', lbl:'Entregue',    emoji:'📦', cor:'var(--green)'}
 ];
@@ -2118,7 +2118,7 @@ function prodBlock(o){
   const datas=o.status_prod_datas||{};
   const atualLbl=PROD_ETAPAS.find(e=>e.k===atual);
   let html='<div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)">';
-  html+='<div style="font-size:12px;color:var(--muted);margin-bottom:7px">📍 Status de produção'+(atualLbl?': <b style="color:'+atualLbl.cor+'">'+atualLbl.emoji+' '+atualLbl.lbl+'</b>':'')+'</div>';
+  html+='<div style="font-size:12px;color:var(--muted);margin-bottom:7px">📍 Production status'+(atualLbl?': <b style="color:'+atualLbl.cor+'">'+atualLbl.emoji+' '+atualLbl.lbl+'</b>':'')+'</div>';
   html+='<div style="display:flex;gap:6px;flex-wrap:wrap">';
   PROD_ETAPAS.forEach(e=>{
     const on=atual===e.k;
@@ -2129,7 +2129,7 @@ function prodBlock(o){
   if(atual && o.tel_cliente){
     html+=`<button class="addcor" style="margin:8px 0 0;width:100%;border-color:#25d366;color:#25d366" onclick="avisarProducao('${o.id}')">📲 Notify client on WhatsApp</button>`;
   } else if(atual && !o.tel_cliente){
-    html+='<div style="font-size:11px;color:var(--muted);margin-top:7px">💡 Use "Outro número" para gravar o WhatsApp do cliente e poder avisá-lo.</div>';
+    html+='<div style="font-size:11px;color:var(--muted);margin-top:7px">💡 Use "Other number" to save the client WhatsApp and notify them.</div>';
   }
   if(atual){
     html+=`<button class="addcor" style="margin:8px 0 0;width:100%;border-color:var(--muted);color:var(--muted)" onclick="prodStatus('${o.id}','')">✕ Cancel production status</button>`;
@@ -2162,18 +2162,18 @@ function avisarProducao(id){
   const o=db.orcamentos.find(x=>x.id===id); if(!o||!o.tel_cliente)return;
   const e=PROD_ETAPAS.find(x=>x.k===o.status_prod); if(!e)return;
   const nOrc=o.numero?' '+nfOrc(o.numero):'';
-  let msg='*'+(EMP.nome||'Meu Negócio')+'*\n\n';
-  if(e.k==='producao') msg+='Olá! 😊 Seu pedido'+nOrc+' (*'+o.nome+'*) entrou em *produção*! Já já te aviso quando estiver pronto.';
-  else if(e.k==='pronto') msg+='Boa notícia! ✅ Seu pedido'+nOrc+' (*'+o.nome+'*) está *pronto*! Podemos combinar a entrega/retirada.';
-  else if(e.k==='entregue') msg+='Pedido'+nOrc+' (*'+o.nome+'*) *entregue*! 📦 Muito obrigado pela preferência. Qualquer coisa, é só chamar! 🙏';
+  let msg='*'+(EMP.nome||'My Business')+'*\n\n';
+  if(e.k==='producao') msg+='Hi! 😊 Your order'+nOrc+' (*'+o.nome+'*) entered *production*! I will let you know when it is ready.';
+  else if(e.k==='pronto') msg+='Good news! ✅ Your order'+nOrc+' (*'+o.nome+'*) is *ready*! We can arrange delivery/pickup.';
+  else if(e.k==='entregue') msg+='Pedido'+nOrc+' (*'+o.nome+'*) *delivered*! 📦 Thank you so much for your business. Reach out anytime! 🙏';
   const n=o.tel_cliente.replace(/\D/g,'');
   const num=n.length<=11?'55'+n:n;
   window.open('https://wa.me/'+num+'?text='+encodeURIComponent(msg),'_blank');
 }
 function msgOrcamento(o){
-  let txt='*'+(EMP.nome||'Meu Negócio')+'*\n\n';
-  txt+='*Orçamento'+(o.numero?' Nº '+nfOrc(o.numero):'')+'*\n';
-  txt+='*Peça:* '+o.nome+'\n';
+  let txt='*'+(EMP.nome||'My Business')+'*\n\n';
+  txt+='*Quote'+(o.numero?' Nº '+nfOrc(o.numero):'')+'*\n';
+  txt+='*Part:* '+o.nome+'\n';
   if(o.cores&&o.cores.length){ txt+='*Cores:* '+o.cores.map(c=>c.cor||c.tipo).join(', ')+'\n'; }
   const med=[o.larg,o.alt,o.prof].map(x=>+x||0);
   if(med.some(x=>x>0)){ txt+='*Medida:* '+med.map(x=>x.toLocaleString(CUR.locale)).join(' x ')+' cm\n'; }
@@ -2186,7 +2186,7 @@ function msgOrcamento(o){
   }
   if(o.entrega) txt+='*Entrega:* '+o.entrega+'\n';
   if(o.prazo) txt+='*Prazo:* '+o.prazo+'\n';
-  if(EMP.pix) txt+='\n*Pagamento:*\nPix (chave: '+EMP.pix+')\nou Cartão de crédito\n';
+  if(EMP.pix) txt+='\n*Payment:*\n'+EMP.pix+'\nor Credit card\n';
   if(o.obs) txt+='\n*Obs:* '+o.obs+'\n';
   const rodape=[EMP.cidade,EMP.instagram].filter(Boolean).join('\n');
   if(rodape) txt+='\n'+rodape;
@@ -2277,7 +2277,7 @@ async function registrarImpressaoPropria(){
     if(!f){toast('Selecione o filamento em todas as cores',true);return}
     const gReal=c.g*fatorPerda; const restante=+f.restante;
     if(gReal>restante){
-      const novo=await perguntar('Estoque insuficiente de '+nomeFil(f)+'.\nEm estoque: '+restante+' g\nPrecisa: '+gReal.toFixed(1)+' g\n\nDigite o estoque real (g) para corrigir, ou cancele:',Math.ceil(gReal).toString());
+      const novo=await perguntar('Estoque insuficiente de '+nomeFil(f)+'.\nIn stock: '+restante+' g\nPrecisa: '+gReal.toFixed(1)+' g\n\nDigite o estoque real (g) para corrigir, ou cancele:',Math.ceil(gReal).toString());
       if(novo===null)return;
       const ne=numF(novo); if(ne<gReal){toast('Value still insufficient',true);return}
       await sb.from('filamentos').update({restante:ne}).eq('id',f.id); f.restante=ne;
@@ -2298,7 +2298,7 @@ async function registrarImpressaoPropria(){
     maquina_id:document.getElementById('o_maq').value||null
   }).select();
   if(ins.error){toast('Erro: '+ins.error.message,true);return}
-  await logAcao('Impressão própria: '+nome,'impressao',{imp_id:ins.data&&ins.data[0]?ins.data[0].id:null,baixas});
+  await logAcao('Own print: '+nome,'impressao',{imp_id:ins.data&&ins.data[0]?ins.data[0].id:null,baixas});
   ['o_nome','o_th','o_tm','o_trab','o_perda','o_valor','o_obs'].forEach(i=>document.getElementById(i).value='');
   document.getElementById('o_cores').innerHTML='';
   await carregarTudo(); calcOrc(); _recolherSecaoDe('o_nome'); toast('Own print recorded ✓ (stock deducted)');
@@ -2307,7 +2307,7 @@ async function impVirarVenda(id){
   const o=db.impressoes.find(x=>x.id===id); if(!o)return;
   const margem=(db.config&&+db.config.margem_padrao)||3;
   const sug=((+o.custo||0)*margem).toFixed(2).replace('.',',');
-  const v=await perguntar('Virar esta impressão própria em VENDA.\n\nO filamento já foi baixado quando você registrou a impressão — aqui entra só o faturamento.\n\nPreço de venda (R$):', sug);
+  const v=await perguntar('Convert this own print into a SALE.\n\nThe filament was already deducted when you recorded the print — only the revenue is added here.\n\nSale price:', sug);
   if(v===null) return;
   const venda=numF(v); if(!(venda>0)){ toast('Enter a valid price',true); return; }
   const custo=+o.custo||0;
@@ -2319,10 +2319,10 @@ async function impVirarVenda(id){
   }).select();
   if(ins.error){ toast('Erro: '+ins.error.message,true); return; }
   await sb.from('impressoes').delete().eq('id',id);
-  await logAcao('Impressão virou venda: '+o.nome,'venda',{venda_id:ins.data&&ins.data[0]?ins.data[0].id:null});
+  await logAcao('Print converted to sale: '+o.nome,'venda',{venda_id:ins.data&&ins.data[0]?ins.data[0].id:null});
   await carregarTudo(); toast('Converted to sale ✓ (revenue logged)');
 }
-async function delImp(id){ if(!await confirmar('Remover esta impressão própria?'))return; await sb.from('impressoes').delete().eq('id',id); await carregarTudo(); }
+async function delImp(id){ if(!await confirmar('Remove this own print?'))return; await sb.from('impressoes').delete().eq('id',id); await carregarTudo(); }
 
 /* ================= PERDAS / FALHAS ================= */
 function calcPerda(pref){ pref=pref||'pd';
@@ -2340,7 +2340,7 @@ async function registrarPerda(pref){ pref=pref||'pd';
   const custo=g*precoPorGrama(f);
   const restante=+f.restante;
   if(g>restante){
-    const novo=await perguntar('Estoque insuficiente de '+nomeFil(f)+'.\nEm estoque: '+restante+' g\nPerda: '+g+' g\n\nDigite o estoque real (g), ou cancele:',Math.ceil(g).toString());
+    const novo=await perguntar('Estoque insuficiente de '+nomeFil(f)+'.\nIn stock: '+restante+' g\nPerda: '+g+' g\n\nDigite o estoque real (g), ou cancele:',Math.ceil(g).toString());
     if(novo===null)return; const ne=numF(novo); if(ne<g){toast('Insufficient value',true);return}
     await sb.from('filamentos').update({restante:ne}).eq('id',f.id); f.restante=ne;
   }
@@ -2445,7 +2445,7 @@ async function salvarPeca(){
       if(!f){toast('Selecione o filamento em todas as cores',true);return}
       const gReal=c.g*fatorPerda*qtd; const restante=+f.restante;
       if(gReal>restante){
-        const novo=await perguntar('Estoque insuficiente de '+nomeFil(f)+'.\nEm estoque: '+restante+' g\nPrecisa ('+qtd+'un): '+gReal.toFixed(1)+' g\n\nDigite o estoque real (g), ou cancele:',Math.ceil(gReal).toString());
+        const novo=await perguntar('Estoque insuficiente de '+nomeFil(f)+'.\nIn stock: '+restante+' g\nPrecisa ('+qtd+'un): '+gReal.toFixed(1)+' g\n\nDigite o estoque real (g), ou cancele:',Math.ceil(gReal).toString());
         if(novo===null)return; const ne=numF(novo); if(ne<gReal){toast('Insufficient value',true);return}
         await sb.from('filamentos').update({restante:ne}).eq('id',f.id); f.restante=ne;
       }
@@ -2470,18 +2470,18 @@ async function salvarPeca(){
     obs:(document.getElementById('p_obs').value||'').trim()
   }).select();
   if(ins.error){toast('Erro: '+ins.error.message,true);return}
-  if(abate && baixas.length){ await logAcao('Peça pronta (baixou filamento): '+nome+' x'+qtd,'impressao',{imp_id:null,baixas}); }
+  if(abate && baixas.length){ await logAcao('Finished product (filament deducted): '+nome+' x'+qtd,'impressao',{imp_id:null,baixas}); }
   ['p_nome','p_th','p_tm','p_trab','p_perda','p_medida','p_valor','p_qtd','p_obs'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';});
   document.getElementById('p_abate').checked=false;
   document.getElementById('p_filcores').innerHTML=''; document.getElementById('p_acess').innerHTML='';
-  await carregarTudo(); calcPeca(); toast(qtd>1?qtd+' peças adicionadas ao estoque ✓':'Peça adicionada ao estoque ✓');
+  await carregarTudo(); calcPeca(); toast(qtd>1?qtd+' products added to stock ✓':'Product added to stock ✓');
 }
 async function venderPeca(id){
   const p=db.pecas.find(x=>x.id===id); if(!p)return;
   const disp=+p.qtd||1;
   let qtd=disp;
   if(disp>1){
-    const r=await perguntar('Quantas unidades de "'+p.nome+'" vender?\n\nEm estoque: '+disp+' un \u00b7 '+BRL(p.valor)+' cada',String(disp));
+    const r=await perguntar('How many units of "'+p.nome+'" to sell?\n\nIn stock: '+disp+' un \u00b7 '+BRL(p.valor)+' each',String(disp));
     if(r===null) return;
     qtd=Math.floor(numF(r));
     if(!(qtd>0)){ toast('Quantidade inv\u00e1lida',true); return; }
@@ -2508,22 +2508,22 @@ async function venderPeca(id){
   await logAcao('Vendeu pe\u00e7a: '+p.nome+(qtd>1?' x'+qtd:''),'venda',{venda_id:insV.data&&insV.data[0]?insV.data[0].id:null});
   await carregarTudo(); toast(qtd>1?qtd+' pe\u00e7as vendidas \u2713 (no faturamento)':'Pe\u00e7a vendida \u2713 (no faturamento)');
 }
-async function delPeca(id){ if(!await confirmar('Remover esta peça do estoque?'))return; await sb.from('pecas').delete().eq('id',id); await carregarTudo(); }
+async function delPeca(id){ if(!await confirmar('Remove this product from stock?'))return; await sb.from('pecas').delete().eq('id',id); await carregarTudo(); }
 
 async function refugarPeca(id){
   const p=db.pecas.find(x=>x.id===id); if(!p)return;
-  if(!await confirmar('Refugar "'+p.nome+'"?\n\nA peça quebrada sai do estoque e o custo do material ('+BRL(p.custo)+') entra como perda. NÃO mexe no filamento (já foi descontado quando imprimiu).'))return;
+  if(!await confirmar('Scrap "'+p.nome+'"?\n\nThe broken part leaves stock and the material cost ('+BRL(p.custo)+') is logged as a loss. Does NOT touch the filament (already deducted when printed).'))return;
   // registra como perda (custo do material desperdiçado)
   const ins=await sb.from('perdas').insert({
-    filamento_id:null, filamento_nome:p.nome+' (peça refugada)', gramas:+p.peso||0, custo:+p.custo||0,
-    maquina_id:null, motivo:'Peça refugada (quebrou/defeito)',
+    filamento_id:null, filamento_nome:p.nome+' (part scrapped)', gramas:+p.peso||0, custo:+p.custo||0,
+    maquina_id:null, motivo:'Part scrapped (broke/defect)',
     data:new Date().toISOString().slice(0,10)
   }).select();
   if(ins.error){toast('Erro: '+ins.error.message,true);return}
   // tira 1 do estoque de peças
   if((+p.qtd||1)>1){ await sb.from('pecas').update({qtd:(+p.qtd)-1}).eq('id',id); }
   else { await sb.from('pecas').update({qtd:0,vendida:true}).eq('id',id); }
-  await logAcao('Peça refugada: '+p.nome,'perda',{pd_id:ins.data&&ins.data[0]?ins.data[0].id:null,filId:null,g:0});
+  await logAcao('Part scrapped: '+p.nome,'perda',{pd_id:ins.data&&ins.data[0]?ins.data[0].id:null,filId:null,g:0});
   await carregarTudo(); toast('Part scrapped ♻️ (cost logged as loss)');
 }
 
@@ -2536,7 +2536,7 @@ async function salvarAcessorio(){
   ['ac_nome','ac_custo','ac_qtd'].forEach(i=>document.getElementById(i).value='');
   await carregarTudo(); toast('Accessory added ✓');
 }
-async function delAc(id){ if(!await confirmar('Remover este acessório?'))return; await sb.from('acessorios').delete().eq('id',id); await carregarTudo(); }
+async function delAc(id){ if(!await confirmar('Remove this accessory?'))return; await sb.from('acessorios').delete().eq('id',id); await carregarTudo(); }
 function renderAc(){
   const box=document.getElementById('listaAc'); if(!box)return;
   document.getElementById('acCount').textContent=db.acessorios.length?db.acessorios.length+' itens':'';
@@ -2571,8 +2571,8 @@ function renderLk(){
 function abrirCartao(){
   const wrap=document.getElementById('cartaoLinks');
   document.getElementById('logoImg3').src=EMP.logo_url||LOGO_DATA;
-  const cn=document.getElementById('cartaoNome'); if(cn)cn.textContent=EMP.nome||'Meu Negócio';
-  const cs=document.getElementById('cartaoSub'); if(cs)cs.textContent=(EMP.ramo||'Impressão 3D')+(EMP.cidade?' · '+EMP.cidade:'');
+  const cn=document.getElementById('cartaoNome'); if(cn)cn.textContent=EMP.nome||'My Business';
+  const cs=document.getElementById('cartaoSub'); if(cs)cs.textContent=(EMP.ramo||'3D Printing')+(EMP.cidade?' · '+EMP.cidade:'');
   if(!db.links.length){ wrap.innerHTML='<div class="empty" style="padding:10px">Adicione links primeiro.</div>'; }
   else {
     wrap.innerHTML=db.links.map(l=>`<a href="${l.url}" target="_blank" rel="noopener" style="display:block;background:var(--brand);color:#fff;padding:13px;border-radius:12px;font-weight:700;text-decoration:none">${l.titulo}</a>`).join('');
@@ -2591,7 +2591,7 @@ function renderPecas(){
   const box=document.getElementById('listaPecas');
   if(box){
     const valTot=emEstoque.reduce((s,p)=>s+(+p.valor||0)*(+p.qtd||1),0);
-    document.getElementById('pecasCount').textContent=emEstoque.length?emEstoque.length+' · '+BRL(valTot)+' em peças':'';
+    document.getElementById('pecasCount').textContent=emEstoque.length?emEstoque.length+' · '+BRL(valTot)+' in products':'';
     box.innerHTML=emEstoque.length?emEstoque.map(p=>{
       return `<div class="item"><div class="thumb" style="display:flex;align-items:center;justify-content:center;font-size:22px">📦</div>
         <div class="main"><div class="t">${p.nome} ${(+p.qtd||1)>1?`<span class="badge" style="background:var(--brand-soft)">${p.qtd}un</span>`:''}</div>
@@ -2643,7 +2643,7 @@ function renderOrc(){
   if(!listaO.length){box.innerHTML='<div class="empty" style="padding:14px">No quotes found.</div>';return}
   box.innerHTML=listaO.map(o=>{
     const dias=Math.floor((Date.now()-new Date(o.criado_em).getTime())/86400000);
-    const diasTxt=dias<=0?'hoje':(dias===1?'há 1 dia':'há '+dias+' dias');
+    const diasTxt=dias<=0?'today':(dias===1?'1 day ago':dias+' days ago');
     const d=new Date(o.criado_em).toLocaleDateString(CUR.locale,{day:'2-digit',month:'short'});
     const lucroO=(+o.valor||0)-(+o.custo||0);
     const valorOriginal=(+o.desconto)>0?(+o.valor)+(+o.desconto):(+o.valor);
@@ -2687,7 +2687,7 @@ async function orcVirarVenda(id){
   calcVenda();
   _abrirSecaoDe('v_nome');
   _vendaSrcOrc=id;
-  if(await confirmar('Registrar esta venda agora?\n\nVai baixar o filamento, lançar o faturamento e concluir o orçamento (ele sai da lista de orçamentos).')){
+  if(await confirmar('Record this sale now?\n\nIt will deduct filament, log the revenue and complete the quote (it leaves the quotes list).')){
     registrarVenda();
   } else {
     toast('Quote loaded into Sale — review and tap Record sale');
@@ -2757,10 +2757,10 @@ async function registrarVenda(){
       const falta=(gReal-restante).toFixed(1);
       const novo=await perguntar(
         'Estoque insuficiente de '+nomeF+'.\n\n'+
-        'Em estoque: '+restante.toLocaleString(CUR.locale)+' g\n'+
-        'Esta peça precisa: '+gReal.toLocaleString(CUR.locale)+' g\n'+
+        'In stock: '+restante.toLocaleString(CUR.locale)+' g\n'+
+        'This part needs: '+gReal.toLocaleString(CUR.locale)+' g\n'+
         'Faltam: '+falta+' g\n\n'+
-        'Digite o estoque REAL que você tem desse filamento (g) para corrigir, ou cancele:',
+        'Enter the REAL stock you have of this filament (g) to fix, or cancel:',
         Math.ceil(gReal).toString()
       );
       if(novo===null){ return; } // cancelou
@@ -2804,7 +2804,7 @@ async function registrarVenda(){
   document.getElementById('v_cores').innerHTML=''; document.getElementById('v_acess').innerHTML=''; pendingPhoto.v=null;
   document.getElementById('v_prev').src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' fill='%230a1322'/><text x='32' y='38' font-size='24' text-anchor='middle' fill='%238095b4'>📷</text></svg>";
   document.getElementById('v_produto').value='';
-  await carregarTudo(); calcVenda(); toast(_eraOrc?'Venda registrada e orçamento concluído ✓':'Venda registrada ✓');
+  await carregarTudo(); calcVenda(); toast(_eraOrc?'Sale recorded and quote completed ✓':'Venda registrada ✓');
 }
 async function delVenda(id){
   const v=db.vendas.find(x=>x.id===id);
@@ -2881,13 +2881,13 @@ async function ajustarInventario(){
   }
   const {error}=await sb.from('filamentos').update(update).eq('id',f.id);
   if(error){toast('Erro: '+error.message,true);return}
-  await logAcao('Ajustou inventário: '+nomeFil(f)+' '+f.tipo,'filamento',{modo:'update',id:f.id,antes});
+  await logAcao('Inventory adjusted: '+nomeFil(f)+' '+f.tipo,'filamento',{modo:'update',id:f.id,antes});
   ['inv_restante','inv_preco','inv_peso'].forEach(i=>document.getElementById(i).value='');
   document.getElementById('inv_corrigepreco').checked=false;
   document.getElementById('inv_blocoPreco').style.display='none';
   document.getElementById('inv_porg').textContent='R$ 0,0000';
   document.getElementById('inv_fil').value='';
-  await carregarTudo(); toast(corrigePreco?'Estoque e preço corrigidos ✓':'Estoque corrigido ✓');
+  await carregarTudo(); toast(corrigePreco?'Stock and price fixed ✓':'Estoque corrigido ✓');
 }
 
 /* ================= TEMA / PERSONALIZAÇÃO ================= */
@@ -2931,10 +2931,10 @@ async function moverMaquina(){
   const maqs=db.maquinas;
   if(maqs.length<2){ toast('You need 2 machines registered',true); return; }
   const lista=maqs.map((m,i)=>(i+1)+') '+m.nome).join('\n');
-  const de=await perguntar('Mover registros DE qual máquina?\n\n'+lista+'\n\nDigite o número:','');
+  const de=await perguntar('Move records FROM which machine?\n\n'+lista+'\n\nEnter the number:','');
   if(de===null)return;
   const iDe=parseInt(de)-1; if(!(iDe>=0&&iDe<maqs.length)){toast('Invalid option',true);return;}
-  const para=await perguntar('Mover PARA qual máquina?\n\n'+lista+'\n\nDigite o número:','');
+  const para=await perguntar('Move records TO which machine?\n\n'+lista+'\n\nEnter the number:','');
   if(para===null)return;
   const iPara=parseInt(para)-1; if(!(iPara>=0&&iPara<maqs.length)){toast('Invalid option',true);return;}
   if(iDe===iPara){toast('Choose different machines',true);return;}
@@ -2973,7 +2973,7 @@ async function recalcularCustos(){
   let maq=maqs.find(m=>/bambu/i.test(m.nome||'')) || maqs[0];
   if(maqs.length>1){
     const lista=maqs.map((m,i)=>(i+1)+') '+m.nome).join('\n');
-    const esc=await perguntar('Qual máquina foi usada nesses registros antigos?\n\n'+lista+'\n\nDigite o número:','1');
+    const esc=await perguntar('Qual máquina foi usada nesses registros antigos?\n\n'+lista+'\n\nEnter the number:','1');
     if(esc===null)return;
     const idx=parseInt(esc)-1;
     if(idx>=0 && idx<maqs.length) maq=maqs[idx]; else { toast('Invalid option',true); return; }
@@ -3009,7 +3009,7 @@ async function recalcularCustos(){
 function exportarBackup(){
   const dados={
     exportado_em:new Date().toISOString(),
-    negocio:(EMP.nome||'Meu Negócio'),
+    negocio:(EMP.nome||'My Business'),
     filamentos:db.filamentos, vendas:db.vendas, orcamentos:db.orcamentos,
     pecas:db.pecas, acessorios:db.acessorios, maquinas:db.maquinas,
     manutencoes:db.manutencoes, impressoes:db.impressoes, perdas:db.perdas,
@@ -3075,13 +3075,13 @@ function renderMt(){
   const box=document.getElementById('listaMt'); if(!box)return;
   document.getElementById('mtCount').textContent=db.manutencoes.length?db.manutencoes.length+' registros':'';
   if(!db.manutencoes.length){box.innerHTML='<div class="empty"><span class="em">🔧</span>No maintenance recorded.</div>';return}
-  const nome=id=>{const m=db.maquinas.find(x=>x.id===id);return m?m.nome:'Máquina'};
+  const nome=id=>{const m=db.maquinas.find(x=>x.id===id);return m?m.nome:'Machine'};
   box.innerHTML=db.manutencoes.map(mt=>{
     const d=mt.data?new Date(mt.data+'T00:00').toLocaleDateString(CUR.locale,{day:'2-digit',month:'short',year:'2-digit'}):'';
     const parada=mt.tempo_parada_h>=24?(mt.tempo_parada_h/24).toLocaleString(CUR.locale,{maximumFractionDigits:1})+'d':(mt.tempo_parada_h||0)+'h';
     return `<div class="item">
       <div class="thumb" style="display:flex;align-items:center;justify-content:center;font-size:22px">🔧</div>
-      <div class="main"><div class="t">${mt.peca||'Manutenção'} <span class="badge" style="background:var(--brand-soft)">${nome(mt.maquina_id)}</span></div>
+      <div class="main"><div class="t">${mt.peca||'Maintenance'} <span class="badge" style="background:var(--brand-soft)">${nome(mt.maquina_id)}</span></div>
       <div class="s">${d} · ${mt.descricao||''} ${mt.tempo_parada_h?'· parada '+parada:''}</div></div>
       <div class="right"><div class="big">${BRL(mt.custo)}</div></div>
       <button class="ed" onclick="editar('manutencoes','${mt.id}')">✏️</button><button class="x" onclick="delMt('${mt.id}')">×</button></div>`;
@@ -3101,11 +3101,11 @@ async function salvarManutencao(){
   };
   const ins=await sb.from('manutencoes').insert(payload).select();
   if(ins.error){toast('Erro: '+ins.error.message,true);return}
-  await logAcao('Registrou manutenção: '+(payload.peca||'serviço'),'manutencao',{id:ins.data&&ins.data[0]?ins.data[0].id:null});
+  await logAcao('Maintenance recorded: '+(payload.peca||'service'),'manutencao',{id:ins.data&&ins.data[0]?ins.data[0].id:null});
   ['mt_peca','mt_desc','mt_custo','mt_parada'].forEach(i=>document.getElementById(i).value='');
   await carregarTudo(); toast('Maintenance recorded ✓');
 }
-async function delMt(id){ if(!await confirmar('Remover esta manutenção?'))return; await sb.from('manutencoes').delete().eq('id',id); await carregarTudo(); }
+async function delMt(id){ if(!await confirmar('Remove this maintenance?'))return; await sb.from('manutencoes').delete().eq('id',id); await carregarTudo(); }
 
 /* ================= PRODUTOS (catálogo) ================= */
 function renderProdutos(){
@@ -3150,9 +3150,9 @@ async function salvarComoProduto(){
   else { res=await sb.from('produtos').insert(payload); }
   if(res.error){toast('Erro: '+res.error.message,true);return}
   await carregarTudo();
-  toast(existe?'Produto atualizado no catálogo ✓':'Produto salvo no catálogo ✓');
+  toast(existe?'Product updated in catalog ✓':'Product saved to catalog ✓');
 }
-async function delProduto(id){ if(!await confirmar('Remover este produto do catálogo? (não afeta vendas já feitas)'))return; await sb.from('produtos').delete().eq('id',id); await carregarTudo(); }
+async function delProduto(id){ if(!await confirmar('Remove this product from catalog? (does not affect past sales)'))return; await sb.from('produtos').delete().eq('id',id); await carregarTudo(); }
 
 /* ================= HISTÓRICO / REVERTER ================= */
 function renderHist(){
@@ -3246,7 +3246,7 @@ function renderFechamento(){
   const recus=oMes.filter(o=>o.status==='recusado').length;
   const conv=oMes.length?Math.round(aprov/oMes.length*100):0;
   const oc=document.getElementById('orcConversao');
-  if(oc) oc.innerHTML=`📄 Orçamentos no mês: <b>${oMes.length}</b> · ✓ aprovados: <b style="color:var(--green-soft)">${aprov}</b> · ✕ recusados: <b style="color:var(--red)">${recus}</b> · conversão: <b>${conv}%</b>${pMes>0?'<br>🗑️ Perdas no mês: <b style="color:var(--red)">'+BRL(pMes)+'</b>':''}`;
+  if(oc) oc.innerHTML=`📄 Orçamentos no mês: <b>${oMes.length}</b> · ✓ aprovados: <b style="color:var(--green-soft)">${aprov}</b> · ✕ recusados: <b style="color:var(--red)">${recus}</b> · conversion: <b>${conv}%</b>${pMes>0?'<br>🗑️ Losses this month: <b style="color:var(--red)">'+BRL(pMes)+'</b>':''}`;
 }
 function renderResumo(){
   renderFechamento();
@@ -3273,7 +3273,7 @@ function mkChart(id,type,labels,data,opts){
     },opts.options||{})});
 }
 function renderGraficos(){
-  const maqNome=id=>{const m=db.maquinas.find(x=>x.id===id);return m?m.nome:'Sem máquina'};
+  const maqNome=id=>{const m=db.maquinas.find(x=>x.id===id);return m?m.nome:'No machine'};
   // KPIs
   // perda = purga das vendas + perdas/falhas registradas
   const purgaG=db.vendas.reduce((s,v)=>s+(+(v.perda_g)||0),0);
@@ -3287,7 +3287,7 @@ function renderGraficos(){
   const custoMt=db.manutencoes.reduce((s,m)=>s+(+m.custo||0),0);
   const paradaTot=db.manutencoes.reduce((s,m)=>s+(+m.tempo_parada_h||0),0);
   document.getElementById('kPerdaG').textContent=perdaG.toLocaleString(CUR.locale)+' g';
-  document.getElementById('kPerdaR').textContent=BRL(perdaR)+' desperdiçado';
+  document.getElementById('kPerdaR').textContent=BRL(perdaR)+' wasted';
   document.getElementById('kMargem').textContent=fat>0?Math.round(luc/fat*100)+'%':'0%';
   document.getElementById('kHoras').textContent=horas.toLocaleString(CUR.locale,{maximumFractionDigits:1})+' h';
   document.getElementById('kManut').textContent=BRL(custoMt);
