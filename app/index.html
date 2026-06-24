@@ -569,6 +569,11 @@
       <label>Cor do tema</label>
       <input id="emp_cor" type="color" value="#1f8fff" style="width:54px;height:42px;padding:2px;border-radius:10px;cursor:pointer;display:block">
       <button class="act" style="margin-top:14px" onclick="guard(salvarEmpresa)">💾 Salvar minha empresa</button>
+      <div id="assinarBox" style="display:none;margin-top:18px;padding:14px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.35);border-radius:12px">
+        <div style="font-weight:700;color:#eaf1ff;margin-bottom:4px">💳 Assinar o Gestor</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:10px">Pode assinar quando quiser, sem esperar o teste acabar. R$ 19,90/mês.</div>
+        <button class="act" style="background:#22c55e" onclick="assinarAgora()">💳 Assinar agora</button>
+      </div>
     </div>
 
     <h2 class="sec">💡 Sugestões e suporte</h2>
@@ -1067,6 +1072,7 @@ async function criarConta(){
 function atualizarStatusBadge(ac){
   var el=document.getElementById('statusBadge'); if(!el) return;
   ac=ac||{}; var a=(window.ASSIN)||{}; var agora=new Date();
+  var _ab=document.getElementById('assinarBox'); if(_ab){ _ab.style.display=(ac.status==='teste'||a.status==='teste')?'block':'none'; }
   var dia=function(d){ return Math.ceil((new Date(d)-agora)/86400000); };
   var txt='', cor='#1f8fff', bg='rgba(31,143,255,.15)', tap=false;
   if(ac.status==='admin'){ el.style.display='none'; return; }
@@ -1081,7 +1087,7 @@ function atualizarStatusBadge(ac){
     txt='\u2705 Acesso liberado'; cor='#22c55e'; bg='rgba(34,197,94,.15)';
   } else if(ac.status==='teste' || a.status==='teste'){
     var dd=(ac.dias!=null)?ac.dias:(a.teste_fim?dia(a.teste_fim):0);
-    if(dd>7){ txt='\u23f0 Teste gr\u00e1tis \u00b7 faltam '+dd+' dias'; cor='#1f8fff'; bg='rgba(31,143,255,.15)'; }
+    if(dd>7){ txt='\u23f0 Teste \u00b7 faltam '+dd+' dias \u00b7 assinar'; cor='#1f8fff'; bg='rgba(31,143,255,.15)'; tap=true; }
     else if(dd>=1){ txt='\u23f0 Teste acaba em '+dd+(dd===1?' dia':' dias')+' \u00b7 assine'; cor='#f59e0b'; bg='rgba(245,158,11,.15)'; tap=true; }
     else { txt='\u26a0\ufe0f Teste encerrado \u00b7 assine'; cor='#ff6b6b'; bg='rgba(255,107,107,.15)'; tap=true; }
   } else { el.style.display='none'; return; }
