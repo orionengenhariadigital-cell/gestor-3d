@@ -570,9 +570,24 @@
       <input id="emp_cor" type="color" value="#1f8fff" style="width:54px;height:42px;padding:2px;border-radius:10px;cursor:pointer;display:block">
       <button class="act" style="margin-top:14px" onclick="guard(salvarEmpresa)">💾 Salvar minha empresa</button>
       <div id="assinarBox" style="display:none;margin-top:18px;padding:14px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.35);border-radius:12px">
-        <div style="font-weight:700;color:#eaf1ff;margin-bottom:4px">💳 Assinar o Gestor</div>
-        <div style="font-size:13px;color:var(--muted);margin-bottom:10px">Pode assinar quando quiser, sem esperar o teste acabar. R$ 19,90/mês.</div>
-        <button class="act" style="background:#22c55e" onclick="assinarAgora()">💳 Assinar agora</button>
+        <div id="subscribeParte">
+          <div style="font-weight:700;color:#eaf1ff;margin-bottom:4px">💳 Assinar o Gestor</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:10px">Pode assinar quando quiser, sem esperar o teste acabar. R$ 19,90/mês.</div>
+          <button class="act" style="background:#22c55e" onclick="assinarAgora()">💳 Assinar com cartão</button>
+          <button class="act" style="margin-top:8px;background:#1f8fff" onclick="abrirPix()">📲 Pagar com Pix</button>
+          <div id="pixBox" style="display:none;margin-top:12px;padding:12px;background:#0a1322;border:1px solid #23375c;border-radius:10px">
+            <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Copie o código e pague <b style="color:#eaf1ff">R$ 19,90</b> no app do seu banco (Pix &rarr; Copia e cola):</div>
+            <textarea id="pixCode" readonly style="width:100%;box-sizing:border-box;height:80px;background:#060b16;color:#eaf1ff;border:1px solid #23375c;border-radius:8px;padding:8px;font-size:11px;font-family:monospace;resize:none">00020126540014br.gov.bcb.pix0132orionengenhariadigital@gmail.com520400005303986540519.905802BR5925Ana Carolina Rosa Ferreir6015Sao Jose do Rio62070503***63046E54</textarea>
+            <button class="act" style="margin-top:8px" onclick="copiarPix()">📋 Copiar código Pix</button>
+            <div style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5">Chave Pix: <b style="color:#eaf1ff">orionengenhariadigital@gmail.com</b><br>Favorecido: <b style="color:#eaf1ff">Ana Carolina Rosa Ferreira</b></div>
+            <button class="act" style="margin-top:10px;background:#22c55e" onclick="jaPagueiPix()">✅ Já paguei — avisar no WhatsApp</button>
+          </div>
+        </div>
+        <div id="cancelParte" style="display:none">
+          <div style="font-weight:700;color:#46e08a;margin-bottom:4px">✅ Assinatura ativa</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:10px">Quer parar? Você pode cancelar quando quiser.</div>
+          <button class="act" style="background:#5a1414;color:#ff8a8a" onclick="cancelarAssinatura()">Cancelar assinatura</button>
+        </div>
       </div>
     </div>
 
@@ -1072,7 +1087,7 @@ async function criarConta(){
 function atualizarStatusBadge(ac){
   var el=document.getElementById('statusBadge'); if(!el) return;
   ac=ac||{}; var a=(window.ASSIN)||{}; var agora=new Date();
-  var _ab=document.getElementById('assinarBox'); if(_ab){ _ab.style.display=(ac.status==='teste'||a.status==='teste')?'block':'none'; }
+  var _ab=document.getElementById('assinarBox'); if(_ab){ var _st=ac.status||a.status; var _te=(_st==='teste'); var _pg=(_st==='pago'); _ab.style.display=(_te||_pg)?'block':'none'; var _sp=document.getElementById('subscribeParte'); if(_sp)_sp.style.display=_te?'block':'none'; var _cp=document.getElementById('cancelParte'); if(_cp)_cp.style.display=_pg?'block':'none'; }
   var dia=function(d){ return Math.ceil((new Date(d)-agora)/86400000); };
   var txt='', cor='#1f8fff', bg='rgba(31,143,255,.15)', tap=false;
   if(ac.status==='admin'){ el.style.display='none'; return; }
@@ -1223,6 +1238,10 @@ function mostrarBloqueio(info){
   el.style.display='flex';
 }
 function assinarAgora(){ window.open('https://mpago.la/1QFACk5','_blank'); }
+function abrirPix(){ var b=document.getElementById('pixBox'); if(b) b.style.display=(b.style.display==='none'?'block':'none'); }
+function copiarPix(){ var t=document.getElementById('pixCode'); if(!t)return; t.select(); t.setSelectionRange(0,99999); try{ navigator.clipboard.writeText(t.value); }catch(e){ try{document.execCommand('copy');}catch(_){} } toast('Código Pix copiado \u2713'); }
+function jaPagueiPix(){ var nome=EMP.nome?(' ('+EMP.nome+')'):''; var txt='Olá! Acabei de pagar a assinatura do Gestor Impressão 3D'+nome+' via Pix (R$ 19,90). Segue o comprovante:'; window.open('https://wa.me/'+SUPORTE_WHATS+'?text='+encodeURIComponent(txt),'_blank'); }
+async function cancelarAssinatura(){ if(typeof confirmar==='function'){ if(!await confirmar('Deseja cancelar sua assinatura do Gestor? Vamos te chamar no WhatsApp para confirmar.'))return; } var nome=EMP.nome?(' ('+EMP.nome+')'):''; var txt='Olá! Quero CANCELAR minha assinatura do Gestor Impressão 3D'+nome+'.'; window.open('https://wa.me/'+SUPORTE_WHATS+'?text='+encodeURIComponent(txt),'_blank'); }
 let _usoPend=0, _usoOn=false;
 function iniciarHeartbeatUso(){
   if(_usoOn) return; _usoOn=true;
