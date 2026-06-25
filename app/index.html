@@ -1246,7 +1246,17 @@ function mostrarBloqueio(info){
     '<button onclick="sair()" style="background:transparent;color:#8095b4;border:0;font-size:13px;padding:8px;cursor:pointer">Sair desta conta</button>';
   el.style.display='flex';
 }
-function assinarAgora(){ window.open('https://mpago.la/1QFACk5','_blank'); }
+async function assinarAgora(){
+  try{
+    var uid=(EMP&&EMP.user_id)?EMP.user_id:null;
+    var mail=(EMP&&EMP.email)?EMP.email:null;
+    if(!uid){ var s=await sb.auth.getSession(); var u=s&&s.data&&s.data.session?s.data.session.user:null; if(u){uid=u.id; mail=mail||u.email;} }
+    if(!uid){ alert('Faça login antes de assinar.'); return; }
+    var r=await sb.functions.invoke('mp-criar',{ body:{ user_id:uid, email:mail } });
+    if(r.error || !r.data || !r.data.init_point){ console.error('mp-criar',r.error||r.data); alert('Não consegui abrir o pagamento agora. Use o Pix ou chame o suporte.'); return; }
+    window.open(r.data.init_point,'_blank');
+  }catch(e){ console.error(e); alert('Erro ao iniciar pagamento. Tente de novo.'); }
+}
 function abrirPix(){ var b=document.getElementById('pixBox'); if(b) b.style.display=(b.style.display==='none'?'block':'none'); }
 function abrirPixBloq(){ var b=document.getElementById('pixBoxBloq'); if(b) b.style.display=(b.style.display==='none'?'block':'none'); }
 function copiarPixBloq(){ var t=document.getElementById('pixCodeBloq'); if(!t)return; t.select(); t.setSelectionRange(0,99999); try{ navigator.clipboard.writeText(t.value); }catch(e){ try{document.execCommand('copy');}catch(_){} } toast('Código Pix copiado \u2713'); }
