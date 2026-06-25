@@ -1257,8 +1257,8 @@ async function assinarAgora(){
     window.open(r.data.init_point,'_blank');
   }catch(e){ console.error(e); alert('Erro ao iniciar pagamento. Tente de novo.'); }
 }
-function abrirPix(){ assinarAgora(); }
-function abrirPixBloq(){ assinarAgora(); }
+function abrirPix(){ var b=document.getElementById('pixBox'); if(b) b.style.display=(b.style.display==='none'?'block':'none'); }
+function abrirPixBloq(){ var b=document.getElementById('pixBoxBloq'); if(b) b.style.display=(b.style.display==='none'?'block':'none'); }
 function copiarPixBloq(){ var t=document.getElementById('pixCodeBloq'); if(!t)return; t.select(); t.setSelectionRange(0,99999); try{ navigator.clipboard.writeText(t.value); }catch(e){ try{document.execCommand('copy');}catch(_){} } toast('Código Pix copiado \u2713'); }
 function copiarPix(){ var t=document.getElementById('pixCode'); if(!t)return; t.select(); t.setSelectionRange(0,99999); try{ navigator.clipboard.writeText(t.value); }catch(e){ try{document.execCommand('copy');}catch(_){} } toast('Código Pix copiado \u2713'); }
 function jaPagueiPix(){ var nome=EMP.nome?(' ('+EMP.nome+')'):''; var txt='Olá! Acabei de pagar a assinatura do Gestor Impressão 3D'+nome+' via Pix (R$ 19,90). Segue o comprovante:'; window.open('https://wa.me/'+SUPORTE_WHATS+'?text='+encodeURIComponent(txt),'_blank'); }
