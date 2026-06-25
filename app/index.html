@@ -577,9 +577,9 @@
           <button class="act" style="margin-top:8px;background:#1f8fff" onclick="abrirPix()">📲 Pagar com Pix</button>
           <div id="pixBox" style="display:none;margin-top:12px;padding:12px;background:#0a1322;border:1px solid #23375c;border-radius:10px">
             <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Copie o código e pague <b style="color:#eaf1ff">R$ 19,90</b> no app do seu banco (Pix &rarr; Copia e cola):</div>
-            <textarea id="pixCode" readonly style="width:100%;box-sizing:border-box;height:80px;background:#060b16;color:#eaf1ff;border:1px solid #23375c;border-radius:8px;padding:8px;font-size:11px;font-family:monospace;resize:none">00020126540014br.gov.bcb.pix0132orionengenhariadigital@gmail.com520400005303986540519.905802BR5925Ana Carolina Rosa Ferreir6015Sao Jose do Rio62070503***63046E54</textarea>
+            <textarea id="pixCode" readonly style="width:100%;box-sizing:border-box;height:80px;background:#060b16;color:#eaf1ff;border:1px solid #23375c;border-radius:8px;padding:8px;font-size:11px;font-family:monospace;resize:none">00020126490014br.gov.bcb.pix0127gestorimpressao3d@gmail.com520400005303986540519.905802BR5925Ana Carolina Rosa Ferreir6015Sao Jose do Rio62070503***6304F383</textarea>
             <button class="act" style="margin-top:8px" onclick="copiarPix()">📋 Copiar código Pix</button>
-            <div style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5">Chave Pix: <b style="color:#eaf1ff">orionengenhariadigital@gmail.com</b><br>Favorecido: <b style="color:#eaf1ff">Ana Carolina Rosa Ferreira</b></div>
+            <div style="font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5">Chave Pix: <b style="color:#eaf1ff">gestorimpressao3d@gmail.com</b><br>Favorecido: <b style="color:#eaf1ff">Ana Carolina Rosa Ferreira</b></div>
             <button class="act" style="margin-top:10px;background:#22c55e" onclick="jaPagueiPix()">✅ Já paguei — avisar no WhatsApp</button>
           </div>
         </div>
@@ -845,7 +845,7 @@ let db = { filamentos:[], vendas:[], maquinas:[], produtos:[], historico:[], man
 let EMP = {};
 /* Contato do DONO do produto (você, João) — usado nos botões de suporte/sugestão */
 const SUPORTE_WHATS = '5519994554271';
-const PIX_CODE='00020126540014br.gov.bcb.pix0132orionengenhariadigital@gmail.com520400005303986540519.905802BR5925Ana Carolina Rosa Ferreir6015Sao Jose do Rio62070503***63046E54';
+const PIX_CODE='00020126490014br.gov.bcb.pix0127gestorimpressao3d@gmail.com520400005303986540519.905802BR5925Ana Carolina Rosa Ferreir6015Sao Jose do Rio62070503***6304F383';
 function falarSuporte(assunto){
   const nome=EMP.nome?(' ('+EMP.nome+')'):'';
   const txt=assunto==='tempo'
@@ -1238,7 +1238,7 @@ function mostrarBloqueio(info){
       '<div style="font-size:12px;color:#8095b4;margin-bottom:8px">Pague R$ 19,90 no Pix (copia e cola):</div>'+
       '<textarea id="pixCodeBloq" readonly style="width:100%;box-sizing:border-box;height:78px;background:#060b16;color:#eaf1ff;border:1px solid #23375c;border-radius:8px;padding:8px;font-size:11px;font-family:monospace;resize:none">'+PIX_CODE+'</textarea>'+
       '<button onclick="copiarPixBloq()" style="margin-top:8px;width:100%;background:#16306b;color:#cfe3ff;border:0;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer">📋 Copiar código</button>'+
-      '<div style="font-size:11px;color:#8095b4;margin-top:8px;word-break:break-all">Chave: orionengenhariadigital@gmail.com<br>Favorecido: Ana Carolina Rosa Ferreira</div>'+
+      '<div style="font-size:11px;color:#8095b4;margin-top:8px;word-break:break-all">Chave: gestorimpressao3d@gmail.com<br>Favorecido: Ana Carolina Rosa Ferreira</div>'+
       '<button onclick="jaPagueiPix()" style="margin-top:10px;width:100%;background:#1a7a44;color:#d6ffe6;border:0;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer">✅ Já paguei — avisar no WhatsApp</button>'+
     '</div>'+
     '<button onclick="location.reload()" style="background:transparent;color:#6cc0ff;border:0;font-size:14px;padding:10px;cursor:pointer">Já paguei — atualizar acesso</button>'+
