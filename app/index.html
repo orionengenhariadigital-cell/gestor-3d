@@ -171,6 +171,10 @@
       <input id="cad_nome" type="text" placeholder="Ex: Sua Impressão 3D">
       <label>Seu WhatsApp (com DDD)</label>
       <input id="cad_tel" type="text" inputmode="numeric" placeholder="Ex: 19999999999">
+      <label>Cidade</label>
+      <input id="cad_cidade" type="text" placeholder="Ex: São José do Rio Pardo">
+      <label>Estado (UF)</label>
+      <select id="cad_estado"><option value="">Selecione o estado...</option><option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option><option>SE</option><option>TO</option></select>
       <button class="act" onclick="criarConta()">✅ Criar conta e começar</button>
       <button class="act ghost" style="margin-top:10px" onclick="mostrarCadastro(false)">Já tenho conta</button>
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
@@ -564,8 +568,10 @@
       <input id="emp_email" type="text" placeholder="seu@email.com">
       <label>Chave Pix</label>
       <input id="emp_pix" type="text" placeholder="email, telefone ou chave aleatória">
-      <label>Cidade / UF</label>
-      <input id="emp_cidade" type="text" placeholder="Ex: São José do Rio Pardo - SP">
+      <label>Cidade</label>
+      <input id="emp_cidade" type="text" placeholder="Ex: São José do Rio Pardo">
+      <label>Estado (UF)</label>
+      <select id="emp_estado"><option value="">Selecione o estado...</option><option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option><option>SE</option><option>TO</option></select>
       <label>Cor do tema</label>
       <input id="emp_cor" type="color" value="#1f8fff" style="width:54px;height:42px;padding:2px;border-radius:10px;cursor:pointer;display:block">
       <button class="act" style="margin-top:14px" onclick="guard(salvarEmpresa)">💾 Salvar minha empresa</button>
@@ -1059,17 +1065,21 @@ async function criarConta(){
   const pass=document.getElementById('lg_pass').value;
   const nome=(document.getElementById('cad_nome').value||'').trim();
   const tel=(document.getElementById('cad_tel').value||'').replace(/\D/g,'');
+  const cidade=(document.getElementById('cad_cidade').value||'').trim();
+  const estado=(document.getElementById('cad_estado').value||'').trim();
   if(!email||!pass){toast('Preencha email e senha',true);return}
   if(pass.length<6){toast('A senha precisa de ao menos 6 caracteres',true);return}
   if(!nome){toast('Digite o nome do seu negócio',true);return}
   if(tel.length<10){toast('Digite seu WhatsApp com DDD',true);return}
+  if(!cidade){toast('Digite sua cidade',true);return}
+  if(!estado){toast('Selecione seu estado (UF)',true);return}
   const {data,error}=await sb.auth.signUp({email,password:pass});
   if(error){toast('Não foi possível cadastrar: '+error.message,true);return}
   // cria o perfil da empresa com 30 dias de teste
   if(data.user){
     user=data.user;
     const fim=new Date(); fim.setDate(fim.getDate()+30);
-    await sb.from('empresa').insert({nome,whatsapp:tel,telefone:tel,ramo:'Impressão 3D',ultimo_acesso:new Date().toISOString()});
+    await sb.from('empresa').insert({nome,whatsapp:tel,telefone:tel,ramo:'Impressão 3D',cidade,estado,ultimo_acesso:new Date().toISOString()});
     await sb.from('assinatura').insert({status:'teste',teste_fim:fim.toISOString()});
   }
   toast('Conta criada! Bem-vindo 🎉');
@@ -1545,7 +1555,7 @@ function preencherEmpresaForm(){
   const v=(id,val)=>{const e=document.getElementById(id); if(e)e.value=val||'';};
   v('emp_nome',EMP.nome); v('emp_ramo',EMP.ramo); v('emp_slogan',EMP.slogan);
   v('emp_whats',EMP.whatsapp); v('emp_insta',EMP.instagram); v('emp_email',EMP.email);
-  v('emp_pix',EMP.pix); v('emp_cidade',EMP.cidade);
+  v('emp_pix',EMP.pix); v('emp_cidade',EMP.cidade); v('emp_estado',EMP.estado);
   if(EMP.cor_tema){const e=document.getElementById('emp_cor'); if(e)e.value=EMP.cor_tema;}
   const prev=document.getElementById('emp_prev'); if(prev && EMP.logo_url) prev.src=EMP.logo_url;
 }
@@ -1574,6 +1584,7 @@ async function salvarEmpresa(){
     email:(document.getElementById('emp_email').value||'').trim(),
     pix:(document.getElementById('emp_pix').value||'').trim(),
     cidade:(document.getElementById('emp_cidade').value||'').trim(),
+    estado:(document.getElementById('emp_estado').value||'').trim(),
     cor_tema:document.getElementById('emp_cor').value,
     logo_url
   };
