@@ -180,7 +180,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v3.4</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v3.5</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -2770,7 +2770,7 @@ function renderOrc(){
       <div class="t">${o.numero?'<span class="badge" style="background:var(--brand)">'+nfOrc(o.numero)+'</span> ':''}${o.nome} ${badge} <span class="badge" style="background:var(--panel-2);color:var(--muted)">${diasTxt}</span></div>
       <div class="s">${d} · ${(+o.gramas).toLocaleString('pt-BR')}g · <span style="color:var(--red)">custo ${BRL(o.custo)}</span>${(+o.desconto)>0?' · desc '+BRL(o.desconto):''} · <b class="${cls}">lucro ${BRL(lucroO)} (${pctO}%)</b>${o.tel_cliente?'<br>📱 '+o.tel_cliente:''}${o.obs?'<br>📝 '+o.obs:''}</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
-        <button class="addcor" style="margin:0;flex:1;min-width:130px" onclick="orcVirarVenda('${o.id}')">➡️ Virar venda</button>
+        <button class="addcor" style="margin:0;flex:1;min-width:130px;border-color:var(--green);color:var(--green)" onclick="orcVirarVenda('${o.id}')">💰 Pago</button>
         <button class="addcor" style="margin:0;flex:1;min-width:130px;border-color:var(--brand-soft);color:var(--brand-soft)" onclick="orcEditarCompleto('${o.id}')">✏️ Editar completo</button>
         <button class="addcor" style="margin:0;flex:1;min-width:130px;border-color:#25d366;color:#25d366" onclick="enviarWhatsFixo('${o.id}')">📱 Meu Whats</button>
         <button class="addcor" style="margin:0;flex:1;min-width:130px;border-color:#25d366;color:#25d366" onclick="enviarWhatsOutro('${o.id}')">📱 Outro número</button>
