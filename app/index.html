@@ -180,7 +180,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v3.3</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v3.4</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -527,7 +527,7 @@
     <div id="onbAviso" style="display:none;margin:0 0 12px;padding:14px 16px;background:linear-gradient(135deg,#0f2a4a,#0a1322);border:1px solid #1f8fff;border-radius:14px">
       <div style="font-weight:800;color:#7fd0ff;font-size:15px;margin-bottom:4px">👋 Bem-vindo! Comece por aqui</div>
       <div style="font-size:13px;color:#cfe0ff;line-height:1.45">Pra liberar o app, preencha <b>2 coisas</b> aqui nos Dados: os <b>Custos do negócio</b> e cadastre pelo menos <b>1 Máquina</b>. O resto é opcional. ✅</div>
-      <button onclick="(function(){var e=document.getElementById('c_kwh');if(e){e.scrollIntoView({behavior:'smooth',block:'center'});e.focus();}})()" style="margin-top:10px;background:#1f8fff;color:#fff;border:0;border-radius:10px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer">📋 Começar a preencher</button>
+      <button onclick="irCustos()" style="margin-top:10px;background:#1f8fff;color:#fff;border:0;border-radius:10px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer">📋 Começar a preencher</button>
     </div>
     <h2 class="sec">Custos do negócio</h2>
     <div class="card">
@@ -1170,6 +1170,66 @@ function montarSanfonas(){
     });
   });
 }
+/* ====== REORDENAR SEÇÕES (Dados) ====== */
+function _secKey(h){ return ((h&&h.textContent)||'').replace(/[^A-Za-zÀ-ÿ ]/g,'').replace(/\s+/g,' ').trim(); }
+var _MOVBTN='background:#16284a;color:#9fc2ff;border:1px solid #2f6fb0;border-radius:8px;width:32px;height:28px;font-size:12px;cursor:pointer;line-height:1;padding:0';
+function initReorderSecoes(){
+ try{
+  var sec=document.getElementById('tab-custos'); if(!sec||sec._reord) return; sec._reord=1;
+  var heads=Array.prototype.slice.call(sec.querySelectorAll(':scope > h2.sec'));
+  if(!heads.length) return;
+  heads.forEach(function(h){
+    var key=_secKey(h);
+    var body=h.nextElementSibling;
+    var w=document.createElement('div'); w.className='sec-wrap'; w.dataset.key=key;
+    h.parentNode.insertBefore(w,h);
+    w.appendChild(h);
+    if(body && body.classList && body.classList.contains('sec-body')) w.appendChild(body);
+    var ctrl=document.createElement('span'); ctrl.className='sec-mov'; ctrl.style.cssText='display:inline-flex;gap:6px;margin-right:8px';
+    ctrl.innerHTML='<button type="button" onclick="event.stopPropagation();moverSec(this,-1)" style="'+_MOVBTN+'">▲</button><button type="button" onclick="event.stopPropagation();moverSec(this,1)" style="'+_MOVBTN+'">▼</button>';
+    var chev=h.querySelector('.acc-chev');
+    if(chev) h.insertBefore(ctrl, chev); else h.appendChild(ctrl);
+  });
+  aplicarOrdemSecoes();
+ }catch(e){ console.warn('reorder',e); }
+}
+function aplicarOrdemSecoes(){
+  var sec=document.getElementById('tab-custos'); if(!sec) return;
+  var wraps=Array.prototype.slice.call(sec.querySelectorAll(':scope > .sec-wrap'));
+  var saved=null; try{ saved=JSON.parse(localStorage.getItem('g3d_sec_order')||'null'); }catch(e){}
+  var ord=[];
+  if(saved && saved.length){
+    saved.forEach(function(k){ var w=wraps.filter(function(x){return x.dataset.key===k && ord.indexOf(x)<0;})[0]; if(w) ord.push(w); });
+    wraps.forEach(function(w){ if(ord.indexOf(w)<0) ord.push(w); });
+  } else {
+    var DEF=['Custos','Minha Empresa','Personaliza','Máquinas','Acessórios','Manuten','Sugest','Meus links','Backup','Atribuir'];
+    var rank=function(w){ var k=w.dataset.key||''; for(var i=0;i<DEF.length;i++){ if(k.indexOf(DEF[i])>=0) return i; } return 99; };
+    ord=wraps.slice().sort(function(a,b){ return rank(a)-rank(b); });
+  }
+  ord.forEach(function(w){ sec.appendChild(w); });
+}
+function moverSec(btn,dir){
+  try{
+    var w=btn.closest('.sec-wrap'); if(!w) return;
+    var sib=dir<0?w.previousElementSibling:w.nextElementSibling;
+    while(sib && !(sib.classList&&sib.classList.contains('sec-wrap'))) sib=dir<0?sib.previousElementSibling:sib.nextElementSibling;
+    if(!sib) return;
+    if(dir<0) w.parentNode.insertBefore(w,sib); else w.parentNode.insertBefore(sib,w);
+    salvarOrdemSecoes();
+  }catch(e){}
+}
+function salvarOrdemSecoes(){
+  try{ var sec=document.getElementById('tab-custos'); var keys=Array.prototype.slice.call(sec.querySelectorAll(':scope > .sec-wrap')).map(function(w){return w.dataset.key;}); localStorage.setItem('g3d_sec_order',JSON.stringify(keys)); }catch(e){}
+}
+function irCustos(){
+  try{
+    var sec=document.getElementById('tab-custos');
+    var heads=Array.prototype.slice.call(sec.querySelectorAll('h2.sec'));
+    var h=heads.filter(function(x){return (x.textContent||'').indexOf('Custos')>=0;})[0]||heads[0];
+    if(h){ var b=h.nextElementSibling; if(h.classList.contains('acc') && b && b.classList && b.classList.contains('sec-body') && b.style.display==='none'){ h.click(); } h.scrollIntoView({behavior:'smooth',block:'start'}); }
+  }catch(e){}
+}
+
 function telaLogin(){
   var boot=document.getElementById('boot'); if(boot) boot.style.display='none';
   var app=document.getElementById('app'); if(app) app.style.display='none';
@@ -1277,6 +1337,7 @@ async function iniciarApp(){
   document.getElementById('app').style.display='block';
   document.getElementById('nav').style.display='flex';
   montarSanfonas();
+  initReorderSecoes();
   atualizarStatusBadge(_ac);
   await carregarTudo();
   // registra último acesso (para o painel admin saber tempo de uso)
