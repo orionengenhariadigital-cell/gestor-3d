@@ -180,7 +180,7 @@
       <small class="note">30 dias grátis. Sem cartão. Cancele quando quiser.</small>
     </div>
   </div>
-  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v3.2</div>
+  <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--muted);opacity:.5">Gestor Impressão 3D v3.3</div>
 </div>
 
 <!-- ================= APP ================= -->
@@ -526,7 +526,8 @@
   <section id="tab-custos" class="active">
     <div id="onbAviso" style="display:none;margin:0 0 12px;padding:14px 16px;background:linear-gradient(135deg,#0f2a4a,#0a1322);border:1px solid #1f8fff;border-radius:14px">
       <div style="font-weight:800;color:#7fd0ff;font-size:15px;margin-bottom:4px">👋 Bem-vindo! Comece por aqui</div>
-      <div style="font-size:13px;color:#cfe0ff;line-height:1.45">Preencha os dados do seu negócio abaixo e toque em <b>Salvar empresa</b> pra liberar o restante do app. Leva 1 minutinho 🚀</div>
+      <div style="font-size:13px;color:#cfe0ff;line-height:1.45">Pra liberar o app, preencha <b>2 coisas</b> aqui nos Dados: os <b>Custos do negócio</b> e cadastre pelo menos <b>1 Máquina</b>. O resto é opcional. ✅</div>
+      <button onclick="(function(){var e=document.getElementById('c_kwh');if(e){e.scrollIntoView({behavior:'smooth',block:'center'});e.focus();}})()" style="margin-top:10px;background:#1f8fff;color:#fff;border:0;border-radius:10px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer">📋 Começar a preencher</button>
     </div>
     <h2 class="sec">Custos do negócio</h2>
     <div class="card">
@@ -1545,10 +1546,13 @@ async function carregarTudo(){
   aplicarAbas();
   checarOnboarding();
 }
+function onboardingDone(){ try{ return !!(db.config&&db.config.id) && !!(db.maquinas&&db.maquinas.length>0); }catch(e){ return true; } }
+var _onbWasPending=false;
 function checarOnboarding(){
-  var pend = !!(EMP && !EMP.onboarding_ok);
-  var av=document.getElementById('onbAviso'); if(av) av.style.display=pend?'block':'none';
-  if(pend){ go('custos'); }
+  var done=onboardingDone();
+  var av=document.getElementById('onbAviso'); if(av) av.style.display=done?'none':'block';
+  if(!done){ _onbWasPending=true; go('custos'); }
+  else if(_onbWasPending){ _onbWasPending=false; toast('🎉 Tudo pronto! App liberado'); }
 }
 function aplicarMarca(){
   const nome=EMP.nome||'Meu Negócio';
@@ -1583,7 +1587,6 @@ function pickLogoEmpresa(ev){
   rd.readAsDataURL(file); ev.target.value='';
 }
 async function salvarEmpresa(){
-  var _primeiraVez=!(EMP&&EMP.onboarding_ok);
   let logo_url=EMP.logo_url||'';
   if(pendingLogo){ toast('Enviando logo...'); const u=await uploadPhoto(pendingLogo); if(u)logo_url=u; }
   const dados={
@@ -1597,7 +1600,6 @@ async function salvarEmpresa(){
     cidade:(document.getElementById('emp_cidade').value||'').trim(),
     estado:(document.getElementById('emp_estado').value||'').trim(),
     cor_tema:document.getElementById('emp_cor').value,
-    onboarding_ok:true,
     logo_url
   };
   // upsert: atualiza se existe, insere se não
@@ -1607,7 +1609,7 @@ async function salvarEmpresa(){
   if(err){toast('Erro: '+err.message,true);return}
   pendingLogo=null;
   await carregarTudo();
-  toast(_primeiraVez?'🎉 Tudo pronto! App liberado':'Empresa salva ✓');
+  toast('Empresa salva ✓');
 }
 async function logAcao(acao,tipo,snapshot){
   try{ await sb.from('historico').insert({acao,tipo,snapshot}); }catch(e){ console.warn(e); }
@@ -1622,7 +1624,7 @@ function flashSync(){const b=document.getElementById('syncBadge');document.getEl
 
 /* ================= NAV ================= */
 function go(t){
-  if(t!=='custos' && typeof EMP!=='undefined' && EMP && !EMP.onboarding_ok){ toast('Comece preenchendo os dados do seu negócio 👇',true); t='custos'; }
+  if(t!=='custos' && !onboardingDone()){ toast('Preencha os Custos e cadastre 1 Máquina pra liberar 👇',true); t='custos'; }
   _vendaSrcOrc=null; _editandoOrcId=null; _editandoImpId=null;
   var _bo=document.getElementById('btnSalvarOrc'); if(_bo)_bo.textContent='💾 Salvar orçamento';
   var _bi=document.getElementById('btnRegImp'); if(_bi)_bi.textContent=_TXT_REGIMP;
